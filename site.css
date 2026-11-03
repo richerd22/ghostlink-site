@@ -28,3 +28,4 @@ b { font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { .ghost { animation: none; } }
 footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }
 @media (max-width: 420px) { dl { grid-template-columns: 1fr; } dd { margin-bottom: 8px; } }
+.watch-list { display: grid; gap: 10px; }
