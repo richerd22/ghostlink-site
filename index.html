@@ -4,58 +4,272 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GHOST LINK</title>
-<meta name="description" content="A booth box that reads the DJ network and shows every deck on any phone.">
+<meta name="description" content="A small box for the DJ booth. Plug it into the DJ network and every deck shows up live on any phone browser: track, BPM, time left, waveforms, what's next. No app. It only listens.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://ghostlink.cold.fyi/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GHOST LINK">
+<meta property="og:title" content="GHOST LINK">
+<meta property="og:description" content="Every deck, live, on every phone in the room. A small box for the DJ booth. No app. It only listens.">
+<meta property="og:url" content="https://ghostlink.cold.fyi/">
+<meta property="og:image" content="https://ghostlink.cold.fyi/shots/decks.png">
+<meta property="og:image:width" content="780">
+<meta property="og:image:height" content="1688">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="stylesheet" href="site.css">
+<link rel="preload" href="JetBrainsMono_400Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="www.css">
 </head>
 <body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#">GHOST LINK</a>
+    <nav aria-label="Sections">
+      <a href="#shows">WHAT IT SHOWS</a>
+      <a href="#how">HOW IT WORKS</a>
+      <a href="#faq">FAQ</a>
+      <a class="wl" href="#waitlist">WAITLIST</a>
+    </nav>
+  </div>
+</header>
+
 <main>
-<header>
+
+<div class="hero">
+  <div class="wrap">
 <pre class="ghost" aria-hidden="true">  .--.
  / oo \
 |      |
 |      |
  \/\/\/</pre>
-<h1>GHOST LINK</h1>
-</header>
+    <h1>GHOST LINK</h1>
+    <p class="line">Every deck, live, on every phone in the room.</p>
+    <p class="sub">A small box for the DJ booth. Plug it into the DJ network and anyone in the room opens what's playing in their phone's browser: track, BPM, time left, waveforms, and when the next chorus hits. No app. It only listens.</p>
+    <div class="buttons">
+      <a class="btn solid" href="#waitlist">JOIN THE WAITLIST</a>
+      <a class="btn" href="#see">SEE IT</a>
+    </div>
+    <p class="status">TESTING AT BOSTON SHOWS · FALL 2026 · FIRST VENUE <b>BIJOU</b></p>
+  </div>
+</div>
 
-<p>A small box for the DJ booth. It reads the PRO DJ LINK network and shows every deck on any phone:
-track, artist, artwork, BPM, time left, waveforms, on air, master, song sections, and what's been played
-tonight.</p>
+<section id="see" aria-labelledby="see-h">
+  <div class="wrap">
+    <p class="label">ALL DECKS</p>
+    <h2 id="see-h">The whole booth on one screen.</h2>
+    <p class="lead">Who's on air, who's master, how long is left, and what's coming next. Waveforms scroll in time. The beat counter flashes on the beat.</p>
+    <div class="demo-head"><span class="live">SIMULATED · 124 BPM</span><span>DECKS</span></div>
+    <div class="decks" id="decks"></div>
+    <p class="demo-note">Running in your browser. The box reads the same things off the network, from the players themselves.</p>
+  </div>
+</section>
 
-<p>It only listens. It never sends anything to the players, and if anything else on the network needs its
-spot, it steps off by itself.</p>
+<section id="shows" aria-labelledby="shows-h">
+  <div class="wrap">
+    <p class="label">WHAT IT SHOWS</p>
+    <h2 id="shows-h">Everything the decks know, readable at arm's length.</h2>
+    <p class="lead">It reads the PRO DJ LINK network that CDJs, XDJs and DJM mixers already talk on, and puts it on a page any phone can open.</p>
+    <ul class="feat">
+      <li><b>THE TRACK</b><span>Title, artist, artwork, genre, key.</span></li>
+      <li><b>THE NUMBERS</b><span>BPM, pitch, time left, ticking on every deck.</span></li>
+      <li><b>WAVEFORMS</b><span>Scrolling colour waveforms and the whole-track overview.</span></li>
+      <li><b>STATE</b><span>On air, master, sync, loop, cue.</span></li>
+      <li><b>THE BEAT</b><span>A counter that flashes on every beat, bar one in white.</span></li>
+      <li><b>SECTIONS</b><span>Intro, up, chorus, down from rekordbox phrase analysis, with countdowns like <b>CHORUS in 0:12</b>.</span></li>
+      <li><b>ALL DECKS</b><span>Every player on one screen.</span></li>
+      <li><b>PLAYED TONIGHT</b><span>A log of every track that went out. It counts after 10 seconds on air.</span></li>
+    </ul>
+  </div>
+</section>
 
-<h2>At the booth</h2>
-<ol>
-<li>Plug the box into the DJ network switch, then plug in power.</li>
-<li>Join the Wi-Fi <b>GHOST LINK</b>. The password is on the sticker.</li>
-<li>The dashboard opens by itself. If it doesn't, open <a href="http://10.42.0.1/">10.42.0.1</a>.</li>
-</ol>
-<p>If the box finds a Wi-Fi it knows, it joins that instead and the dashboard is on that network.</p>
+<section aria-labelledby="real-h">
+  <div class="wrap">
+    <p class="label">THE REAL THING</p>
+    <h2 id="real-h">This is what's on the phones.</h2>
+    <p class="lead">Straight from the box. Black, big type, nothing to learn.</p>
+    <div class="shots">
+      <figure><img src="shots/dj.png" width="390" height="844" loading="lazy" alt="NOW tab, DJ view: deck 1 on air and master, Night Bus by Halden Rowe, 2:31 remaining, 122.0 BPM, key C, section DOWN bar 2 of 8, and the all-decks list below."><figcaption><b>NOW · DJ</b>Time left, BPM, key, section.</figcaption></figure>
+      <figure><img src="shots/photo.png" width="390" height="844" loading="lazy" alt="NOW tab, PHOTO view: big CHORUS in 0:12 countdown, section UP bar 3 of 8, 2:14 remaining."><figcaption><b>NOW · PHOTO</b>The countdown to the chorus.</figcaption></figure>
+      <figure><img src="shots/lights.png" width="390" height="844" loading="lazy" alt="NOW tab, LIGHTS view: 122.0 BPM, four big beat squares with beat four lit, section UP, CHORUS in 0:15."><figcaption><b>NOW · LIGHTS</b>Master BPM, beat, phrase.</figcaption></figure>
+      <figure><img src="shots/decks.png" width="390" height="844" loading="lazy" alt="DECKS tab: deck 1 CDJ-3000 on air and master with artwork, BPM 122.0, pitch -1.63 percent, 2:31 remaining, colour waveform, phrase strip, DOWN 2 of 8, UP in 0:13."><figcaption><b>DECKS</b>Every player, full detail.</figcaption></figure>
+      <figure><img src="shots/network.png" width="390" height="844" loading="lazy" alt="NETWORK tab: three CDJ-3000 players, GHOST LINK on device 15, a DJM-V10 mixer, and an event log in plain English."><figcaption><b>NETWORK</b>Who's on the cable, in plain English.</figcaption></figure>
+      <figure><img src="shots/welcome.png" width="390" height="844" loading="lazy" alt="Welcome page after joining the GHOST LINK Wi-Fi: joined the DJ network, 3 players, deck 1 on air, dashboard address 10.42.0.1."><figcaption><b>WALK-IN WI-FI</b>Join, and it pops up.</figcaption></figure>
+    </div>
+    <p class="scroll-hint">SWIPE FOR MORE &rarr;</p>
+  </div>
+</section>
 
-<h2>For everyone in the room</h2>
-<dl>
-<dt>DJ</dt><dd>Time left, next section, BPM and key on every deck.</dd>
-<dt>PHOTO</dt><dd>Countdown to the drop.</dd>
-<dt>VJ / LIGHTS</dt><dd>Beat counter, phrases, master BPM.</dd>
-<dt>TECH</dt><dd>Network map, plain-English problems and fixes, dead-air alert.</dd>
-<dt>MANAGER</dt><dd>Played tonight, set times, a recap to post.</dd>
-</dl>
-<p>Every view is a starting point. Anyone can see everything and rearrange their own screen.</p>
+<section id="roles" aria-labelledby="roles-h">
+  <div class="wrap">
+    <p class="label">WHO IT'S FOR</p>
+    <h2 id="roles-h">One box. A view for everyone in the room.</h2>
+    <p class="lead">Pick a role on the NOW tab and get a starting layout. Anyone can see everything and rearrange their own screen.</p>
+    <div class="grid three">
+      <div class="cell role"><h3>DJ</h3><p>Time left, next section, BPM and key on every deck. Know what the other deck is doing without leaning over.</p></div>
+      <div class="cell role"><h3>PHOTO</h3><p>A countdown to the chorus. Be in position before the drop, not after.</p></div>
+      <div class="cell role"><h3>VJ</h3><p>Beat counter, phrase and master BPM. Cut on the one.</p></div>
+      <div class="cell role"><h3>LIGHTS</h3><p>Big beat squares, the section you're in and the one that's next.</p></div>
+      <div class="cell role"><h3>TECH</h3><p>The network in plain English. Two players on one number, a missing mixer, a pulled USB.</p></div>
+      <div class="cell role"><h3>MANAGER</h3><p>Who's on, what's played, set times, and a recap to post at the end of the night.</p></div>
+    </div>
+  </div>
+</section>
 
-<p><a class="button" id="dash" href="http://10.42.0.1/">OPEN THE DASHBOARD</a></p>
-<script>
-  // Whatever domain this ends up on, the dashboard page is the same name with dash. in front.
-  if (location.hostname.includes('.')) document.getElementById('dash').href = 'https://dash.' + location.hostname.replace(/^www\./, '') + '/';
-</script>
+<section id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <p class="label">HOW IT WORKS</p>
+    <h2 id="how-h">Plug in. Power. Join.</h2>
+    <ol class="steps">
+      <li><h3>PLUG IN</h3><p>Run a cable from the box to a spare port on the DJ network switch.</p></li>
+      <li><h3>POWER</h3><p>Plug in power. The box finds the players and mixer by itself.</p></li>
+      <li><h3>JOIN THE WI-FI</h3><p>On your phone, join <b>GHOST LINK</b>. The dashboard pops up. Share it with the room.</p></li>
+    </ol>
+    <p class="after">Got venue Wi-Fi? Save it once and the box joins it on the next visit, so everyone stays on their usual network. No known Wi-Fi around, it makes its own. No internet needed either way.</p>
+  </div>
+</section>
 
-<h2>Credits</h2>
-<p class="small">Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0).
-JetBrains Mono (OFL). Not affiliated with Pioneer DJ or AlphaTheta.</p>
+<section id="alerts" aria-labelledby="alerts-h">
+  <div class="wrap">
+    <div class="grid two">
+      <div>
+        <p class="label">IT WATCHES THE BOOTH</p>
+        <h2 id="alerts-h">Trouble shows up on every phone at once.</h2>
+        <p class="lead">Nobody has to be staring at the decks. If the music is about to stop, everyone holding a phone knows.</p>
+      </div>
+      <div class="alerts" aria-label="Example alerts">
+        <div class="fill"><b>DEAD AIR</b>Nothing is playing on air.</div>
+        <div><b>DECK 1 ENDS IN 20s</b>Nothing is loaded on another deck.</div>
+        <div class="fill"><b>PLAYER 2 USB OUT</b>Deck 1's track is on it. Plug it back in before loading the next track.</div>
+        <div><b>TWO PLAYERS ARE BOTH NUMBER 2</b>On one of them: Menu / Utility -&gt; PLAYER No. -&gt; pick a free number.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<footer>made with &lt;3 in Boston, MA by Third Polar Arch</footer>
+<section id="safety" class="safety" aria-labelledby="safety-h">
+  <div class="wrap">
+    <p class="label">SAFETY</p>
+    <h2 id="safety-h">It never touches the DJ's gear.</h2>
+    <p class="lead">A booth is no place for surprises. GHOST LINK is built to be the quietest thing on the network.</p>
+    <div class="grid three">
+      <div class="cell">
+<pre class="ghost" aria-hidden="true">  .--.
+ / .. \
+|      |
+|      |
+ \/\/\/</pre>
+        <h3>IT ONLY LISTENS</h3><p>It reads what the players say. It never sends a command to a player or mixer.</p></div>
+      <div class="cell">
+<pre class="ghost amber" aria-hidden="true">  .--.
+ / oo \
+|      |
+|      |
+ \/\/\/</pre>
+        <h3>IT STEPS ASIDE</h3><p>It joins on a spare number, 7 to 15. If anything else needs that number, it backs off by itself. It never fights.</p></div>
+      <div class="cell">
+<pre class="ghost asleep" aria-hidden="true">  .--.
+ / __ \
+|      |
+|      |
+ \/\/\/</pre>
+        <h3>PULL THE PLUG</h3><p>The system is read-only. Pulling the power can't hurt it. Plug it back in and it comes back up.</p></div>
+    </div>
+    <p class="after">Controls are password-locked. Watching is open to anyone on the Wi-Fi. Every night is recorded on the box, so you can replay it later.</p>
+  </div>
+</section>
+
+<section id="venues" aria-labelledby="venues-h">
+  <div class="wrap">
+    <p class="label">FOR VENUES &amp; MANAGERS</p>
+    <h2 id="venues-h">The night, written down for you.</h2>
+    <p class="lead">Set it up once per room. It runs the night by itself and keeps the paperwork.</p>
+    <div class="grid three">
+      <div class="cell"><small>PLAYED TONIGHT</small><p>Every track that went out, grouped by DJ. Past nights kept. CSV export. A BPM-across-the-night chart.</p></div>
+      <div class="cell"><small>RECAP</small><p>A recap image of the night, ready to post.</p></div>
+      <div class="cell"><small>LINEUP</small><p>Set who's on the decks. Tracks land under the right name.</p></div>
+      <div class="cell"><small>PLAN AHEAD</small><p>Date, venue, lineup with set times. On the night it switches over by itself.</p></div>
+      <div class="cell"><small>VENUE PROFILES</small><p>Address, rooms, gear, contacts and the venue Wi-Fi, saved on the box.</p></div>
+      <div class="cell"><small>REPLAY</small><p>Every night is recorded on the box. Go back and see what happened, and when.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" aria-labelledby="faq-h">
+  <div class="wrap faq">
+    <p class="label">FAQ</p>
+    <h2 id="faq-h">Short answers.</h2>
+    <details><summary>Which gear does it work with?</summary><p>PRO DJ LINK players and mixers: CDJs, XDJs and DJMs on the DJ network. Tested on an XDJ-XZ and on CDJ-3000s at Bijou.</p></details>
+    <details><summary>Do people need an app?</summary><p>No. Any phone browser. Join the Wi-Fi and it opens.</p></details>
+    <details><summary>Does it need internet?</summary><p>No. Everything runs on the box, in the booth.</p></details>
+    <details><summary>Does it touch the DJ's gear?</summary><p>No. It's read-only. It listens to the network and never sends commands to the players. If anything needs its spot, it steps aside.</p></details>
+    <details><summary>What if someone pulls the power?</summary><p>Nothing breaks. The system is read-only, so plug it back in and it comes back up.</p></details>
+    <details><summary>What does it cost?</summary><p>It's not for sale yet. We're testing at Boston shows through fall 2026. Get on the list and we'll reach out when units are ready.</p></details>
+  </div>
+</section>
+
+<section id="waitlist" aria-labelledby="wl-h">
+  <div class="wrap waitlist">
+    <p class="label">WAITLIST</p>
+    <h2 id="wl-h">GET ON THE LIST.</h2>
+    <p class="lead">Not for sale yet. Tell us who you are and we'll reach out when units are ready.</p>
+    <form id="wl-form" novalidate>
+      <div class="row2">
+        <div class="field"><label for="wl-name">NAME <span class="req">*</span></label><input id="wl-name" name="name" type="text" autocomplete="name" required maxlength="120"></div>
+        <div class="field"><label for="wl-email">EMAIL <span class="req">*</span></label><input id="wl-email" name="email" type="email" autocomplete="email" required maxlength="200"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="wl-role">YOU ARE A <span class="req">*</span></label>
+          <select id="wl-role" name="role" required>
+            <option value="" selected disabled>Choose one</option>
+            <option>DJ</option>
+            <option>Venue / club</option>
+            <option>Promoter</option>
+            <option>Tour manager / production</option>
+            <option>Photographer / video</option>
+            <option>VJ / lighting</option>
+            <option>Sound tech</option>
+            <option>Other</option>
+          </select></div>
+        <div class="field"><label for="wl-city">CITY</label><input id="wl-city" name="city" type="text" autocomplete="address-level2" maxlength="120"></div>
+      </div>
+      <div class="field"><label for="wl-shows">SHOWS PER MONTH</label>
+        <select id="wl-shows" name="shows">
+          <option value="" selected>-</option>
+          <option>1-4</option>
+          <option>5-10</option>
+          <option>11-20</option>
+          <option>20+</option>
+        </select></div>
+      <div class="field"><label for="wl-note">ANYTHING ELSE</label>
+        <textarea id="wl-note" name="note" maxlength="500" rows="4"></textarea>
+        <div class="count" id="wl-count" aria-live="polite">0 / 500</div></div>
+      <div class="honey" aria-hidden="true"><label for="wl-honey">Leave this empty</label><input id="wl-honey" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="check"><input type="checkbox" name="news" checked> Email me when there's news. Nothing else.</label>
+      <p class="form-msg" id="wl-msg" role="status" aria-live="polite"></p>
+      <div class="buttons"><button class="btn solid" type="submit">JOIN THE WAITLIST</button></div>
+    </form>
+  </div>
+</section>
+
 </main>
+
+<div class="venue-link">
+  <div class="wrap"><a href="https://gl.cold.fyi">AT A VENUE? <span>OPEN THE DASHBOARD &rarr;</span></a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="tpa" href="https://thirdpolararch.com" aria-label="Third Polar Arch"><img src="tpa-lockup-on-dark.svg" alt="Third Polar Arch" width="160" height="22"></a>
+    <p class="main">GHOST LINK is a Third Polar Arch device. Boston.</p>
+    <p><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+    <p>Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0). Type is JetBrains Mono (OFL).</p>
+    <p>Not affiliated with Pioneer DJ or AlphaTheta.</p>
+    <p>made with &lt;3 in Boston, MA by Third Polar Arch</p>
+  </div>
+</footer>
+
+<script src="www.js"></script>
 </body>
 </html>
