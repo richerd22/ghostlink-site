@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GHOST LINK</title>
+<meta name="description" content="A booth box that reads the DJ network and shows every deck on any phone.">
+<link rel="icon" href="icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<main>
+<header>
+<pre class="ghost" aria-hidden="true">  .--.
+ / oo \
+|      |
+|      |
+ \/\/\/</pre>
+<h1>GHOST LINK</h1>
+</header>
+
+<p>A small box for the DJ booth. It reads the PRO DJ LINK network and shows every deck on any phone:
+track, artist, artwork, BPM, time left, waveforms, on air, master, song sections, and what's been played
+tonight.</p>
+
+<p>It only listens. It never sends anything to the players, and if anything else on the network needs its
+spot, it steps off by itself.</p>
+
+<h2>At the booth</h2>
+<ol>
+<li>Plug the box into the DJ network switch, then plug in power.</li>
+<li>Join the Wi-Fi <b>GHOST LINK</b>. The password is on the sticker.</li>
+<li>The dashboard opens by itself. If it doesn't, open <a href="http://10.42.0.1/">10.42.0.1</a>.</li>
+</ol>
+<p>If the box finds a Wi-Fi it knows, it joins that instead and the dashboard is on that network.</p>
+
+<h2>For everyone in the room</h2>
+<dl>
+<dt>DJ</dt><dd>Time left, next section, BPM and key on every deck.</dd>
+<dt>PHOTO</dt><dd>Countdown to the drop.</dd>
+<dt>VJ / LIGHTS</dt><dd>Beat counter, phrases, master BPM.</dd>
+<dt>TECH</dt><dd>Network map, plain-English problems and fixes, dead-air alert.</dd>
+<dt>MANAGER</dt><dd>Played tonight, set times, a recap to post.</dd>
+</dl>
+<p>Every view is a starting point. Anyone can see everything and rearrange their own screen.</p>
+
+<p><a class="button" id="dash" href="http://10.42.0.1/">OPEN THE DASHBOARD</a></p>
+<script>
+  // Whatever domain this ends up on, the dashboard page is the same name with dash. in front.
+  if (location.hostname.includes('.')) document.getElementById('dash').href = 'https://dash.' + location.hostname.replace(/^www\./, '') + '/';
+</script>
+
+<h2>Credits</h2>
+<p class="small">Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0).
+JetBrains Mono (OFL). Not affiliated with Pioneer DJ or AlphaTheta.</p>
+
+<footer>made with &lt;3 in Boston, MA by Third Polar Arch</footer>
+</main>
+</body>
+</html>
