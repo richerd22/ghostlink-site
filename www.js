@@ -241,7 +241,7 @@
       }).catch(function () {
         btn.disabled = false; btn.textContent = 'JOIN THE WAITLIST';
         msg.className = 'form-msg warn';
-        msg.innerHTML = 'That didn\'t send. Check your connection and try again, or email us at ' +
+        msg.innerHTML = 'That didn\'t go through. Try again in a minute, or email us at ' +
           '<a href="mailto:hello@thirdpolararch.com?subject=GHOST%20LINK%20waitlist">hello@thirdpolararch.com</a>.';
       });
     });
