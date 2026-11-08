@@ -1,0 +1,97 @@
+/* GHOST LINK help center. Sits on top of ../www.css: same black ground, same type, colour only when it means something. */
+
+.help-main { padding: 32px 0 56px; }
+@media (min-width: 720px) { .help-main { padding: 48px 0 80px; } }
+.crumbs { font-size: 12px; letter-spacing: .14em; color: var(--grey); margin: 0 0 14px; }
+.crumbs a { color: var(--grey); text-decoration: none; }
+.crumbs a:hover { color: var(--fg); }
+
+.doc { max-width: 760px; overflow-wrap: break-word; }
+.doc h1 { margin: 0 0 14px; font-size: clamp(26px, 7vw, 44px); line-height: 1.12; font-weight: 600; letter-spacing: .04em; }
+.doc h2 { margin: 40px 0 12px; padding-top: 28px; border-top: 1px solid var(--line); font-size: clamp(19px, 4.6vw, 24px); max-width: none; letter-spacing: .06em; }
+.doc h3 { margin: 22px 0 6px; }
+.doc .lead { margin-bottom: 20px; }
+.doc ul, .doc ol { padding-left: 22px; margin: 0 0 14px; }
+.doc li { margin-bottom: 6px; }
+.doc a { text-underline-offset: 3px; }
+.doc .small { font-size: 14px; color: var(--grey); }
+.doc code { font: inherit; border-bottom: 1px dotted var(--grey); }
+
+/* On-screen words: looks like the dashboard's own buttons, so you know what to look for. */
+b.ui { font-weight: 600; letter-spacing: .06em; border: 1px solid var(--dim); padding: 0 5px; font-size: .92em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+
+/* Numbered steps */
+ol.how { list-style: none; counter-reset: s; padding: 0; margin: 18px 0 18px; display: grid; gap: 10px; }
+ol.how > li { counter-increment: s; border: 1px solid var(--line); padding: 14px 14px 14px 58px; position: relative; margin: 0; min-width: 0; }
+ol.how > li::before { content: counter(s); position: absolute; left: 16px; top: 10px; font-size: 26px; font-weight: 600; line-height: 1.2; }
+ol.how > li h3 { margin: 2px 0 4px; }
+ol.how > li p { margin: 0; }
+ol.how > li p + p { margin-top: 8px; }
+
+/* Key / value lists */
+dl.kv { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px 18px; margin: 0 0 18px; }
+dl.kv dt { font-weight: 600; letter-spacing: .06em; margin-top: 10px; }
+dl.kv dd { margin: 0; color: var(--grey); }
+@media (min-width: 560px) { dl.kv { grid-template-columns: 17ch minmax(0, 1fr); } dl.kv dt, dl.kv dd { margin-top: 0; padding: 9px 0; border-bottom: 1px solid var(--line); } }
+
+/* Callouts: amber only for real warnings */
+.callout { border: 1px solid var(--line); padding: 14px 16px; margin: 0 0 18px; }
+.callout.warn { border-color: var(--warn); }
+.callout.warn > b:first-child { color: var(--warn); }
+.callout p:last-child { margin-bottom: 0; }
+
+/* Contents */
+.toc { list-style: none; padding: 0; margin: 0 0 8px; columns: 1; }
+@media (min-width: 640px) { .toc { columns: 2; column-gap: 32px; } }
+.toc li { break-inside: avoid; border-bottom: 1px solid var(--line); margin: 0; }
+.toc a { display: block; padding: 9px 0; text-decoration: none; letter-spacing: .06em; font-size: 14px; }
+.toc a:hover { color: var(--grey); }
+
+/* Section cards on the help home */
+.cards { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); margin: 0 0 12px; }
+@media (min-width: 640px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cards a { display: block; border: 1px solid var(--line); padding: 16px 18px; text-decoration: none; min-width: 0; }
+.cards a:hover { border-color: var(--fg); }
+.cards a b { display: block; letter-spacing: .1em; margin-bottom: 4px; }
+.cards a span { color: var(--grey); font-size: 15px; }
+
+/* Search */
+.search { margin: 8px 0 28px; max-width: 760px; }
+.search label { display: block; font-size: 12px; letter-spacing: .12em; color: var(--grey); margin-bottom: 6px; }
+.search input { font: inherit; font-size: 16px; width: 100%; background: var(--bg); color: var(--fg); border: 1px solid var(--grey);
+  border-radius: 0; padding: 14px; -webkit-appearance: none; appearance: none; }
+.search input:focus { outline: none; border-color: var(--fg); }
+.results { list-style: none; padding: 0; margin: 14px 0 0; }
+.results li { border-bottom: 1px solid var(--line); }
+.results a { display: block; padding: 12px 0; text-decoration: none; }
+.results a b { display: block; letter-spacing: .06em; }
+.results a span { color: var(--grey); font-size: 14px; }
+.results mark { background: var(--fg); color: var(--bg); }
+.search .msg { color: var(--grey); font-size: 14px; margin: 12px 0 0; min-height: 1.4em; }
+
+/* Copy boxes (advance kit) */
+.copybox { border: 1px solid var(--line); margin: 0 0 18px; }
+.copybox .text { padding: 14px 16px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; font: inherit; font-size: 15px; }
+.copybox .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--line); padding: 8px 8px 8px 16px; }
+.copybox .bar small { color: var(--grey); font-size: 12px; letter-spacing: .12em; }
+.copybox .btn { padding: 9px 14px; font-size: 13px; }
+@media (max-width: 420px) { .buttons .copybox .btn { flex: 0 0 auto; } }
+
+/* The receiver one-pager */
+.onepager { border: 1px solid var(--fg); padding: 20px 18px; margin: 0 0 18px; }
+.onepager h2 { border-top: 0; padding-top: 0; margin-top: 22px; }
+.onepager h2:first-of-type { margin-top: 0; }
+.onepager .ghost { font-size: 14px; margin-bottom: 16px; animation: none; }
+
+.pager { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.stuck { margin-top: 36px; color: var(--grey); font-size: 14px; }
+
+@media print {
+  :root { --bg: #fff; --fg: #0b0b0c; --grey: #333; --dim: #777; --line: #bbb; color-scheme: light; }
+  .top, footer, .venue-link, .pager, .stuck, .copybox .bar, .no-print { display: none !important; }
+  .help-main { padding: 0; }
+  .onepager { border: 0; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+}

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KNOWN ISSUES - GHOST LINK HELP</title>
+<meta name="description" content="What GHOST LINK doesn&#x27;t do well yet, honestly. Issues come off the list when their fix ships.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://ghostlink.cold.fyi/help/known-issues.html">
+<link rel="icon" href="../icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<link rel="preload" href="../JetBrainsMono_400Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="../www.css">
+<link rel="stylesheet" href="help.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../">GHOST LINK</a>
+    <nav aria-label="Help">
+      <a href="quick-start.html">QUICK START</a>
+      <a href="guide.html">GUIDE</a>
+      <a href="how-to/index.html">HOW TO</a>
+      <a href="faq.html">FAQ</a>
+      <a class="wl" href="index.html">HELP</a>
+    </nav>
+  </div>
+</header>
+
+<main class="help-main">
+  <div class="wrap">
+    <p class="crumbs"><a href="index.html">HELP</a> / <a href="known-issues.html">KNOWN ISSUES</a></p>
+    <article class="doc">
+<h1>KNOWN ISSUES</h1>
+<p class="lead">What doesn't work as well as it should yet, said plainly. An issue comes off this list when its fix ships.</p>
+<p class="small">Updated 8 November 2026.</p>
+<h2 id="without-a-mixer-played-guesses">WITHOUT A MIXER, PLAYED GUESSES</h2>
+<p>With no mixer on the network, nothing says which deck is out loud. PLAYED counts the MASTER deck after 30 seconds, which is right most of the time but can miss a short blend or count a long preview. Cable the mixer to the switch for the real thing.</p>
+<h2 id="xdj-xz-loops-show-after-the-first-time-round">XDJ-XZ: LOOPS SHOW AFTER THE FIRST TIME ROUND</h2>
+<p>XZ-style players say they're looping but don't send where the loop is. GHOST LINK works it out from the first jump back, so the loop shows on the waveform after it has gone round once.</p>
+<h2 id="a-one-more-after-a-changeover-can-merge-sets">A "ONE MORE" AFTER A CHANGEOVER CAN MERGE SETS</h2>
+<p>If the outgoing DJ plays one more track from their USB after the next DJ has started, GHOST LINK reads it as a backup stick and joins the two sets. Fix it with <b class="ui">SET</b> or <b class="ui">USBS TONIGHT</b> in PLAYED.</p>
+<h2 id="song-sections-need-phrase-analysed-tracks-on-recent-players">SONG SECTIONS NEED PHRASE-ANALYSED TRACKS ON RECENT PLAYERS</h2>
+<p>Intro / up / chorus / down and the chorus countdown come from rekordbox phrase analysis. The track must be analysed for phrases, and the player must share it. The XDJ-XZ doesn't. Without it, those blocks stay empty; everything else works.</p>
+<h2 id="slip-and-emergency-loop-aren-t-shown">SLIP AND EMERGENCY LOOP AREN'T SHOWN</h2>
+<p>The players don't send them on the network.</p>
+<h2 id="the-clock-can-be-off-until-a-phone-connects">THE CLOCK CAN BE OFF UNTIL A PHONE CONNECTS</h2>
+<p>The box has no clock battery. With no internet it sets its time from the first phone that opens the dashboard. Until then BOOTH CHECK says CLOCK NOT CONFIRMED and early times in the logs can be off.</p>
+<h2 id="guest-wi-fi-that-keeps-devices-apart">GUEST WI-FI THAT KEEPS DEVICES APART</h2>
+<p>Some guest Wi-Fi stops devices seeing each other, so phones can't reach the box. Use the GHOST LINK Wi-Fi there.</p>
+<h2 id="ghostlink-local-doesn-t-open-on-some-phones">GHOSTLINK.LOCAL DOESN'T OPEN ON SOME PHONES</h2>
+<p>Use the number address from the share panel, gl.cold.fyi, or 10.42.0.1 on the GHOST LINK Wi-Fi.</p>
+<h2 id="iphones-can-t-vibrate-for-alerts">IPHONES CAN'T VIBRATE FOR ALERTS</h2>
+<p>A web page can't make an iPhone vibrate. Android phones do.</p>
+
+    </article>
+    <p class="stuck">Still stuck? <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a> · <a href="index.html">All help</a></p>
+  </div>
+</main>
+
+<div class="venue-link">
+  <div class="wrap"><a href="https://gl.cold.fyi">AT A VENUE? <span>OPEN THE DASHBOARD &rarr;</span></a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="tpa" href="https://thirdpolararch.com" aria-label="Third Polar Arch"><img src="../tpa-lockup-on-dark.svg" alt="Third Polar Arch" width="160" height="22"></a>
+    <p class="main">GHOST LINK is a Third Polar Arch device. Boston.</p>
+    <p><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+    <p>Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0). Type is JetBrains Mono (OFL).</p>
+    <p>Not affiliated with Pioneer DJ or AlphaTheta.</p>
+    <p>made with &lt;3 in Boston, MA by Third Polar Arch</p>
+  </div>
+</footer>
+
+<script src="help.js" defer></script>
+</body>
+</html>
