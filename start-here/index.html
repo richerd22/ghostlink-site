@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GETTING STARTED - GHOST LINK</title>
+<meta name="description" content="Setting up GHOST LINK, one step at a time: what's in the box, power, the DJ network, the Wi-Fi, the dashboard, your password, your venue, your first night.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://ghostlink.cold.fyi/start-here/">
+<link rel="icon" href="../icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<link rel="preload" href="../JetBrainsMono_400Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="../www.css">
+<link rel="stylesheet" href="../help/help.css">
+<style>
+  .start-ghost { font-size: clamp(18px, 5vw, 28px); margin: 0 0 22px; }
+  .part { font-size: 12px; letter-spacing: .14em; color: var(--grey); margin: 34px 0 0; }
+  ol.how { margin-top: 12px; }
+  ol.how > li h3 { letter-spacing: .06em; }
+  ul.checklist { list-style: none; padding: 0; margin: 12px 0 18px; }
+  ul.checklist li { border-bottom: 1px solid var(--line); padding: 10px 0 10px 34px; position: relative; margin: 0; }
+  ul.checklist li::before { content: "[ ]"; position: absolute; left: 0; color: var(--grey); }
+  .doc .addr { font-weight: 600; letter-spacing: .02em; }
+  @media (prefers-reduced-motion: reduce) { .start-ghost { animation: none; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../">GHOST LINK</a>
+    <nav aria-label="Help">
+      <a href="../start-here/">START HERE</a>
+      <a href="../manual/">MANUAL</a>
+      <a href="../help/faq.html">FAQ</a>
+      <a class="wl" href="../help/">HELP</a>
+    </nav>
+  </div>
+</header>
+
+<main class="help-main">
+  <div class="wrap">
+    <p class="crumbs"><a href="../help/">HELP</a> / <a href="./">START HERE</a></p>
+    <article class="doc">
+<pre class="ghost start-ghost" aria-hidden="true">  .--.
+ / oo \
+|      |
+|      |
+ \/\/\/</pre>
+<h1>GETTING STARTED</h1>
+<p class="lead">From the box to your first night. Eight steps, one thing each. Doing it at home first is a good idea: skip step 2 until you're at the booth.</p>
+
+<ol class="how">
+  <li id="step-box"><h3>WHAT'S IN THE BOX</h3>
+    <p>The GHOST LINK box and its own power supply. You also need a network cable long enough to reach the DJ switch, and your phone. That's all it takes to start.</p>
+    <p>Extras (a sound card for recordings, a MIDI interface for a lighting desk) are optional: <a href="../help/gear.html">gear to buy</a>.</p></li>
+
+  <li id="step-network"><h3>PLUG INTO THE DJ NETWORK</h3>
+    <p>At the booth, run the network cable from the box to a free port on the switch or DJ router the players and mixer use. <b>Not straight into one player</b>: then it only sees that one.</p>
+    <p>No free port? A small plain switch fixes that: <a href="../help/new-unit.html#plugging-into-the-dj-network">how</a>.</p></li>
+
+  <li id="step-power"><h3>POWER</h3>
+    <p>Plug in the box's own supply: the official Raspberry Pi 27W USB-C supply (5.1V, 5A). Push the plug all the way in. A phone charger is often too weak, and the box will say <b>Power low</b>.</p>
+    <p>Give it a minute. It finds the players and the mixer by itself.</p></li>
+
+  <li id="step-wifi"><h3>JOIN THE WI-FI</h3>
+    <p>First time, or anywhere it doesn't know: join the Wi-Fi called <b>GHOST LINK</b> on your phone. The password is on the sticker.</p>
+    <p>Once the box knows the venue's Wi-Fi (step 7), it joins that by itself. Then just stay on the venue Wi-Fi.</p></li>
+
+  <li id="step-open"><h3>OPEN THE DASHBOARD</h3>
+    <p>On the GHOST LINK Wi-Fi the dashboard pops up by itself: tap <b class="ui">GOT IT</b>. If it doesn't, open <span class="addr">10.42.0.1</span> or scan the OPEN code on the sticker.</p>
+    <p>On a venue Wi-Fi it knows: open <span class="addr">ghostlink.local</span> or <span class="addr">gl.cold.fyi</span>, or tap GHOST LINK at the top of a phone that already has it open for a QR. No app needed, any phone browser.</p>
+    <p>Using the HARD STOP app? It finds GHOST LINK on the same Wi-Fi once its next update is out: <a href="../help/hard-stop.html">using it with HARD STOP</a>.</p></li>
+
+  <li id="step-password"><h3>SET YOUR PASSWORD</h3>
+    <p><b class="ui">STATUS</b>, type the password from the sticker, <b class="ui">UNLOCK</b>. Then <b class="ui">CHANGE PASSWORD</b> to one of your own, 8 characters or more.</p>
+    <p>Watching is open to anyone on the Wi-Fi. Changing things needs the password. For crew, give tonight's 4-digit crew code instead.</p></li>
+
+  <li id="step-venue"><h3>ADD YOUR VENUE AND ITS WI-FI</h3>
+    <p><b class="ui">STATUS</b> &rarr; <b class="ui">VENUE</b> &rarr; <b class="ui">NEW</b>. Name it, then <b class="ui">+ VENUE WI-FI</b> with the Wi-Fi name and password exactly as the venue gave them. <b class="ui">SAVE</b>.</p>
+    <p>Do the same with your home Wi-Fi: a venue called HOME. The box joins the strongest one it knows, wherever it is. Passwords stay on the box.</p></li>
+
+  <li id="step-night"><h3>PLAN A NIGHT</h3>
+    <p><b class="ui">STATUS</b> &rarr; <b class="ui">NIGHTS</b> &rarr; <b class="ui">PLAN A NIGHT</b>: the date, the venue, STARTS, MUSIC OFF and the lineup, one line each like <span class="addr">22:00 NAME</span>.</p>
+    <p>On the night, tracks land under the right DJ by themselves. Optional, but it makes PLAYED tidy.</p></li>
+</ol>
+
+<h2 id="first-night">YOUR FIRST NIGHT</h2>
+<p>Before doors, top to bottom:</p>
+<ul class="checklist">
+  <li>Cable from the box to the DJ switch, then power.</li>
+  <li>Green light on the box: solid = on a Wi-Fi it knows, slow blink = it is the GHOST LINK Wi-Fi.</li>
+  <li>Your phone on the same Wi-Fi, dashboard open.</li>
+  <li><b class="ui">STATUS</b> &rarr; <b class="ui">BOOTH CHECK</b>: read every line. Confirm the venue if it asks.</li>
+  <li>Load a track on each deck: title, art and waveform show on <b class="ui">DECKS</b>.</li>
+  <li>Share: tap <b class="ui">GHOST LINK</b> at the top and show the QR to the crew.</li>
+  <li>Recording a set, lights, or a hard curfew tonight? Only if wanted: <a href="../help/quick-start.html#optional-tonight">the optional steps</a>.</li>
+</ul>
+<p>During the night there's nothing to do. If anything looks odd, <b class="ui">STATUS</b> &rarr; <b class="ui">LISTEN ONLY</b>, no password needed. At the end of the night, just unplug it. Nothing breaks.</p>
+
+<h2 id="help">WHERE TO GET HELP</h2>
+<div class="cards">
+  <a href="../help/quick-start.html"><b>QUICK START</b><span>The booth version, on one screen.</span></a>
+  <a href="../manual/"><b>OWNER'S MANUAL</b><span>Everything, on one page you can print.</span></a>
+  <a href="../help/faq.html"><b>FAQ</b><span>Short, honest answers.</span></a>
+  <a href="../help/known-issues.html"><b>KNOWN ISSUES</b><span>What doesn't work as well as it should yet.</span></a>
+</div>
+<p>Still stuck? Write to <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a>.</p>
+
+    </article>
+  </div>
+</main>
+
+<div class="venue-link">
+  <div class="wrap"><a href="https://gl.cold.fyi">AT A VENUE? <span>OPEN THE DASHBOARD &rarr;</span></a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="tpa" href="https://thirdpolararch.com" aria-label="Third Polar Arch"><img src="../tpa-lockup-on-dark.svg" alt="Third Polar Arch" width="160" height="22"></a>
+    <p class="main">GHOST LINK is a Third Polar Arch device. Boston.</p>
+    <p><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a> · <a href="../help/">Help</a> · <a href="../manual/">Manual</a></p>
+    <p>Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0). Type is JetBrains Mono (OFL).</p>
+    <p>Not affiliated with Pioneer DJ or AlphaTheta.</p>
+    <p>made with &lt;3 in Boston, MA by Third Polar Arch</p>
+  </div>
+</footer>
+</body>
+</html>

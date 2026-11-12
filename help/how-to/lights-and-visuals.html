@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOOK UP LIGHTS AND VISUALS - GHOST LINK HELP</title>
+<meta name="description" content="GHOST LINK help: Ableton Link, MIDI clock, Resolume, grandMA3 and QLab from SHOW CONTROL.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://ghostlink.cold.fyi/help/how-to/lights-and-visuals.html">
+<link rel="icon" href="../../icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../icon-180.png">
+<link rel="preload" href="../../JetBrainsMono_400Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="../../www.css">
+<link rel="stylesheet" href="../help.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../../">GHOST LINK</a>
+    <nav aria-label="Help">
+      <a href="../quick-start.html">QUICK START</a>
+      <a href="../guide.html">GUIDE</a>
+      <a href="../how-to/index.html">HOW TO</a>
+      <a href="../faq.html">FAQ</a>
+      <a class="wl" href="../index.html">HELP</a>
+    </nav>
+  </div>
+</header>
+
+<main class="help-main">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">HELP</a> / <a href="../how-to/index.html">HOW TO</a></p>
+    <article class="doc">
+<h1>HOOK UP LIGHTS AND VISUALS</h1>
+
+<p class="lead">Send the DJ's tempo and bar to Resolume, a lighting desk, QLab or any app with Ableton Link. Each one is off until you turn it on, and nothing is ever sent to the decks or the mixer.</p>
+<ol class="how">
+  <li><p>Put the lights or visuals computer on the same Wi-Fi as the box.</p></li>
+  <li><p>Unlock first, if this phone isn't already: <b class="ui">STATUS</b> &rarr; type the password (or tonight's crew code) where it says <i>password or crew code</i> &rarr; <b class="ui">UNLOCK</b>.</p></li>
+  <li><p>Open <b class="ui">STATUS</b> &rarr; <b class="ui">SHOW CONTROL</b>. Pick a row (below).</p></li>
+  <li><p>For the app rows: type the computer's address, <b class="ui">SAVE</b>, then <b class="ui">TEST</b>. Then <b class="ui">TURN ON</b>.</p></li>
+  <li><p>The dot on the row fills in while it's sending.</p></li>
+</ol>
+<dl class="kv">
+<dt>ABLETON LINK</dt><dd>For Resolume, Ableton Live, Traktor and other apps with Link. Turn Link on in the app too. It follows the DJ's tempo, with its "1" on the DJ's "1". Nothing to type.</dd>
+<dt>MIDI CLOCK</dt><dd>For a lighting desk or drum machine with a 5-pin MIDI IN. Needs a <a href="../gear.html#midi-interface">USB MIDI interface</a> in the box; its MIDI OUT to the desk's MIDI IN. Starts on the DJ's "1".</dd>
+<dt>RESOLUME</dt><dd>Arena or Avenue 7: Preferences &rarr; OSC &rarr; turn on OSC Input (port 7000). Sets the tempo and resyncs every bar. Optional: launch a column on the drop, or on a new track. Using ABLETON LINK in Resolume? Leave this one off.</dd>
+<dt>GRANDMA3</dt><dd>In MA: Menu &rarr; In &amp; Out &rarr; OSC: Enable Input, a line with the same port, Receive Command = Yes. Sets a speed master to the DJ's BPM. Optional: Go+ an executor on the drop.</dd>
+<dt>QLAB</dt><dd>QLab 5 (port 53000). Number cues <i>drop</i> (one bar before the chorus), <i>track</i> (a new track on air) and <i>test</i>. Give the box a passcode with Control in Workspace Settings &rarr; Network.</dd>
+</dl>
+<p>Building your own patch? <b class="ui">STATUS</b> &rarr; <b class="ui">OSC OUT</b> sends beat, downbeat, BPM, song section, what's next, the drop and the on-air track to any computer you list.</p>
+<p class="small">The timing comes from the master deck's beats over the network. Song sections and the drop need phrase-analysed tracks on recent players.</p>
+
+<div class="pager"><a class="btn" href="index.html">ALL HOW TO</a></div>
+
+    </article>
+    <p class="stuck">Still stuck? <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a> · <a href="../index.html">All help</a></p>
+  </div>
+</main>
+
+<div class="venue-link">
+  <div class="wrap"><a href="https://gl.cold.fyi">AT A VENUE? <span>OPEN THE DASHBOARD &rarr;</span></a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="tpa" href="https://thirdpolararch.com" aria-label="Third Polar Arch"><img src="../../tpa-lockup-on-dark.svg" alt="Third Polar Arch" width="160" height="22"></a>
+    <p class="main">GHOST LINK is a Third Polar Arch device. Boston.</p>
+    <p><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+    <p>Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0). Type is JetBrains Mono (OFL).</p>
+    <p>Not affiliated with Pioneer DJ or AlphaTheta.</p>
+    <p>made with &lt;3 in Boston, MA by Third Polar Arch</p>
+  </div>
+</footer>
+
+<script src="../help.js" defer></script>
+</body>
+</html>

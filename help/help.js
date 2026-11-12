@@ -4,6 +4,8 @@
   'use strict';
 
   var PAGES = [
+    ["../start-here/index.html", "GETTING STARTED", "START"],
+    ["../manual/index.html", "OWNER'S MANUAL", "MANUAL"],
     ["quick-start.html", "QUICK START", "START"],
     ["guide.html", "USER'S GUIDE", "GUIDE"],
     ["new-unit.html", "NEW UNIT", "START"],
@@ -20,6 +22,19 @@
     ["how-to/share-the-dashboard.html", "SHARE THE DASHBOARD", "HOW TO"],
     ["how-to/watch-from-home.html", "WATCH FROM HOME", "HOW TO"],
     ["how-to/listen-only.html", "MAKE IT GO QUIET", "HOW TO"],
+    ["how-to/record-a-set.html", "RECORD A SET", "HOW TO"],
+    ["how-to/lights-and-visuals.html", "HOOK UP LIGHTS AND VISUALS", "HOW TO"],
+    ["how-to/stop-at-curfew.html", "STOP THE MUSIC AT CURFEW", "HOW TO"],
+    ["how-to/music-at-this-venue.html", "SET A VENUE'S MUSIC NOTES", "HOW TO"],
+    ["how-to/all-nights.html", "LOOK BACK AT EVERY NIGHT", "HOW TO"],
+    ["how-to/arcade.html", "PLAY BOO'S ARCADE", "HOW TO"],
+    ["gear.html", "GEAR TO BUY", "START"],
+    ["roles/dj.html", "FOR THE DJ", "BY ROLE"],
+    ["roles/photo.html", "FOR PHOTO AND VIDEO", "BY ROLE"],
+    ["roles/vj.html", "FOR VISUALS", "BY ROLE"],
+    ["roles/lights.html", "FOR LIGHTS", "BY ROLE"],
+    ["roles/tech.html", "FOR THE TECH", "BY ROLE"],
+    ["roles/manager.html", "FOR THE MANAGER", "BY ROLE"],
     ["how-to/index.html", "HOW TO", "HOW TO"],
     ["faq.html", "FAQ", "FAQ"],
     ["known-issues.html", "KNOWN ISSUES", "ISSUES"],
@@ -93,6 +108,10 @@
           if (el.tagName === 'H1') return;
           if (el.tagName === 'H2') {
             cur = { url: p[0] + (el.id ? '#' + el.id : ''), title: p[1], head: clean(el.textContent), text: '' };
+            list.push(cur);
+          } else if (el.tagName === 'SECTION' && el.id && el.querySelector('h2')) { // the manual: one section per chapter
+            var h = el.querySelector('h2');
+            cur = { url: p[0] + '#' + el.id, title: p[1], head: clean(h.textContent).replace(/^\d+\s*/, ''), text: clean(el.textContent.replace(h.textContent, '')) };
             list.push(cur);
           } else cur.text += ' ' + clean(el.textContent);
         });
