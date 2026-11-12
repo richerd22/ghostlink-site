@@ -80,6 +80,11 @@
       <li><b>SECTIONS</b><span>Intro, up, chorus, down from rekordbox phrase analysis, with countdowns like <b>CHORUS in 0:12</b>.</span></li>
       <li><b>ALL DECKS</b><span>Every player on one screen.</span></li>
       <li><b>PLAYED TONIGHT</b><span>A log of every track that went out. It counts after 10 seconds on air.</span></li>
+      <li><b>EVERY NIGHT</b><span>Every night on the box by venue, DJ or artist: most played, who played what where, when the room peaks.</span></li>
+      <li><b>THE ROOM'S RULES</b><span>Each venue's usual times, tempo and a not-here list. Decks flag a repeat or a track the room doesn't want.</span></li>
+      <li><b>SET RECORDINGS</b><span>Add a small USB sound card and the box hears the mixer: a level meter, a warning when the room goes silent, and a lossless recording of any set you choose, with its tracklist.</span></li>
+      <li><b>LIGHTS &amp; VISUALS</b><span>Beat, BPM, section, what's next and a cue one bar before the drop, sent over OSC to Resolume, TouchDesigner or a lighting desk.</span></li>
+      <li><b>BOO'S ARCADE</b><span>Ride the live waveform, beatmatch, catch the drop. High scores live on the box.</span></li>
     </ul>
   </div>
 </section>
@@ -160,7 +165,7 @@
 |      |
 |      |
  \/\/\/</pre>
-        <h3>IT ONLY LISTENS</h3><p>It reads what the players say. It never sends a command to a player or mixer.</p></div>
+        <h3>IT ONLY LISTENS</h3><p>It reads what the players say. Out of the box it never sends a command to a player or mixer. Deck controls stay off unless you turn them on.</p></div>
       <div class="cell">
 <pre class="ghost amber" aria-hidden="true">  .--.
  / oo \
@@ -203,7 +208,8 @@
     <details><summary>Which gear does it work with?</summary><p>PRO DJ LINK players and mixers: CDJs, XDJs and DJMs on the DJ network. Tested on XDJ-XZ and CDJ-3000 setups.</p></details>
     <details><summary>Do people need an app?</summary><p>No. Any phone browser. Join the Wi-Fi and it opens.</p></details>
     <details><summary>Does it need internet?</summary><p>No. Everything runs on the box, in the booth.</p></details>
-    <details><summary>Does it touch the DJ's gear?</summary><p>No. It's read-only. It listens to the network and never sends commands to the players. If anything needs its spot, it steps aside.</p></details>
+    <details><summary>Where does the data come from?</summary><p>From the PRO DJ LINK network your players and mixer already use to talk to each other: what's loaded, playing and on air, tempo, beats, and the track details the players share (title, artist, key, waveform and sections from rekordbox analysis). GHOST LINK reads it with beat-link, an open-source library by Deep Symmetry that was built by studying that network, the same way Beat Link Trigger works. Pioneer DJ / AlphaTheta haven't published this protocol and haven't certified GHOST LINK, so a player firmware update can change something before we catch up. It doesn't copy or read your music files, doesn't need rekordbox running, and stores only what went on air.</p></details>
+    <details><summary>Does it touch the DJ's gear?</summary><p>Not unless you ask it to. Out of the box it listens to the network and never sends commands to the players; deck controls (stop, play, load) stay off unless you turn them on. If anything needs its spot, it steps aside.</p></details>
     <details><summary>What if someone pulls the power?</summary><p>Nothing breaks. The system is read-only, so plug it back in and it comes back up.</p></details>
     <details><summary>What does it cost?</summary><p>It's not for sale yet. Get on the list and we'll reach out when units are ready.</p></details>
   </div>

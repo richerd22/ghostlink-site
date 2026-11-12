@@ -35,7 +35,7 @@
 <h1>FAQ</h1>
 <p class="lead">Short, honest answers.</p>
 <h2 id="does-it-touch-the-decks-or-the-sound">DOES IT TOUCH THE DECKS OR THE SOUND?</h2>
-<p>No. It listens to the DJ network and never sends a command to a player or mixer. Nothing passes through it, so if it dies the booth carries on. It joins on a spare number (7 to 15) and if anything else wants that number, it steps aside by itself.</p>
+<p>Not unless you ask it to. Out of the box it listens to the DJ network and never sends a command to a player or mixer. The one exception is DECK CONTROLS (stop, play, load a track), which stay off until the owner turns them on. Nothing passes through it, so if it dies the booth carries on. It joins on a spare number (7 to 15) and if anything else wants that number, it steps aside by itself.</p>
 <h2 id="what-can-people-see-what-s-private">WHAT CAN PEOPLE SEE? WHAT'S PRIVATE?</h2>
 <p>Anyone on the same Wi-Fi as the box can open the dashboard and watch: decks, NOW, PLAYED. Changing anything needs the password or tonight's crew code. Away from the venue, WATCH FROM HOME shows the decks but not the tracklist, unless the DJ says yes. Venue Wi-Fi passwords stay on the box. It doesn't copy anyone's music: it reads the track details the players share on the network. If the box sits on a Wi-Fi the public uses, anyone there who finds the address can watch too; use the GHOST LINK Wi-Fi if that matters.</p>
 <h2 id="no-mixer">NO MIXER ON THE NETWORK?</h2>
@@ -50,8 +50,13 @@
 <p>No. Any phone browser.</p>
 <h2 id="which-gear-does-it-work-with">WHICH GEAR DOES IT WORK WITH?</h2>
 <p>Players and mixers on a PRO DJ LINK network: CDJs, XDJs and DJMs with a LINK port. Tested with XDJ-XZ and CDJ-3000 setups. Older LINK players should show up the same way, but some don't share everything: song sections need a recent player, and the XDJ-XZ doesn't send them. See <a href="known-issues.html">KNOWN ISSUES</a>.</p>
+<h2 id="where-does-the-data-come-from">WHERE DOES THE DATA COME FROM?</h2>
+<p>From the PRO DJ LINK network your players and mixer already use to talk to each other: what's loaded, playing and on air, tempo, beats, and the track details the players share (title, artist, key, waveform and sections from rekordbox analysis). GHOST LINK reads it with <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a>, an open-source library by Deep Symmetry built by studying that network (Beat Link Trigger works the same way).</p>
+<p>What that means: Pioneer DJ / AlphaTheta haven't published this protocol and haven't certified GHOST LINK. A player firmware update can change something before we catch up; <a href="known-issues.html">KNOWN ISSUES</a> says when it does.</p>
+<p>What it doesn't do: it doesn't copy or read your music files, doesn't need rekordbox running, and keeps only what went on air (and a set recording, only when you choose one). Out of the box it only listens; deck controls stay off unless you turn them on.</p>
+<p>With a USB sound card, it also hears the mixer's REC OUT: the actual sound, not just the data.</p>
 <h2 id="what-about-laptops-serato-or-controllers">WHAT ABOUT LAPTOPS, SERATO OR CONTROLLERS?</h2>
-<p>GHOST LINK reads the DJ network. Players in laptop or controller mode (Serato, rekordbox over USB to a laptop) don't talk on it, so those decks don't show. DJs playing from USB on the other decks still do. Nothing to change for the laptop DJ.</p>
+<p>GHOST LINK reads the DJ network. Players in laptop or controller mode (Serato, rekordbox over USB to a laptop) don't talk on it, so those decks don't show. DJs playing from USB on the other decks still do. Nothing to change for the laptop DJ. A mixer with no network port (a DJM-S9, for example) doesn't show either; the decks still do if they're linked to each other.</p>
 <h2 id="what-s-the-password">WHAT'S THE PASSWORD?</h2>
 <p>The one on the sticker on your box. Change it to your own in <b class="ui">STATUS</b> &rarr; <b class="ui">CHANGE PASSWORD</b>. For crew, give tonight's <a href="how-to/crew-code.html">crew code</a> instead.</p>
 <h2 id="ghostlink-local-won-t-open">GHOSTLINK.LOCAL WON'T OPEN.</h2>

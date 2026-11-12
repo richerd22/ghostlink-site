@@ -73,7 +73,7 @@
 <li>A scrolling colour waveform with the playhead, and the whole track below it with the cue points. Tap a waveform to zoom.</li>
 <li>Tags when they apply: KEY, LOOP (with its length, shaded on the waveform), SYNC, REVERSE, CUED, END.</li>
 <li>A beat counter that flashes on the beat, and song sections (intro, up, chorus, down) when the track and the player have them.</li>
-<li><b class="ui">PLAYED 23:14</b> in amber: this track was already on air tonight. <b class="ui">LAST PLAYED</b>: it was played on a past night.</li>
+<li><b class="ui">PLAYED 23:14</b> in amber: this track was already on air tonight. <b class="ui">LAST PLAYED</b>: it was played on a past night. <b class="ui">PLAYED HERE</b>: played at this venue before (amber when it's recent).</li>
 <li><b class="ui">MIX 8A&rarr;9A ✓ +2.1%</b> on a cued deck: whether its key fits what's on air, and the tempo change it needs.</li>
 <li><b class="ui">LAST SEEN</b>: the box isn't reading right now. The tile keeps the last track and stops the clock instead of guessing.</li>
 </ul>
@@ -99,6 +99,7 @@
 <li><b class="ui">WAVES ONLY</b> is just the waveforms, big.</li>
 </ul>
 <p>Then change any part: decks across, waveform height (<b class="ui">S</b> to <b class="ui">GIANT</b>), zoom (4, 8, 16 or 32 seconds across), deck text size, what shows, waveform colour (<b class="ui">FULL COLOUR</b>, <b class="ui">BLUE</b>, <b class="ui">WHITE</b>), <b class="ui">REMAINING</b> or <b class="ui">ELAPSED</b>, dim the decks that aren't on air, which decks to show.</p>
+<p><b>Small window</b> (in a corner of the screen beside Resolume or Quickshow): the header shrinks to one line and warnings to one line (tap to read all of it), so the decks get the room. <b class="ui">STACKED</b> works best there.</p>
 <p><b class="ui">COPY LINK TO THIS LAYOUT</b> makes a link that opens the same layout on another phone or a booth screen.</p>
 
 <h2 id="alerts">ALERTS</h2>
@@ -131,6 +132,7 @@
 <p>Step by step: <a href="how-to/get-the-tracklist.html">get the tracklist or playlist</a>.</p>
 
 <h2 id="sets-starts-and-soundcheck">SETS, STARTS AND SOUNDCHECK</h2>
+<p><b class="ui">ALL NIGHTS</b> (top of the night list in <b class="ui">PLAYED</b>): every night on the box. Pick a venue or a DJ, or search a track or artist: most played, who played what where, genres, keys, and when the music peaks. Tap a night to open it.</p>
 <p><b class="ui">ON THE DECKS</b> in <b class="ui">PLAYED</b> shows whose set it is. Tracks land under that name.</p>
 <ul>
 <li><b>By hand:</b> type the name and tap <b class="ui">SET</b>.</li>
@@ -152,18 +154,23 @@
 <p>Everything on the DJ network: each player and mixer by number, and GHOST LINK on its own number (7 to 15, never a player's). <b class="ui">EVENTS</b> is a list of what happened, in plain English.</p>
 
 <h2 id="status">STATUS</h2>
-<p><b>BOOTH CHECK</b> at the top is the one-glance check before doors: CLOCK, CLOCK BATTERY, WI-FI, DJ CABLE, JOINED, PLAYERS, MIXER, TRACKS, POWER, BLACK BOX. The words say if something needs a look; colour is only a hint.</p>
+<p><b>BOOTH CHECK</b> at the top is the one-glance check before doors: CLOCK, CLOCK BATTERY, VENUE, WI-FI, DJ CABLE, JOINED, PLAYERS, MIXER, TRACKS, DECK SETUP, POWER, BLACK BOX. The words say if something needs a look; colour is only a hint.</p>
+<p><b>VENUE</b> asks (CROWN? · not checked tonight) until tonight's venue is confirmed: picked by hand, set by tonight's plan, or found by joining that venue's saved Wi-Fi. It keeps PLAYED from being filed under last night's room.</p>
+<p><b>WHO'S HERE</b> lists what's watching or nearby: HARD STOP panels and the HARD STOP app, phones, tablets and computers. Decks and mixers are on <b class="ui">NETWORK</b>.</p>
 <p><b>CLOCK BATTERY</b> shows when the box has one: a small coin cell that keeps the time while it's unplugged, so the clock is right even with no internet. GOOD is fine. LOW or FLAT: swap in a new CR2032. A rechargeable ML2032 also works, but the box only charges it once charging is switched on for it; it stays off for regular coin cells, which must never be charged.</p>
 <p><b>GEAR CARE · FYI</b> shows up under the problems when something could be hard on the gear: a low-quality file (160 kbps or less) on air and, if the mixer's USB goes to the box with its controls named, a trim near the top, an EQ boosted all the way, or the master or booth near max. Each one says what to do about it. These are for the tech, never an alarm, and the box can't hear the sound itself: the red light on the mixer is the truth. With HARD STOP at the booth, its mic adds the room's level (ROOM ~98 dB) and a note after 20 minutes over 100 dB.</p>
 <p>Below it, any problems, each with the cause and the fix in plain words (for example <i>Two players are both number 2</i>, <i>No mixer on the DJ network</i>, <i>Power low</i>). Then the controls:</p>
 <dl class="kv">
   <dt>VENUE</dt><dd>Name, players expected, address, rooms, gear, contacts, booth notes and the venue Wi-Fi.</dd>
+  <dt>SOUND IN</dt><dd>On <b class="ui">NETWORK</b>. Plug a small USB sound card into the box and the mixer's REC OUT into the card. You get a level meter, a <b class="ui">SILENCE</b> warning when the room goes quiet, and <b class="ui">SET RECORDINGS</b>: nothing records unless you tap <b class="ui">● RECORD</b> for that set (crew password). It ends when the next DJ is on, and anyone can tap <b class="ui">STOP</b>. Each set gets its <b class="ui">TRACKLIST</b> and a lossless download. A red <b class="ui">● REC</b> shows while it records.</dd>
+  <dt>MUSIC AT THIS VENUE</dt><dd>Under VENUE: the room's usual start and MUSIC OFF (used on any night you didn't plan), its usual BPM, how many days a repeat counts as recent, a NOT HERE list (a title, an artist, or artist - title) and the room's music in words. Decks show <b class="ui">PLAYED HERE</b>, <b class="ui">NOT HERE</b> and <b class="ui">SLOWER / FASTER THAN HERE</b>. They're notes: GHOST LINK never stops a DJ for them.</dd>
   <dt>NIGHTS</dt><dd><b class="ui">PLAN A NIGHT</b>: date, venue, STARTS, MUSIC OFF, lineup, notes.</dd>
   <dt>WI-FI</dt><dd><b class="ui">AUTO</b>, <b class="ui">BE THE HOTSPOT</b> or <b class="ui">KNOWN WI-FI ONLY</b>.</dd>
   <dt>CONTROLS</dt><dd><b class="ui">REJOIN</b>, <b class="ui">RESTART READING</b>, <b class="ui">LISTEN ONLY</b>, <b class="ui">ALLOW JOIN</b>, <b class="ui">RESTART</b>, <b class="ui">SHUT DOWN</b>, <b class="ui">BLACK BOX</b>, <b class="ui">LOGS</b>, <b class="ui">PRINT STICKER</b>, <b class="ui">TV MODE</b>, <b class="ui">STREAM OVERLAY</b>.</dd>
   <dt>BACKUP</dt><dd><b class="ui">BACKUP</b> keeps venues, nights, played lists and the password in one file. <b class="ui">RESTORE</b> puts it back.</dd>
   <dt>WATCH FROM HOME</dt><dd>A view-only link that works from anywhere.</dd>
   <dt>TOOLS</dt><dd><b class="ui">DEMO</b>, <b class="ui">SHOW THE TOUR</b>, the ghost switches, <b class="ui">TEST RUN</b>.</dd>
+  <dt>BOO'S ARCADE</dt><dd>Under TOOLS: five short games. <b class="ui">RIDE THE WAVE</b> (the ghost surfs the playing track; tap to jump, on the beat for a combo), <b class="ui">ON THE ONE</b> (tap along to the room's beat), <b class="ui">EQ KILL</b> (kill the bass, bring it back on the drop), <b class="ui">BEATMATCH</b> (line up two beat grids) and <b class="ui">CATCH THE DROP</b> (tap right on the drop). High scores stay on the box for every phone, all time and tonight. <b class="ui">TONIGHT ON A SCREEN</b> shows the night's best with a code to scan, for a TV by the bar.</dd>
 </dl>
 
 
@@ -212,7 +219,7 @@
   <dt>AMBER</dt><dd>Backed off: another device wanted its number. It comes back on a free one by itself, in about 30 seconds.</dd>
 </dl>
 
-<p>While music plays, a little copy of him goes and sits on the <b class="ui">MASTER</b> deck. Drag him to park him somewhere for a minute; tap him for a boop. He reacts to the room (a nod on the downbeat, faces at drops, loops and long blends) and never talks. He never covers the numbers.</p>
+<p>While music plays, a little copy of him goes and sits on the <b class="ui">MASTER</b> deck, under its waveform, never on it. Drag him anywhere to park him there; he stays put, even after a reload (handy in a small window). Drop him back on the big one to send him to the decks again. Tap him for a boop. He reacts to the room (a nod on the downbeat, faces at drops, loops and long blends) and never talks. He never covers the numbers.</p>
 <p>All per phone, in <b class="ui">STATUS</b> &rarr; <b class="ui">TOOLS</b>: <b class="ui">GHOST MOODS: ON</b>, <b class="ui">GHOST: GOES TO THE DECKS</b> (or <b class="ui">GHOST: STAYS UP TOP</b>), <b class="ui">GHOST SIZE: M</b> (S, M, L, XL), and <b class="ui">GHOST SMELLS RIPS: OFF</b>: switch it on and he pulls a face at a track that looks ripped (free-download tags, rip-site names, low bitrate). It's about the file, never the DJ.</p>
 
 <h2 id="black-box">BLACK BOX</h2>
@@ -230,6 +237,9 @@
   <dt>STREAM OVERLAY</dt><dd>A see-through now-playing card for OBS (Browser Source).</dd>
   <dt>SONG ID</dt><dd><b class="ui">SONG ID FOR THE CROWD</b>: a "what's playing" page and QR for the room. Off unless the DJ is OK with IDs going out.</dd>
   <dt>OSC OUT</dt><dd>For lights and visuals software (Resolume, TouchDesigner, MadMapper, QLC+, lighting desks): beat, downbeat, BPM, section and the on-air track, sent over Wi-Fi to the computers you list. Never to the players.</dd>
+  <dt>DECK CONTROLS</dt><dd>Off until the owner turns it on. Then <b class="ui">STATUS</b> &rarr; <b class="ui">DECK CONTROLS</b> can stop every deck, start a loaded deck, or find a track on any USB or SD in the booth and load it onto a deck: a mix before doors with no laptop. Every button: tap, then hold for a second. It asks first before playing over music that's on air, or replacing a loaded track, and never loads onto a playing deck. The deck plays through its own channel, so the fader has to be up. Stopping sends the deck back to its cue point. Each deck also has <b class="ui">FROM CUE</b> (back to its cue point and play), <b class="ui">SYNC ON</b> / <b class="ui">SYNC OFF</b> and <b class="ui">MASTER</b>; they ask first if the change could move the tempo of music on air. Scratching, jumping around a track, effects and the mixer can't be controlled from the network.</dd>
+  <dt>AUTO-STOP</dt><dd>For rooms with a hard curfew. Under <b class="ui">DECK CONTROLS</b>, <b class="ui">ARM FOR TONIGHT</b> stops every deck at the night's MUSIC OFF time (set it in <b class="ui">PLAN A NIGHT</b>, or in HARD STOP). Every phone shows a countdown bar from 10 minutes out, with <b class="ui">CANCEL AUTO-STOP</b>. It only stops once, never late, and resets the next night. <b class="ui">HARD STOP CAN STOP IT</b> lets the HARD STOP app stop the music in the last 10 minutes too.</dd>
+  <dt>HOUSE SETTINGS</dt><dd>Our club standard for every deck (vinyl jog, ±10 tempo, quantize on, auto cue to memory, single play so a deck never starts the next track by itself, and more). Change any line, then <b class="ui">SEND TO STOPPED DECKS</b> between DJs. <b class="ui">BOOTH CHECK</b> &rarr; <b class="ui">DECK SETUP</b> shows a deck in the wrong jog mode, or on different firmware from the others. Decks don't report the rest of their settings, so sending is how you know.</dd>
   <dt>DEMO</dt><dd><b class="ui">STATUS</b> &rarr; <b class="ui">TOOLS</b> &rarr; <b class="ui">DEMO</b>: made-up tracks on empty players, to show someone how it works. Only on that phone. <b class="ui">END DEMO</b> at the top.</dd>
   <dt>TEST RUN</dt><dd><b class="ui">STATUS</b> &rarr; <b class="ui">TOOLS</b> &rarr; <b class="ui">TEST RUN</b>: checks that tick themselves as each part works. For a new venue.</dd>
   <dt>DISPLAY</dt><dd><b class="ui">HELP</b> tab: <b class="ui">NIGHT</b>, <b class="ui">DIM BOOTH</b> or <b class="ui">DAYLIGHT</b> looks, text size, keep the screen awake. Per phone.</dd>
