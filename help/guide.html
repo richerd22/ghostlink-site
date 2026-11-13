@@ -101,13 +101,13 @@
 <li><b class="ui">WAVES ONLY</b> is just the waveforms, big.</li>
 </ul>
 <p>Then change any part: decks across, waveform height (<b class="ui">S</b> to <b class="ui">GIANT</b>), zoom (4, 8, 16 or 32 seconds across), deck text size, what shows, waveform colour (<b class="ui">FULL COLOUR</b>, <b class="ui">BLUE</b>, <b class="ui">WHITE</b>), <b class="ui">REMAINING</b> or <b class="ui">ELAPSED</b>, dim the decks that aren't on air, which decks to show.</p>
-<p><b>Small window</b> (in a corner of the screen beside Resolume or Quickshow): the header shrinks to one line and warnings to one line (tap to read all of it), so the decks get the room. <b class="ui">STACKED</b> works best there.</p>
+<p><b>Small window</b> (in a corner of the screen beside Resolume or Quickshow): the header shrinks to one line and warnings to one line (tap to read all of it), so the decks get the room. <b class="ui">STACKED</b> works best there: every deck fits without scrolling. Each waveform gets one line with the deck's state, BPM, pitch, key and time left; the decks you can hear get the most room, <b class="ui">MIXING</b> shows when two are out loud, <b class="ui">NEXT</b> marks the deck cued up next, and an empty deck is a thin line. Want the full deck tiles back underneath? <b class="ui">LAYOUT</b> &rarr; <b class="ui">DECK TILES BELOW</b>.</p>
 <p><b class="ui">COPY LINK TO THIS LAYOUT</b> makes a link that opens the same layout on another phone or a booth screen.</p>
 
 <h2 id="alerts">ALERTS</h2>
 <p>Alerts are worked out on the box, so every open phone shows the same thing at the same time.</p>
 <dl class="kv">
-  <dt>DEAD AIR</dt><dd>Music was going out, and nothing has been on air for 4 seconds.</dd>
+  <dt>DEAD AIR</dt><dd>Music was going out, and nothing has been on air for 10 seconds.</dd>
   <dt>ENDS IN 20s</dt><dd>The only deck going out ends in under 30 seconds and nothing is loaded on another deck.</dd>
   <dt>USB OUT</dt><dd>The USB or SD card a playing track comes from is being pulled. The track keeps going; plug it back before loading the next one.</dd>
   <dt>LOST CONNECTION</dt><dd>This phone lost the box. It reconnects by itself. Check the phone is on the same Wi-Fi.</dd>
@@ -120,6 +120,7 @@
 <p>The night's tracklist. A track counts once it has been on air for 10 seconds. Cue previews don't count.</p>
 <p>No mixer on the DJ network? PLAYED still works: it guesses from the <b class="ui">MASTER</b> deck, and a track counts after 30 seconds. See <a href="faq.html#no-mixer">no mixer</a>.</p>
 <p>Under the list: recap numbers, BPM across the night, a timeline, and THE NIGHT IN NUMBERS (pace, tempo, how the DJs mixed: cuts or long blends and how long, mixes in key, the night's energy, loops, genres, artists, who played what). Pick a past night from the menu at the top.</p>
+<p>TRANSITIONS rates how well the beats sat together while two decks or more were out loud: clean, a flam, or a gallop. BOX RECORDS keeps this box's records (fastest track, longest blend, biggest pitch, most decks at once and more) until they're beaten. HALL OF FAME shows the records, the cleanest blends and the WILD RIDES (add <code>?tv=1</code> for a TV). Names on WILD RIDES stay hidden unless the owner turns them on.</p>
 
 <h2 id="exports">EXPORTS</h2>
 <dl class="kv">
@@ -163,7 +164,7 @@
 <p><b>CLOCK BATTERY</b> shows when the box has one: a small coin cell that keeps the time while it's unplugged, so the clock is right even with no internet. GOOD is fine. LOW or FLAT: swap in a new CR2032. A rechargeable ML2032 also works, but the box only charges it once charging is switched on for it; it stays off for regular coin cells, which must never be charged.</p>
 <p><b>GEAR CARE · FYI</b> shows up under the problems when something could be hard on the gear: a low-quality file (160 kbps or less) on air and, if the mixer's USB goes to the box with its controls named, a trim near the top, an EQ boosted all the way, or the master or booth near max. Each one says what to do about it. These are for the tech, never an alarm, and the box can't hear the sound itself: the red light on the mixer is the truth. With HARD STOP at the booth, its mic adds the room's level (ROOM ~98 dB) and a note after 20 minutes over 100 dB.</p>
 <p>Below it, any problems, each with the cause and the fix in plain words (for example <i>Two players are both number 2</i>, <i>No mixer on the DJ network</i>, <i>Power low</i>).</p>
-<p><b>GO TO</b> at the very top finds any setting: type <i>wifi</i>, <i>record</i> or <i>venue</i> and tap the answer; it opens right there. On a laptop, <b>/</b> jumps to it and <b>1</b>-<b>6</b> switch tabs. The page opens on the tab you used last.</p>
+<p><b>GO TO</b> at the very top finds any setting, switch or section on any tab: type <i>wifi</i>, <i>record</i> or <i>rips</i> and tap the answer. Each answer says where it lives; it opens right there and blinks. On a laptop, <b>/</b> jumps to it and <b>1</b>-<b>6</b> switch tabs. The page opens on the tab you used last.</p>
 <p>Everything else sits in four groups, each line folded until you open it. A small <b class="ui">?</b> next to a note shows the longer version.</p>
 <dl class="kv">
   <dt>TONIGHT</dt><dd>NIGHTS, DECK CONTROLS, SONG ID FOR THE CROWD.</dd>
@@ -184,7 +185,7 @@
   <dt>BOX DETAILS</dt><dd>Link, cable, players, Wi-Fi, uptime, temperature.</dd>
   <dt>WATCH FROM HOME</dt><dd>A view-only link that works from anywhere.</dd>
   <dt>TOOLS</dt><dd><b class="ui">DEMO</b>, <b class="ui">SHOW THE TOUR</b>, <b class="ui">BOO'S ARCADE</b>, <b class="ui">TEST RUN</b>. The ghost switches are in <b class="ui">HELP</b> &rarr; <b class="ui">DISPLAY</b>.</dd>
-  <dt>BOO'S ARCADE</dt><dd>Under TOOLS: short games for anyone in the room. On the decks: <b class="ui">RIDE THE WAVE</b> (the ghost surfs the playing track; tap to jump, on the beat for a combo), <b class="ui">ON THE ONE</b> (tap along to the room's beat), <b class="ui">EQ KILL</b> (kill the bass, bring it back on the drop) and <b class="ui">BEATMATCH</b> (line up two beat grids). Quick ones: <b class="ui">CATCH THE DROP</b>, <b class="ui">TAP THE TEMPO</b> (keep the beat going in the dark), <b class="ui">CAMELOT</b> (which key mixes in?) and <b class="ui">DAILY RIDE</b> (one course a day, the same for everyone). With tonight's tracks: <b class="ui">HIGHER OR LOWER</b> (faster or slower?) and <b class="ui">SET LIST</b> (in the order they played). <b class="ui">CALIBRATE</b> once per phone so the timing games allow for its delay. High scores stay on the box for every phone: all time, tonight and at this venue. <b class="ui">TONIGHT ON A SCREEN</b> shows the night's best with a code to scan, for a TV by the bar.</dd>
+  <dt>BOO'S ARCADE</dt><dd>Under TOOLS: short games for anyone in the room. On the decks: <b class="ui">RIDE THE WAVE</b> (the ghost surfs the playing track; tap to jump, on the beat for a combo; the first ride is a short lesson), <b class="ui">ON THE ONE</b> (tap along to the room's beat), <b class="ui">EQ KILL</b> (kill the bass, bring it back on the drop) and <b class="ui">BEATMATCH</b> (line up two beat grids). Quick ones: <b class="ui">CATCH THE DROP</b>, <b class="ui">TAP THE TEMPO</b> (keep the beat going in the dark), <b class="ui">CAMELOT</b> (which key mixes in?) and <b class="ui">DAILY RIDE</b> (one course a day, the same for everyone). With tonight's tracks: <b class="ui">HIGHER OR LOWER</b> (faster or slower?) and <b class="ui">SET LIST</b> (in the order they played). <b class="ui">CALIBRATE</b> once per phone so the timing games allow for its delay. High scores stay on the box for every phone: all time, tonight and at this venue. <b class="ui">TONIGHT ON A SCREEN</b> shows the night's best with a code to scan, for a TV by the bar.</dd>
 </dl>
 
 
@@ -234,7 +235,7 @@
 </dl>
 
 <p>While music plays, a little copy of him goes and sits on the <b class="ui">MASTER</b> deck, under its waveform, never on it. Drag him anywhere to park him there; he stays put, even after a reload (handy in a small window). Drop him back on the big one to send him to the decks again. Tap him for a boop. He reacts to the room (a nod on the downbeat, faces at drops, loops and long blends) and never talks. He never covers the numbers.</p>
-<p>All per phone, in <b class="ui">HELP</b> &rarr; <b class="ui">DISPLAY</b>: <b class="ui">GHOST MOODS: ON</b>, <b class="ui">GHOST: GOES TO THE DECKS</b> (or <b class="ui">GHOST: STAYS UP TOP</b>), <b class="ui">GHOST SIZE: M</b> (S, M, L, XL), and <b class="ui">GHOST SMELLS RIPS: OFF</b>: switch it on and he pulls a face at a track that looks ripped (free-download tags, rip-site names, low bitrate). It's about the file, never the DJ.</p>
+<p>All per phone, in <b class="ui">HELP</b> &rarr; <b class="ui">DISPLAY</b> (and <b class="ui">STATUS</b> &rarr; <b class="ui">TOOLS</b>): <b class="ui">GHOST MOODS: ON</b>, <b class="ui">GHOST: GOES TO THE DECKS</b> (or <b class="ui">GHOST: STAYS UP TOP</b>), <b class="ui">GHOST SIZE: M</b> (S, M, L, XL), and <b class="ui">GHOST SMELLS RIPS: OFF</b>: switch it on and he pulls a face at a track that looks ripped (free-download tags, rip-site names, low bitrate). It's about the file, never the DJ.</p>
 
 <h2 id="black-box">BLACK BOX</h2>
 <p>The box writes a plain-text log of the night as it goes: when it started, every deck change, players found and lost, Wi-Fi, power and problems. It survives a pulled plug. It stays on the box; nothing is sent anywhere.</p>
