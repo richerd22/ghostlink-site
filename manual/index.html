@@ -934,7 +934,7 @@
 <div class="feat-entry" id="f-sc-resolume">
 <h4>RESOLUME <span class="tag">SHIPPED</span></h4>
 <p class="where">PORT: UDP 7000 (default)</p>
-<p>Resolume Arena / Avenue 7 tempo and a resync every bar; optional column on the drop or a new track.</p>
+<p>Resolume Arena / Avenue 7 tempo and a resync once a phrase (every 8 bars); optional column on the drop or a new track. With ABLETON LINK on, Link owns the tempo and this row only fires the columns.</p>
 <p class="lbl">HOW</p>
 <ol class="use-steps"><li>In Resolume: Preferences → OSC → OSC Input on (port 7000).</li><li>Type the computer&#x27;s address, TURN ON, TEST.</li><li>If Resolume follows ABLETON LINK, leave this off.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/composition/tempocontroller/tempo</code></td><td data-label="WITH">&quot;a&quot; bpm</td><td data-label="WHEN">the BPM moves</td></tr><tr><td data-label="SENDS"><code>/composition/tempocontroller/resync</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">every downbeat</td></tr><tr><td data-label="SENDS"><code>/composition/columns/N/connect</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">the drop / a new track (if a column is set)</td></tr></tbody></table></div>
