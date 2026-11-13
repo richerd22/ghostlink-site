@@ -21,6 +21,9 @@
   ul.checklist li { border-bottom: 1px solid var(--line); padding: 10px 0 10px 34px; position: relative; margin: 0; }
   ul.checklist li::before { content: "[ ]"; position: absolute; left: 0; color: var(--grey); }
   .doc .addr { font-weight: 600; letter-spacing: .02em; }
+  .aside { font-size: 14px; color: var(--grey); border-left: 2px solid var(--dim); padding: 2px 0 2px 12px; margin: 0 0 14px; }
+  .aside b { color: var(--fg); letter-spacing: .08em; font-weight: 600; }
+  ol.how > li p.aside { margin-top: 10px; }
   @media (prefers-reduced-motion: reduce) { .start-ghost { animation: none; } }
 </style>
 </head>
@@ -49,6 +52,7 @@
  \/\/\/</pre>
 <h1>GETTING STARTED</h1>
 <p class="lead">From the box to your first night. Eight steps, one thing each. Doing it at home first is a good idea: skip step 2 until you're at the booth.</p>
+<p class="aside"><b>BOO:</b> Hi, I'm BOO, the ghost in the box. I'll chip in now and then. Every step works without me.</p>
 
 <ol class="how">
   <li id="step-box"><h3>WHAT'S IN THE BOX</h3>
@@ -61,7 +65,8 @@
 
   <li id="step-power"><h3>POWER</h3>
     <p>Plug in the box's own supply: the official Raspberry Pi 27W USB-C supply (5.1V, 5A). Push the plug all the way in. A phone charger is often too weak, and the box will say <b>Power low</b>.</p>
-    <p>Give it a minute. It finds the players and the mixer by itself.</p></li>
+    <p>Give it a minute. It finds the players and the mixer by itself.</p>
+    <p class="aside"><b>BOO:</b> Power in is all it takes. I wake up by myself.</p></li>
 
   <li id="step-wifi"><h3>JOIN THE WI-FI</h3>
     <p>First time, or anywhere it doesn't know: join the Wi-Fi called <b>GHOST LINK</b> on your phone. The password came with your box (on the sticker or card).</p>
@@ -73,20 +78,21 @@
     <p>Using the HARD STOP app? It finds GHOST LINK on the same Wi-Fi once its next update is out: <a href="../help/hard-stop.html">using it with HARD STOP</a>.</p></li>
 
   <li id="step-password"><h3>SET YOUR PASSWORD</h3>
-    <p><b class="ui">STATUS</b>, type the password from the sticker, <b class="ui">UNLOCK</b>. Then <b class="ui">CHANGE PASSWORD</b> to one of your own, 8 characters or more.</p>
+    <p><b class="ui">STATUS</b>, type the password that came with your box, <b class="ui">UNLOCK</b>. Then <b class="ui">CHANGE PASSWORD</b> to one of your own, 8 characters or more.</p>
     <p>Watching is open to anyone on the Wi-Fi. Changing things needs the password. For crew, give tonight's 4-digit crew code instead.</p></li>
 
   <li id="step-venue"><h3>ADD YOUR VENUE AND ITS WI-FI</h3>
-    <p><b class="ui">STATUS</b> &rarr; <b class="ui">VENUE</b> &rarr; <b class="ui">NEW</b>. Name it, then <b class="ui">+ VENUE WI-FI</b> with the Wi-Fi name and password exactly as the venue gave them. <b class="ui">SAVE</b>.</p>
+    <p><b class="ui">STATUS</b> &rarr; <b class="ui">VENUE</b> &rarr; <b class="ui">NEW</b>. Name it (say, THE ROLLER RINK), then <b class="ui">+ VENUE WI-FI</b> with the Wi-Fi name and password exactly as the venue gave them, capitals and spaces included. <b class="ui">SAVE</b>.</p>
     <p>Do the same with your home Wi-Fi: a venue called HOME. The box joins the strongest one it knows, wherever it is. Passwords stay on the box.</p></li>
 
   <li id="step-night"><h3>PLAN A NIGHT</h3>
-    <p><b class="ui">STATUS</b> &rarr; <b class="ui">NIGHTS</b> &rarr; <b class="ui">PLAN A NIGHT</b>: the date, the venue, STARTS, MUSIC OFF and the lineup, one line each like <span class="addr">22:00 NAME</span>.</p>
-    <p>On the night, tracks land under the right DJ by themselves. Optional, but it makes PLAYED tidy.</p></li>
+    <p><b class="ui">STATUS</b> &rarr; <b class="ui">NIGHTS</b> &rarr; <b class="ui">PLAN A NIGHT</b>: the date, the venue, STARTS, MUSIC OFF and the lineup, one line each like <span class="addr">22:00 TICK</span>.</p>
+    <p>On the night, tracks land under the right DJ by themselves. Optional, but it makes PLAYED tidy.</p>
+    <p class="aside"><b>BOO:</b> TICK at ten, LIL TICK at midnight, TICK JR closing. I'll keep their tracklists apart.</p></li>
 </ol>
 
 <h2 id="first-night">YOUR FIRST NIGHT</h2>
-<p>Before doors, top to bottom:</p>
+<p>Before doors, top to bottom. Tick as you go:</p>
 <ul class="checklist">
   <li>Cable from the box to the DJ switch, then power.</li>
   <li>Green light on the box: solid = on a Wi-Fi it knows, slow blink = it is the GHOST LINK Wi-Fi.</li>
@@ -97,6 +103,7 @@
   <li>Recording a set, lights, or a hard curfew tonight? Only if wanted: <a href="../help/quick-start.html#optional-tonight">the optional steps</a>.</li>
 </ul>
 <p>During the night there's nothing to do. If anything looks odd, <b class="ui">STATUS</b> &rarr; <b class="ui">LISTEN ONLY</b>, no password needed. At the end of the night, just unplug it. Nothing breaks.</p>
+<p class="aside"><b>BOO:</b> That's it. Go enjoy the night. I'll keep watch.</p>
 
 <h2 id="help">WHERE TO GET HELP</h2>
 <div class="cards">

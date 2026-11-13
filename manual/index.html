@@ -54,6 +54,15 @@
   .toc { counter-reset: c; }
   .toc a .n { color: var(--grey); display: inline-block; min-width: 3ch; }
   .back { font-size: 12px; letter-spacing: .12em; margin-top: 18px; }
+  .toc li { margin-bottom: 6px; }
+  .toc .t { display: block; font-size: 13px; color: var(--grey); padding-left: 3ch; }
+  .intro { color: var(--grey); margin: 0 0 12px; }
+  .lbl { font-size: 11px; letter-spacing: .12em; color: var(--grey); margin: 6px 0 4px; }
+  .aside { font-size: 14px; color: var(--grey); border-left: 2px solid var(--dim); padding: 2px 0 2px 12px; margin: 0 0 14px; }
+  .aside b { color: var(--fg); letter-spacing: .08em; font-weight: 600; }
+  .feat-entry .note b { color: var(--fg); letter-spacing: .06em; }
+  .careful b { color: var(--warn); letter-spacing: .06em; }
+  .seealso { font-size: 13px; color: var(--grey); letter-spacing: .04em; margin-top: 18px; }
   .back a { color: var(--grey); text-decoration: none; }
   @media (prefers-reduced-motion: reduce) { .cover .ghost { animation: none; } }
 
@@ -71,6 +80,8 @@
     .feat-entry, .diagram, tr, .callout, ol.how > li { break-inside: avoid; }
     .tbl { overflow: visible; }
     .toc { columns: 2; }
+    .toc .t { display: none; }
+    .aside, .callout { break-inside: avoid; }
     a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #333; }
     .toc a::after, .cards a::after { content: none; }
   }
@@ -104,6 +115,7 @@
 <h1>GHOST LINK</h1>
 <p class="kind">OWNER'S MANUAL</p>
 <p class="lead">A small box for the DJ booth. It plugs into the DJ network, reads what the players and the mixer say about themselves, and shows it live on any phone browser in the room. Out of the box it only listens.</p>
+<p class="aside"><b>BOO:</b> Hi. I'm the ghost in the box. I'll leave a short note here and there. Skip me any time: every instruction in this manual works without me.</p>
 <div class="printbar">
   <button type="button" class="btn solid" id="printBtn">PRINT / SAVE AS PDF</button>
   <a class="btn" href="../start-here/">GETTING STARTED</a>
@@ -117,39 +129,39 @@
 <section class="chapter" id="contents">
 <h2><span class="n">0</span>CONTENTS</h2>
 <ol class="toc">
-  <li><a href="#safety"><span class="n">1</span>SAFETY AND CARE</a></li>
-  <li><a href="#in-the-box"><span class="n">2</span>WHAT'S IN THE BOX</a></li>
-  <li><a href="#know-your-box"><span class="n">3</span>KNOW YOUR BOX</a></li>
-  <li><a href="#specs"><span class="n">4</span>SPECIFICATIONS</a></li>
-  <li><a href="#setup"><span class="n">5</span>SETUP</a></li>
-  <li><a href="#every-night"><span class="n">6</span>EVERY NIGHT</a></li>
-  <li><a href="#features"><span class="n">7</span>FEATURES REFERENCE</a></li>
-  <li><a href="#show-control"><span class="n">8</span>SHOW CONTROL</a></li>
-  <li><a href="#sound-in"><span class="n">9</span>SOUND IN AND RECORDINGS</a></li>
-  <li><a href="#deck-controls"><span class="n">10</span>DECK CONTROLS AND AUTO-STOP</a></li>
-  <li><a href="#troubleshooting"><span class="n">11</span>TROUBLESHOOTING</a></li>
-  <li><a href="#updates"><span class="n">12</span>UPDATES AND ROLLBACK</a></li>
-  <li><a href="#privacy"><span class="n">13</span>PRIVACY</a></li>
-  <li><a href="#data-source"><span class="n">14</span>WHERE THE DATA COMES FROM</a></li>
-  <li><a href="#licences"><span class="n">15</span>LICENCES</a></li>
-  <li><a href="#regulatory"><span class="n">16</span>REGULATORY</a></li>
-  <li><a href="#support"><span class="n">17</span>SUPPORT</a></li>
-  <li><a href="#glossary"><span class="n">18</span>GLOSSARY</a></li>
-  <li><a href="#at-a-glance"><span class="n">19</span>EVERY FEATURE AT A GLANCE</a></li>
+  <li><a href="#safety"><span class="n">1</span>SAFETY AND CARE</a><span class="t">Short, and worth it. Drinks stay over there.</span></li>
+  <li><a href="#in-the-box"><span class="n">2</span>WHAT'S IN THE BOX</a><span class="t">Spoiler: a box. Plus what you bring.</span></li>
+  <li><a href="#know-your-box"><span class="n">3</span>KNOW YOUR BOX</a><span class="t">One button, one light, and where every cable goes.</span></li>
+  <li><a href="#specs"><span class="n">4</span>SPECIFICATIONS</a><span class="t">Only numbers we've checked on a working unit.</span></li>
+  <li><a href="#setup"><span class="n">5</span>SETUP</a><span class="t">The first day. Best done at home, with a cup of something.</span></li>
+  <li><a href="#every-night"><span class="n">6</span>EVERY NIGHT</a><span class="t">Before doors, during, after. During is mostly nothing.</span></li>
+  <li><a href="#features"><span class="n">7</span>FEATURES REFERENCE</a><span class="t">Every screen and every setting, tab by tab.</span></li>
+  <li><a href="#show-control"><span class="n">8</span>SHOW CONTROL</a><span class="t">Make the visuals drop when the DJ drops.</span></li>
+  <li><a href="#sound-in"><span class="n">9</span>SOUND IN AND RECORDINGS</a><span class="t">The box gets ears. It records only when you say so.</span></li>
+  <li><a href="#deck-controls"><span class="n">10</span>DECK CONTROLS AND AUTO-STOP</a><span class="t">Off until the owner says so. Read before you arm.</span></li>
+  <li><a href="#troubleshooting"><span class="n">11</span>TROUBLESHOOTING</a><span class="t">Something's off? Start here, not with a paperclip.</span></li>
+  <li><a href="#updates"><span class="n">12</span>UPDATES AND ROLLBACK</a><span class="t">New versions, and the way back if you want it.</span></li>
+  <li><a href="#privacy"><span class="n">13</span>PRIVACY</a><span class="t">What stays on the box, and the little that leaves.</span></li>
+  <li><a href="#data-source"><span class="n">14</span>WHERE THE DATA COMES FROM</a><span class="t">The honest bit. No jokes in this one.</span></li>
+  <li><a href="#licences"><span class="n">15</span>LICENCES</a><span class="t">The open-source work GHOST LINK stands on.</span></li>
+  <li><a href="#regulatory"><span class="n">16</span>REGULATORY</a><span class="t">The paperwork, straight.</span></li>
+  <li><a href="#support"><span class="n">17</span>SUPPORT</a><span class="t">Write to us.</span></li>
+  <li><a href="#glossary"><span class="n">18</span>GLOSSARY</a><span class="t">Booth words in plain English.</span></li>
+  <li><a href="#at-a-glance"><span class="n">19</span>EVERY FEATURE AT A GLANCE</a><span class="t">The whole list in one table.</span></li>
 </ol>
 </section>
 
 <section class="chapter" id="safety">
 <h2><span class="n">1</span>SAFETY AND CARE</h2>
-<p>GHOST LINK is a small computer in a metal case. Treat it like any booth electronics.</p>
+<p>GHOST LINK is a small computer in a metal case. Treat it like any booth electronics: steady power, a bit of air, no drinks. Each rule says why.</p>
 <dl class="kv">
   <dt>POWER</dt><dd>Use the official Raspberry Pi 27W USB-C supply (5.1V, 5A), or one just like it. Weaker supplies make the box slow down or restart, and it says <b>Power low</b>. Don't use a damaged supply or cable. Avoid switched power strips someone might turn off; it's harmless, just annoying.</dd>
   <dt>UNPLUGGING</dt><dd>Pulling the power is the normal way to switch it off. The system is read-only and the night is saved every few seconds, so it can't be hurt that way.</dd>
   <dt>HEAT</dt><dd>It has no fan: the case is the cooler. Give it air. Not on top of an amp, not in a closed bag, not in direct sun. STATUS warns when it runs hot (above 75 °C inside).</dd>
   <dt>LIQUIDS</dt><dd>Keep drinks away. It is not waterproof. If it gets wet, unplug it and let it dry fully before power goes back in.</dd>
-  <dt>CABLES</dt><dd>Run cables where nobody trips on them and nothing pulls on the ports. Use plain network cables (Cat5e or Cat6). Never plug it straight into one player.</dd>
+  <dt>CABLES</dt><dd>Run cables where nobody trips on them and nothing pulls on the ports. Use plain network cables (Cat5e or Cat6). Never plug it straight into one player: then it only sees that one.</dd>
   <dt>THE MEMORY CARD</dt><dd>The system lives on a memory card inside. Never take it out, wipe it or reflash it: that erases the box and every night on it. If something seems broken, contact support first.</dd>
-  <dt>OPENING IT</dt><dd>There's nothing inside for you to service except the clock battery (see the next chapter). Unplug first.</dd>
+  <dt>OPENING IT</dt><dd>There's nothing inside for you to service except the clock battery (see <a href="#extras">EXTRAS</a>). Unplug first.</dd>
   <dt>THE DJ'S GEAR</dt><dd>Nothing passes through GHOST LINK: if it dies, the booth carries on. It never sends anything to the mixer. Deck controls stay off unless the owner turns them on.</dd>
 </dl>
 </section>
@@ -160,27 +172,28 @@
   <li>The GHOST LINK box: a Raspberry Pi 5 in a fanless aluminium case.</li>
   <li>Its power supply: the official Raspberry Pi 27W USB-C supply.</li>
 </ul>
-<p>You also need your phone and a network cable that reaches the DJ switch. Anything else is optional: <a href="../help/gear.html">gear to buy</a>.</p>
+<p>You bring your phone and a network cable that reaches the DJ switch. Anything else is optional: <a href="../help/gear.html">gear to buy</a>.</p>
 <h3 id="extras">EXTRAS THAT MAY COME WITH IT</h3>
 <p>Some boxes come with these. None of them is needed to run.</p>
 <dl>
-  <dt>THE STICKER</dt><dd>The GHOST LINK Wi-Fi name and password, and a QR code to join it. Stick it on the box, on the side you can see in the booth. No sticker? The password is on the card or email that came with your box. Change it to your own: <b class="ui">STATUS</b> &rarr; the lock.</dd>
+  <dt>THE STICKER</dt><dd>The GHOST LINK Wi-Fi name and password, and a QR code to join it. Stick it on the box, on the side you can see in the booth. No sticker? The password came with your box, on the card or email. Change it to your own: <b class="ui">STATUS</b> &rarr; the lock.</dd>
   <dt>A NETWORK CABLE</dt><dd>A plain Ethernet cable (Cat5e or Cat6), any length that reaches the DJ switch. One end in the box, the other in a spare port on the switch the players and mixer use. Any cable works; a short, flat one packs best.</dd>
   <dt>A CLOCK BATTERY</dt><dd>Keeps the box's clock right while it's unplugged, so the first tracks of a night land on the right date before it finds Wi-Fi. Without one the box still works: it sets its clock from the internet or from the first phone that opens the dashboard.
+    <p>Two kinds: the official Raspberry Pi RTC battery (rechargeable; the box has to be set to charge it, ask support) or a regular CR2032 coin cell on a plug (not rechargeable; charging stays off, replace it every few years).</p>
+    <p class="careful"><b>CAREFUL.</b> Never put a regular coin cell in a box set to charge its battery.</p>
     <ol>
       <li>Unplug the power.</li>
       <li>Open the case.</li>
       <li>Find the small two-pin socket marked <b>BAT</b> on the board, next to the USB-C power socket.</li>
       <li>Push the battery's plug in (it only fits one way). Stick the battery to the inside of the case with its sticky pad, away from the hot chip.</li>
       <li>Close the case, plug the power back in. <b class="ui">STATUS</b> &rarr; <b class="ui">BOOTH CHECK</b> &rarr; <b class="ui">CLOCK BATTERY</b> says if it's working.</li>
-    </ol>
-    Two kinds: the official Raspberry Pi RTC battery (rechargeable; the box has to be set to charge it, ask support) or a regular CR2032 coin cell on a plug (not rechargeable; charging stays off, replace it every few years). Never put a regular cell in a box set to charge.</dd>
+    </ol></dd>
 </dl>
 </section>
 
 <section class="chapter" id="know-your-box">
 <h2><span class="n">3</span>KNOW YOUR BOX</h2>
-<p>The parts you use. The diagram is a schematic, not a scale drawing.</p>
+<p>The parts you touch, and what each one is for. The diagram is a schematic, not a scale drawing.</p>
 <div class="diagram">
 <svg viewBox="0 0 720 330" role="img" aria-labelledby="dgT dgD" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13">
   <title id="dgT">GHOST LINK box, ports</title>
@@ -221,11 +234,12 @@
   <dt>WI-FI AND BLUETOOTH</dt><dd>Built in, no antenna to fit. Wi-Fi is for phones. Bluetooth only gives off a small signal so the HARD STOP app notices the box; it never connects to anything.</dd>
   <dt>CLOCK BATTERY</dt><dd>Inside, on the board's plug marked BAT, next to the USB-C power. Keeps the time while unplugged. Replace with a CR2032 coin cell when BOOTH CHECK &rarr; CLOCK BATTERY says LOW or FLAT. Never turn on battery charging for a coin cell.</dd>
 </dl>
+<p class="aside"><b>BOO:</b> Green means I'm up. Red means I'm asleep but still plugged in. Off means no power, not a sulk.</p>
 </section>
 
 <section class="chapter" id="specs">
 <h2><span class="n">4</span>SPECIFICATIONS</h2>
-<p>Only what we've checked on a working unit.</p>
+<p>Only what we've checked on a working unit. Where we haven't measured something yet, the table says so.</p>
 <div class="tbl stack"><table>
 <thead><tr><th>PART</th><th>WHAT</th></tr></thead>
 <tbody>
@@ -249,33 +263,37 @@
 
 <section class="chapter" id="setup">
 <h2><span class="n">5</span>SETUP</h2>
-<p>The first day. Doing it at home first is easiest. The short version is <a href="../start-here/">GETTING STARTED</a>.</p>
+<p>The first day. Doing it at home first means the booth only gets the easy part. In a hurry? <a href="../start-here/">GETTING STARTED</a> is the same thing, shorter.</p>
 <ol class="how">
   <li><h3>POWER IT</h3><p>Plug in the supply. The green light blinks fast: it's looking for a Wi-Fi it knows, and doesn't know any yet.</p></li>
   <li><h3>WAIT ABOUT 90 SECONDS</h3><p>With no Wi-Fi it knows, it becomes its own Wi-Fi, GHOST LINK. The green light slows to a 1-second blink.</p></li>
-  <li><h3>JOIN GHOST LINK</h3><p>On your phone, join the Wi-Fi called GHOST LINK with the password on the sticker. A page pops up: tap <b class="ui">GOT IT</b>. The dashboard opens at 10.42.0.1. A short tour shows once.</p></li>
-  <li><h3>YOUR PASSWORD</h3><p><b class="ui">STATUS</b>, type the password from the sticker, <b class="ui">UNLOCK</b>, then <b class="ui">CHANGE PASSWORD</b> to your own (8 characters or more). It signs every other phone out.</p></li>
+  <li><h3>JOIN GHOST LINK</h3><p>On your phone, join the Wi-Fi called GHOST LINK. The password came with your box (on the sticker or card). A page pops up: tap <b class="ui">GOT IT</b>. The dashboard opens at 10.42.0.1. A short tour shows once.</p></li>
+  <li><h3>YOUR PASSWORD</h3><p><b class="ui">STATUS</b>, type the password that came with the box, <b class="ui">UNLOCK</b>, then <b class="ui">CHANGE PASSWORD</b> to your own (8 characters or more). It signs every other phone out.</p></li>
   <li><h3>YOUR WI-FI</h3><p><b class="ui">STATUS</b> &rarr; <b class="ui">VENUE</b> &rarr; <b class="ui">NEW</b>, call it HOME, <b class="ui">+ VENUE WI-FI</b> with your Wi-Fi's name and password, <b class="ui">SAVE</b>. Within a minute the box moves to your Wi-Fi; join it too and open ghostlink.local.</p></li>
-  <li><h3>EACH VENUE</h3><p>Add each venue the same way, with its Wi-Fi if you can get it. At each venue the box joins the strongest one it knows. With none around, it is the GHOST LINK Wi-Fi again.</p></li>
+  <li><h3>EACH VENUE</h3><p>Add each venue the same way (say, THE BLUE ARCH), with its Wi-Fi if you can get it. At each venue the box joins the strongest one it knows. With none around, it is the GHOST LINK Wi-Fi again.</p></li>
   <li><h3>A BACKUP</h3><p><b class="ui">STATUS</b> &rarr; <b class="ui">BACKUP</b>. Keep the file on your phone.</p></li>
 </ol>
+<div class="callout"><b>TIP.</b><p>Type venue Wi-Fi names and passwords exactly as the venue gives them, capitals and spaces included. Most "it won't join" mysteries are one wrong letter.</p></div>
 <h3 id="setup-booth">AT THE BOOTH</h3>
 <ul>
-  <li>Plug into the switch or DJ router the players and mixer use. Any free port. Never straight into one player.</li>
+  <li>Plug into the switch or DJ router the players and mixer use. Any free port. Never straight into one player: then it only sees that one.</li>
   <li>Router or switch full? Bring a plain unmanaged 5-port switch: move one cable from the router into the switch, cable the switch back to that router port, plug GHOST LINK into the switch.</li>
   <li>The mixer on the network too gives ON AIR and a better PLAYED. Without it, things still work.</li>
   <li>Players must be in their normal standalone (LINK) mode. In laptop or controller mode they don't talk on the network.</li>
   <li>Guest Wi-Fi that keeps devices apart from each other won't work for phones. Use the GHOST LINK Wi-Fi there.</li>
 </ul>
+<p class="aside"><b>BOO:</b> A spare 5-port switch in the bag has saved more nights than any clever setting.</p>
+<p class="seealso">SEE ALSO: <a href="#know-your-box">KNOW YOUR BOX</a> (the light) · <a href="#ref-status-venue">STATUS: THIS VENUE</a> · <a href="#troubleshooting">TROUBLESHOOTING</a></p>
 </section>
 
 <section class="chapter" id="every-night">
 <h2><span class="n">6</span>EVERY NIGHT</h2>
+<p>The routine, start to finish. Once it is set up, a night asks for a few minutes before doors and nothing during.</p>
 <h3>BEFORE YOU LEAVE</h3>
 <ul>
   <li>The box, its power supply, a network cable and a spare.</li>
   <li>Optional: a small switch, the sound card and its RCA cable, the MIDI interface.</li>
-  <li>New venue? Ask for its Wi-Fi name and password, and plan the night (STATUS &rarr; NIGHTS) with STARTS, MUSIC OFF and the lineup.</li>
+  <li>New venue? Ask for its Wi-Fi name and password, and plan the night (STATUS &rarr; NIGHTS) with STARTS, MUSIC OFF and the lineup, like <code>22:00 TICK</code> and <code>23:30 LIL TICK</code>.</li>
 </ul>
 <h3>AT THE BOOTH</h3>
 <ol>
@@ -289,22 +307,27 @@
 </ol>
 <h3>DURING</h3>
 <p>Nothing to do. Alerts show on every phone. If anything looks odd: <b class="ui">STATUS</b> &rarr; <b class="ui">LISTEN ONLY</b>, no password needed. Last resort: pull the power.</p>
+<p class="aside"><b>BOO:</b> The best nights are the ones where you forget I'm here.</p>
 <h3>AFTER</h3>
 <ul>
   <li><b class="ui">PLAYED</b>: COPY TRACKLIST, PLAYLIST, RECAP IMAGE. Share a tracklist publicly only if the DJ says yes.</li>
   <li>Unplug the box. That's the normal off.</li>
 </ul>
+<p class="seealso">SEE ALSO: <a href="#ref-status-top">STATUS: THE TOP</a> (BOOTH CHECK) · <a href="#ref-played">PLAYED</a> · <a href="../help/quick-start.html">QUICK START</a></p>
 </section>
 
 <section class="chapter" id="features">
 <h2><span class="n">7</span>FEATURES REFERENCE</h2>
 <p>Every screen and setting, tab by tab. The dashboard has six tabs: NOW, DECKS, NETWORK, PLAYED, STATUS, HELP. The grey line under each name says where it is; the address after it opens that place directly on a phone on the box's Wi-Fi. Anything "on this phone" is saved in that browser only.</p>
+<p>Each entry reads the same way: where it is, what it does, <b>HOW</b> (the steps), <b>GOOD TO KNOW</b> (the limits). Lines marked <b>BOO</b> are optional reading. Can't find something? On the dashboard, <b class="ui">STATUS</b> &rarr; <b class="ui">GO TO</b> and type a word.</p>
 <!-- GEN:features -->
 <h3 id="ref-everywhere">EVERY SCREEN</h3>
+<p class="intro">A few things sit on every screen, whichever tab you&#x27;re on. Learn them once.</p>
 <div class="feat-entry" id="f-share-panel">
 <h4>GHOST LINK (SHARE) <span class="tag">SHIPPED</span></h4>
 <p class="where">The GHOST LINK name at the top of every screen · <code>ghostlink.local/#decks</code></p>
 <p>The dashboard&#x27;s address on this Wi-Fi, a QR code, COPY, and the box&#x27;s short link.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Tap GHOST LINK at the top.</li><li>Show the QR or tap COPY.</li><li>Owner only: CHANGE NAME sets the short link (gl.cold.fyi/&lt;name&gt;).</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #45</p>
 </div>
@@ -312,14 +335,16 @@
 <h4>ALERTS <span class="tag">SHIPPED</span></h4>
 <p class="where">Under the header, on every screen · <code>ghostlink.local/#decks</code></p>
 <p>DEAD AIR, a track ending with nothing loaded, USB / SD OUT, FX LEFT ON, SILENCE and the AUTO-STOP countdown. Every phone sees the same alert.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Nothing to set. Alerts clear themselves when the cause is gone.</li></ol>
-<p class="note">Android phones vibrate for dead air and USB / SD. iPhone web pages can&#x27;t vibrate.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Android phones vibrate for dead air and USB / SD. iPhone web pages can&#x27;t vibrate.</p>
 <p class="meta">FOR: TECH, DJ · DECISIONS #42, #53, #57</p>
 </div>
 <div class="feat-entry" id="f-rec-light">
 <h4>● REC <span class="tag">SHIPPED</span></h4>
 <p class="where">The header, on every screen · <code>ghostlink.local/#network/sound</code></p>
 <p>A red ● REC shows on every phone while a set is being recorded, so the booth always knows.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Shows by itself while recording. STOP RECORDING is under NETWORK → SOUND IN.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #57, #61</p>
 </div>
@@ -327,30 +352,36 @@
 <h4>KEYS AND LINKS <span class="tag">SHIPPED</span></h4>
 <p class="where">Any laptop keyboard; any address · <code>ghostlink.local/#status</code></p>
 <p>Keys 1 to 6 pick a tab, / opens GO TO, Esc closes it. Links go straight to a place, like #status/venue or #now/photo. With no tab in the address the page opens on the tab this phone used last. A TOP button shows on long pages.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Press 1 to 6, or /.</li><li>Bookmark a link such as #decks for a booth screen.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #62</p>
 </div>
 <h3 id="ref-decks">DECKS</h3>
+<p class="intro">The heart of it: one tile per player, live. If you only ever open one tab, make it this one.</p>
 <div class="feat-entry" id="f-decks">
 <h4>DECKS <span class="tag">SHIPPED</span></h4>
 <p class="where">DECKS · <code>ghostlink.local/#decks</code></p>
 <p>One tile per player: title, artist, art, BPM, pitch, time left, ON AIR, MASTER, the scrolling waveform and the whole track, the beat counter and song sections, and tags such as KEY, LOOP, SYNC, CUED, END.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Load a track: it shows by itself.</li><li>Tap a waveform to zoom.</li></ol>
-<p class="note">Song sections need tracks analysed for phrases in rekordbox and a player that shares them. The XDJ-XZ doesn&#x27;t; CDJ-3000s are expected to and aren&#x27;t confirmed yet.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Song sections need tracks analysed for phrases in rekordbox and a player that shares them. The XDJ-XZ doesn&#x27;t; CDJ-3000s are expected to and aren&#x27;t confirmed yet.</p>
 <p class="meta">FOR: DJ, VJ, LIGHTS, TECH · DECISIONS #46, #50</p>
 </div>
 <div class="feat-entry" id="f-layout">
 <h4>LAYOUT <span class="tag">SHIPPED</span></h4>
 <p class="where">DECKS → LAYOUT · <code>ghostlink.local/#decks/layout</code></p>
 <p>Presets CLASSIC, BIG WAVES, STACKED, WAVES ONLY, COMPACT, then every part on its own: decks across, waveform height and zoom, text size, which parts show, waveform colour, remaining or elapsed, dim decks not on air, which decks. Saved on this phone. STACKED in a small window fits every deck with no scrolling: one line of facts per deck (ON AIR, MIXING, MASTER, NEXT, LOOP, SYNC, CUED, BPM, pitch, key, time left), the decks you hear get the most room, an empty deck is a thin line.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>DECKS → LAYOUT, pick a preset.</li><li>COPY LINK TO THIS LAYOUT gives the same look on another screen.</li><li>STACKED IN A SMALL WINDOW → DECK TILES BELOW brings the full tiles back under the stack.</li></ol>
-<p class="note">A small browser window beside Resolume works best with STACKED.</p>
+<p class="note"><b>GOOD TO KNOW.</b> A small browser window beside Resolume works best with STACKED.</p>
+<p class="aside"><b>BOO:</b> A tiny window, every deck, no scrolling. BOO calls that good housekeeping.</p>
 <p class="meta">FOR: DJ, VJ, LIGHTS · DECISIONS #50, #73</p>
 </div>
 <div class="feat-entry" id="f-deck-history-tags">
 <h4>PLAYED, LAST PLAYED, PLAYED HERE <span class="tag">SHIPPED</span></h4>
 <p class="where">DECKS, on a tile · <code>ghostlink.local/#decks</code></p>
 <p>Amber PLAYED 23:14 when a loaded track was already on air tonight (and by whom), LAST PLAYED for a past night, PLAYED HERE for this venue, NOT HERE and SLOWER / FASTER THAN HERE from the venue&#x27;s music notes.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Nothing to set. The venue notes come from MUSIC AT THIS VENUE.</li></ol>
 <p class="meta">FOR: DJ · DECISIONS #55</p>
 </div>
@@ -358,21 +389,27 @@
 <h4>MIX HINT <span class="tag">SHIPPED</span></h4>
 <p class="where">DECKS, on a cued deck · <code>ghostlink.local/#decks</code></p>
 <p>For example MIX 8A→9A ✓ +2.1%: whether the cued track&#x27;s key fits what&#x27;s on air, and the tempo change needed.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Cue a track on a deck that isn&#x27;t on air.</li></ol>
+<p class="aside"><b>BOO:</b> A tick means the keys get along. Whether the tunes do is still the DJ&#x27;s call.</p>
 <p class="meta">FOR: DJ</p>
 </div>
 <div class="feat-entry" id="f-little-ghost">
 <h4>THE LITTLE GHOST <span class="tag">SHIPPED</span></h4>
 <p class="where">DECKS · <code>ghostlink.local/#decks</code></p>
 <p>A small copy of the ghost sits at the MASTER deck. Drag him to park him; drop him on the big ghost to bring him home. GHOST SIZE S, M, L, XL.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Drag to park. Turn him off or change his size in HELP → DISPLAY.</li></ol>
+<p class="aside"><b>BOO:</b> He&#x27;s not lost. He&#x27;s parked.</p>
 <p class="meta">FOR: EVERYONE · DECISIONS #46, #50</p>
 </div>
 <h3 id="ref-now">NOW</h3>
+<p class="intro">One big readout for whoever&#x27;s watching. Same music, different questions: the photographer wants the drop, the manager wants minutes left.</p>
 <div class="feat-entry" id="f-now">
 <h4>NOW <span class="tag">SHIPPED</span></h4>
 <p class="where">NOW · <code>ghostlink.local/#now/dj</code></p>
 <p>One big readout of what the room hears, shaped by who&#x27;s watching. Roles: DJ, PHOTO, VJ, LIGHTS, SOUND, TECH, MANAGER, HOST. Each role is only a starting layout; nobody is locked out of anything.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Tap your role at the top.</li><li>Send someone a link straight to theirs, for example #now/photo or ?role=photo.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #62</p>
 </div>
@@ -380,14 +417,17 @@
 <h4>EDIT (NOW) <span class="tag">SHIPPED</span></h4>
 <p class="where">NOW → EDIT · <code>ghostlink.local/#now</code></p>
 <p>Show, hide and reorder the blocks for any role: track, time left, BPM, key, beat, section, next section, next drop, drop in, on now, lineup, tonight, all decks, the box, sound in, room, show control and more. Saved on this phone.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>NOW → EDIT, tick the blocks you want, move them up or down.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #62</p>
 </div>
 <h3 id="ref-network">NETWORK</h3>
+<p class="intro">What&#x27;s on the cables. Mostly for the tech, and for the moment someone asks why nothing shows.</p>
 <div class="feat-entry" id="f-devices">
 <h4>DEVICES AND TRAFFIC <span class="tag">SHIPPED</span></h4>
 <p class="where">NETWORK · <code>ghostlink.local/#network</code></p>
 <p>Every device on the DJ network (number, name, kind, address) and the packets arriving per second.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Open NETWORK.</li></ol>
 <p class="meta">FOR: TECH</p>
 </div>
@@ -395,6 +435,7 @@
 <h4>MIXER (USB MIDI) <span class="tag">SHIPPED</span></h4>
 <p class="where">NETWORK → MIXER (USB MIDI) · <code>ghostlink.local/#network/mixer</code></p>
 <p>With a DJM&#x27;s USB port cabled to the box, a live list of the mixer&#x27;s controls. NAME and WATCH a control: still on when the next track goes on air raises FX LEFT ON. Listen only: nothing is sent to the mixer.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>USB-A to USB-B cable from the box to the mixer.</li><li>Touch a control, NAME it, WATCH it.</li></ol>
 <p class="meta">FOR: TECH · DECISIONS #48</p>
 </div>
@@ -402,38 +443,44 @@
 <h4>SOUND IN <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">NETWORK → SOUND IN · SET RECORDINGS · <code>ghostlink.local/#network/sound</code></p>
 <p>With a USB sound card on the mixer&#x27;s REC OUT: a live L / R meter, and a SILENCE warning when the room goes quiet (below -50 dBFS for 8 seconds after music).</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Sound card into the box&#x27;s USB.</li><li>RCA cable from the mixer&#x27;s REC OUT to the card&#x27;s INPUT.</li><li>Play music: the meter moves. Aim for about -12 dB on loud parts.</li></ol>
-<p class="note">Only the built-in test card has been used so far; the first real card test is still to come.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Only the built-in test card has been used so far; the first real card test is still to come.</p>
 <p class="meta">FOR: SOUND, TECH, DJ · DECISIONS #57</p>
 </div>
 <div class="feat-entry" id="f-set-recordings">
 <h4>SET RECORDINGS <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">NETWORK → SOUND IN · SET RECORDINGS · <code>ghostlink.local/#network/sound</code></p>
 <p>One lossless FLAC file per set, with its tracklist timed from the start of the file. Only when someone taps ● RECORD for that set. About 0.5 GB an hour.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Unlock (password or crew code).</li><li>Tap ● RECORD (it shows the name of the DJ on the decks).</li><li>It ends when the next DJ is on, at the night change, after 10 minutes of silence, or on ■ STOP RECORDING (anyone can stop).</li><li>Download or DELETE from the list (password).</li></ol>
-<p class="note">The next DJ must be chosen again. Nothing ever records without a tap.</p>
+<p class="note"><b>GOOD TO KNOW.</b> The next DJ must be chosen again. Nothing ever records without a tap.</p>
 <p class="meta">FOR: DJ, SOUND, MANAGER · DECISIONS #57, #61</p>
 </div>
 <div class="feat-entry" id="f-events">
 <h4>EVENTS <span class="tag">SHIPPED</span></h4>
 <p class="where">NETWORK → EVENTS · <code>ghostlink.local/#network/events</code></p>
 <p>The last 500 events in plain words: joins, leaves, conflicts, alerts, settings changes.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Open NETWORK → EVENTS.</li></ol>
 <p class="meta">FOR: TECH</p>
 </div>
 <h3 id="ref-played">PLAYED</h3>
+<p class="intro">Everything that went out loud tonight, and every night before. The tracklist belongs to the DJ: share it only when they say yes.</p>
 <div class="feat-entry" id="f-played">
 <h4>PLAYED <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED · <code>ghostlink.local/#played</code></p>
 <p>Every track that was on air for 10 seconds, grouped by DJ, with the night&#x27;s numbers, a BPM chart and a timeline. The night picker opens past nights.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Open PLAYED. Pick another night at the top.</li></ol>
-<p class="note">With no mixer on the network it counts the MASTER deck after 30 seconds.</p>
+<p class="note"><b>GOOD TO KNOW.</b> With no mixer on the network it counts the MASTER deck after 30 seconds.</p>
 <p class="meta">FOR: DJ, MANAGER · DECISIONS #47</p>
 </div>
 <div class="feat-entry" id="f-on-the-decks">
 <h4>ON THE DECKS <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED → ON THE DECKS · <code>ghostlink.local/#played/djForm</code></p>
 <p>Who&#x27;s playing. Tracks are tagged with that DJ. A planned night switches it at each start time; a new USB going on air can start a new set by itself.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Type the DJ&#x27;s name, tap SET.</li></ol>
 <p class="meta">FOR: DJ, TECH, MANAGER · DECISIONS #47</p>
 </div>
@@ -441,6 +488,7 @@
 <h4>USBS TONIGHT <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED → USBS TONIGHT · <code>ghostlink.local/#played/sticksBox</code></p>
 <p>Each USB that went on air tonight. Say whose it is once: next time it plays, GHOST LINK names the set by itself.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Open USBS TONIGHT, type the DJ&#x27;s name next to their USB.</li></ol>
 <p class="meta">FOR: TECH, MANAGER · DECISIONS #47</p>
 </div>
@@ -448,6 +496,7 @@
 <h4>SOUNDCHECK <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED · <code>ghostlink.local/#played</code></p>
 <p>Music on air before the night&#x27;s STARTS time (default 21:00) with no DJ set is filed as SOUNDCHECK, apart from the sets.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Set STARTS when you plan the night.</li></ol>
 <p class="meta">FOR: TECH · DECISIONS #47</p>
 </div>
@@ -455,6 +504,7 @@
 <h4>COPY · SAVE <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED → COPY · SAVE · <code>ghostlink.local/#played/playedMore</code></p>
 <p>COPY SETLIST, COPY TRACKLIST (times from the start of each set, for Mixcloud), PLAYLIST (.m3u8 for rekordbox / Serato), CSV, JSON.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>PLAYED → COPY · SAVE, pick one.</li></ol>
 <p class="meta">FOR: DJ, MANAGER · DECISIONS #45</p>
 </div>
@@ -462,6 +512,7 @@
 <h4>RECAP IMAGE <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED → RECAP IMAGE · <code>ghostlink.local/#played</code></p>
 <p>A 1080 x 1350 card of the night to post: the ghost, the numbers, the BPM line, the tracks.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>PLAYED → RECAP IMAGE, then save or share it.</li></ol>
 <p class="meta">FOR: DJ, MANAGER</p>
 </div>
@@ -469,44 +520,54 @@
 <h4>TRACKLIST: CREW ONLY / SHARED <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED → COPY · SAVE · <code>ghostlink.local/#played/shareTl</code></p>
 <p>The tracklist is the DJ&#x27;s. WATCH FROM HOME shows PLAYED only after this says SHARED, and only for tonight. On the box&#x27;s own Wi-Fi the crew always sees PLAYED.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Only if the DJ says yes: tap TRACKLIST: CREW ONLY so it says SHARED.</li></ol>
+<p class="aside"><b>BOO:</b> Ask first. BOO always asks first.</p>
 <p class="meta">FOR: DJ, MANAGER · DECISIONS #47</p>
 </div>
 <div class="feat-entry" id="f-night-in-numbers">
 <h4>THE NIGHT IN NUMBERS <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PLAYED, under the list · <code>ghostlink.local/#played/insights</code></p>
 <p>PACE, TEMPO, KEYS, GENRES, DECKS, BY THE HOUR, ARTISTS, DJS, and from the mix log: MIXING (how many mixes, typical and longest blend, cuts vs blends, mixes in key), ENERGY and THE DECKS (loops, pitch range, gaps).</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Scroll down PLAYED.</li></ol>
-<p class="note">MIXING hasn&#x27;t been checked against a real night with a mixer yet.</p>
+<p class="note"><b>GOOD TO KNOW.</b> MIXING hasn&#x27;t been checked against a real night with a mixer yet.</p>
 <p class="meta">FOR: DJ, MANAGER · DECISIONS #64</p>
 </div>
 <div class="feat-entry" id="f-transitions">
 <h4>TRANSITIONS: HALL OF FAME AND WILD RIDES <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PLAYED, under the list (TRANSITIONS card) and its HALL OF FAME button · <code>ghostlink.local/#played/insights</code></p>
 <p>While two decks or more are out loud, GHOST LINK checks how well their beats sit together from the players&#x27; beat timing. Each bar is CLEAN (within 4% of a beat), a FLAM (4 to 12%) or a GALLOP (over 12% for 4 bars or more in a row). Tonight: cleanest blend, longest blend, most decks at once, the wildest ride and the GALLOP INDEX (0 to 10). HALL OF FAME: the cleanest 10 blends on the box (SYNC blends marked), WILD RIDES (the gallops), the chop trophies, the longest blends and ride-outs, with a TV mode. Also in the ALL NIGHTS DJ PROFILE.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Scroll down PLAYED to TRANSITIONS.</li><li>Tap HALL OF FAME. For a TV, open it with ?tv=1 at the end.</li><li>Owner: WILD RIDES: SHOW NAMES shows who it was. Off by default: WILD RIDES says a DJ and the time.</li></ol>
-<p class="note">Rated from the beat grids: a track with a sloppy grid can look rougher than it sounded. Headphones, loops, scratching, cuts under a bar and tempos more than 8% apart are not rated.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Rated from the beat grids: a track with a sloppy grid can look rougher than it sounded. Headphones, loops, scratching, cuts under a bar and tempos more than 8% apart are not rated.</p>
+<p class="aside"><b>BOO:</b> A GALLOP isn&#x27;t a crime. Sometimes it&#x27;s even on purpose.</p>
 <p class="meta">FOR: DJ, MANAGER · DECISIONS #74</p>
 </div>
 <div class="feat-entry" id="f-box-records">
 <h4>BOX RECORDS <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED, under the list (BOX RECORDS card), and the top of the HALL OF FAME · <code>ghostlink.local/#played/insights</code></p>
 <p>This box&#x27;s records across every night, each held until it&#x27;s beaten: fastest and slowest track played out, biggest pitch up and down, longest and shortest track, longest one track held the air, longest blend, quickest cut, cleanest blend, most decks at once, longest loop, most loops in a set, longest set, most tracks in a set and in a night, longest night, busiest hour, longest run in key, biggest tempo jump, most DJs in a night, most played track. Filter by venue. When a record falls tonight it says so once in the events, and TV MODE shows a record at the bottom.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Scroll down PLAYED to BOX RECORDS, or tap BOX RECORDS + HALL OF FAME.</li><li>Pick a venue at the top of BOX RECORDS to see that venue&#x27;s.</li><li>Owner: BOX RECORDS + HALL OF FAME (on the HALL OF FAME page) turns it all off or on. On by default.</li></ol>
+<p class="aside"><b>BOO:</b> Records are there to be broken. The speakers are not.</p>
 <p class="meta">FOR: DJ, MANAGER · DECISIONS #74</p>
 </div>
 <div class="feat-entry" id="f-all-nights">
 <h4>ALL NIGHTS <span class="tag">SHIPPED</span></h4>
 <p class="where">PLAYED → top of the night picker · <code>ghostlink.local/#played</code></p>
 <p>Every night on the box by venue, DJ or artist: most played tracks and artists, DJs, venues, genres, keys, by the hour, every night (tap to open) and where and when each track was played. With a DJ picked: a DJ PROFILE.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>PLAYED → night picker → ALL NIGHTS · BY VENUE / DJ / ARTIST.</li><li>Filter by venue or DJ, or search.</li></ol>
 <p class="meta">FOR: MANAGER, DJ · DECISIONS #55, #64</p>
 </div>
 <h3 id="ref-status-top">STATUS: THE TOP</h3>
+<p class="intro">Before doors, start here. The top of STATUS says what&#x27;s wrong and how to fix it, in that order.</p>
 <div class="feat-entry" id="f-go-to">
 <h4>GO TO <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS, the top · <code>ghostlink.local/#status</code></p>
 <p>Type a word (wifi, record, rips, venue) and go straight there. It finds every setting, switch and section on every tab and says where each one lives. Words in any order; smell, stink and rips all work.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>STATUS, type in GO TO, tap a result or press Enter. It opens the fold and blinks what you were looking for.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #62, #73</p>
 </div>
@@ -514,6 +575,7 @@
 <h4>BOOTH CHECK <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → BOOTH CHECK · <code>ghostlink.local/#status/boothCheck</code></p>
 <p>The before-doors check, top to bottom: CLOCK, CLOCK BATTERY, VENUE, WI-FI, DJ CABLE, JOINED, PLAYERS, MIXER, TRACKS, DECK SETUP, POWER, BLACK BOX.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Read it top to bottom before doors. Each line says what&#x27;s wrong and the fix.</li></ol>
 <p class="meta">FOR: TECH · DECISIONS #42, #44, #49, #50, #53</p>
 </div>
@@ -521,6 +583,7 @@
 <h4>WHO&#x27;S HERE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → WHO&#x27;S HERE · <code>ghostlink.local/#status/nearby</code></p>
 <p>The HARD STOP panels the box can hear over Bluetooth, the HARD STOP app, and the phones and computers watching.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Shows by itself on the box&#x27;s own network.</li></ol>
 <p class="meta">FOR: TECH · DECISIONS #50</p>
 </div>
@@ -528,6 +591,7 @@
 <h4>PROBLEMS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS, under BOOTH CHECK · <code>ghostlink.local/#status/problems</code></p>
 <p>The network doctor: each problem with a plain cause and fix (no DJ cable, no DJ Link data, backed off, two players on one number, no mixer, too hot, storage almost full...).</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Nothing to set. Follow the fix on the line.</li></ol>
 <p class="meta">FOR: TECH</p>
 </div>
@@ -535,53 +599,63 @@
 <h4>GEAR CARE · FYI <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → GEAR CARE · <code>ghostlink.local/#status/gearCare</code></p>
 <p>Red-line prevention for the tech: named mixer controls held near the top for 30 seconds, low-bitrate files on air, and the room level from HARD STOP. Never an alarm.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Name the mixer&#x27;s trim, EQ, master and booth controls under NETWORK → MIXER.</li></ol>
-<p class="note">The box can&#x27;t hear the sound itself: the red light on the mixer is the truth.</p>
+<p class="note"><b>GOOD TO KNOW.</b> The box can&#x27;t hear the sound itself: the red light on the mixer is the truth.</p>
 <p class="meta">FOR: TECH, SOUND · DECISIONS #48</p>
 </div>
 <div class="feat-entry" id="f-lock">
 <h4>PASSWORD AND LOCK <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → CONTROLS LOCKED · <code>ghostlink.local/#status/lock</code></p>
 <p>Watching is open to anyone on the Wi-Fi. Changing things needs the password once per phone. LOCK, CHANGE PASSWORD (8 or more characters; signs every phone out). LISTEN ONLY is never locked. A new box asks you to pick your own password the first time you unlock it, before any setting changes.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Type the password from the box&#x27;s card, UNLOCK.</li><li>Pick your own password (8 or more characters). That&#x27;s it.</li></ol>
+<p class="aside"><b>BOO:</b> Watching is free. Touching needs the password. BOO runs a tidy booth.</p>
 <p class="meta">FOR: OWNER · DECISIONS #70</p>
 </div>
 <div class="feat-entry" id="f-crew-code">
 <h4>CREW CODE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → CONTROLS UNLOCKED · <code>ghostlink.local/#status/lock</code></p>
 <p>A new 4-digit code each night that unlocks the booth controls only, until 10:00 the next morning. Owner-only things stay owner only.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Unlock with the owner password: tonight&#x27;s code shows under the lock.</li><li>Give it to crew who need controls.</li></ol>
 <p class="meta">FOR: OWNER, TECH · DECISIONS #45</p>
 </div>
 <h3 id="ref-status-tonight">STATUS: TONIGHT</h3>
+<p class="intro">Tonight&#x27;s plan, and the few switches that can touch the decks. Those stay off until the owner turns them on.</p>
 <div class="feat-entry" id="f-nights">
 <h4>NIGHTS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → TONIGHT → NIGHTS · <code>ghostlink.local/#status/nights</code></p>
 <p>Plan a night: date, venue, STARTS, MUSIC OFF, the lineup (22:00 NAME, one per line) and notes. On the night the box picks the venue and switches ON THE DECKS at each time.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>STATUS → NIGHTS → PLAN A NIGHT.</li><li>Fill in the date, venue, times and lineup, SAVE.</li></ol>
-<p class="note">Times before noon belong to the same night. A night runs noon to noon.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Times before noon belong to the same night. A night runs noon to noon.</p>
 <p class="meta">FOR: MANAGER, TECH · DECISIONS #47</p>
 </div>
 <div class="feat-entry" id="f-deck-controls">
 <h4>DECK CONTROLS <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">STATUS → TONIGHT → DECK CONTROLS · <code>ghostlink.local/#status/deck-controls</code></p>
 <p>The one place GHOST LINK may send commands to players: STOP ALL DECKS, per deck PLAY / STOP, FROM CUE, SYNC, MASTER, and LOAD a track from any USB / SD on the network. Off until the owner turns it on.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Owner password: DECK CONTROLS → TURN ON.</li><li>Every button: tap to arm, then hold 1 second.</li></ol>
-<p class="note">The XDJ-XZ ignores every command. CDJ-3000s are untested. Try your own decks before a night that depends on it.</p>
+<p class="note"><b>GOOD TO KNOW.</b> The XDJ-XZ ignores every command. CDJ-3000s are untested. Try your own decks before a night that depends on it.</p>
 <p class="meta">FOR: OWNER, TECH · DECISIONS #51, #52, #53</p>
 </div>
 <div class="feat-entry" id="f-auto-stop">
 <h4>AUTO-STOP AT MUSIC OFF <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">STATUS → TONIGHT → DECK CONTROLS · <code>ghostlink.local/#status/deck-controls</code></p>
 <p>Armed for one night. Every phone gets a bar at 10, 5 and 1 minute with CANCEL AUTO-STOP, then every deck stops once at MUSIC OFF. Never fires late, never fights a DJ who plays again.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Plan MUSIC OFF (NIGHTS, or the venue&#x27;s usual time).</li><li>DECK CONTROLS → ARM FOR TONIGHT (hold).</li><li>Optional: HARD STOP CAN STOP IT lets the HARD STOP app stop the music in the last 10 minutes.</li></ol>
-<p class="note">Works only with decks that obey network commands (see DECK CONTROLS).</p>
+<p class="note"><b>GOOD TO KNOW.</b> Works only with decks that obey network commands (see DECK CONTROLS).</p>
+<p class="aside"><b>BOO:</b> BOO doesn&#x27;t love this one either. A curfew is a curfew.</p>
 <p class="meta">FOR: OWNER, TECH, MANAGER · DECISIONS #53</p>
 </div>
 <div class="feat-entry" id="f-house-settings">
 <h4>HOUSE SETTINGS <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">STATUS → DECK CONTROLS → HOUSE SETTINGS · <code>ghostlink.local/#status/gdHouse</code></p>
 <p>A club-standard deck setup (jog mode, tempo range, quantize, auto cue and more), editable, sent to stopped decks between DJs. BOOTH CHECK → DECK SETUP shows decks whose jog mode or firmware is off.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Change any line, SAVE.</li><li>Between DJs: SEND TO STOPPED DECKS (hold).</li><li>BACK TO THE STANDARD resets it.</li></ol>
 <p class="meta">FOR: OWNER, TECH · DECISIONS #53</p>
 </div>
@@ -589,6 +663,7 @@
 <h4>HOME TEST: SEND AS <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">STATUS → DECK CONTROLS → HOME TEST: SEND AS · <code>ghostlink.local/#status/gdTest</code></p>
 <p>For finding out what a player obeys: signs commands as a deck number nobody is using (3 or 4). Never saved; back to NORMAL (15) on restart. At home only.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Owner only. Pick AS DECK 3 or AS DECK 4, try a command, then NORMAL.</li></ol>
 <p class="meta">FOR: OWNER · DECISIONS #54</p>
 </div>
@@ -596,14 +671,18 @@
 <h4>SONG ID FOR THE CROWD <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → TONIGHT → SONG ID FOR THE CROWD · <code>ghostlink.local/#status/song-id</code></p>
 <p>A &quot;what&#x27;s playing&quot; page and QR code for the room. Shows nothing until it&#x27;s turned on.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Only if the DJ is OK with IDs going out: TURN ON, then show the QR.</li></ol>
+<p class="aside"><b>BOO:</b> Some DJs keep their IDs secret on purpose. Their set, their call.</p>
 <p class="meta">FOR: DJ, MANAGER</p>
 </div>
 <h3 id="ref-status-venue">STATUS: THIS VENUE</h3>
+<p class="intro">Teach the box a venue once and it remembers the Wi-Fi, the times and the room&#x27;s habits.</p>
 <div class="feat-entry" id="f-venue">
 <h4>VENUE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THIS VENUE → VENUE · <code>ghostlink.local/#status/venue</code></p>
 <p>Pick, edit or add a venue: name, players expected, address, rooms, gear, contacts, booth notes. TONIGHT shows the gear actually on the network. BOOTH CHECK asks until tonight&#x27;s venue is confirmed.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>STATUS → VENUE → NEW or EDIT, fill it in, SAVE.</li></ol>
 <p class="meta">FOR: OWNER, TECH, MANAGER · DECISIONS #50</p>
 </div>
@@ -611,6 +690,7 @@
 <h4>VENUE WI-FI <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → VENUE → EDIT → + VENUE WI-FI · <code>ghostlink.local/#status/venue</code></p>
 <p>Save a venue&#x27;s Wi-Fi and the box joins it by itself from then on, the strongest one it knows in range. Passwords stay on the box and only show to phones unlocked with the owner password.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>STATUS → VENUE → EDIT.</li><li>+ VENUE WI-FI, type the name and password exactly, SAVE.</li><li>Home too: make a venue called HOME.</li></ol>
 <p class="meta">FOR: OWNER · DECISIONS #42, #50</p>
 </div>
@@ -618,6 +698,7 @@
 <h4>MUSIC AT THIS VENUE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → VENUE → MUSIC AT THIS VENUE · <code>ghostlink.local/#status/vMusic</code></p>
 <p>Usual start and MUSIC OFF (used on nights without a plan, AUTO-STOP too), BPM range, repeat warning days, a NOT HERE list and the room&#x27;s music notes. Notes only: GHOST LINK never stops a DJ for any of it.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Unlock, open MUSIC AT THIS VENUE, fill in what you know, SAVE.</li></ol>
 <p class="meta">FOR: MANAGER, DJ · DECISIONS #55</p>
 </div>
@@ -625,6 +706,7 @@
 <h4>WI-FI MODE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THIS VENUE → WI-FI · <code>ghostlink.local/#status/wifi</code></p>
 <p>AUTO (known Wi-Fi first, its own GHOST LINK Wi-Fi only as a last resort), BE THE HOTSPOT, or KNOWN WI-FI ONLY.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Leave it on AUTO unless you have a reason.</li></ol>
 <p class="meta">FOR: OWNER, TECH · DECISIONS #42, #50</p>
 </div>
@@ -632,14 +714,17 @@
 <h4>ROOMS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THIS VENUE → ROOMS · <code>ghostlink.local/#status/rooms</code></p>
 <p>More than one GHOST LINK box, one per room: name this room and list the others, and NOW shows every room.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Type this room&#x27;s name and the others (NAME = ghostlink-2.local), SAVE ROOMS.</li><li>Every box on the same venue Wi-Fi.</li></ol>
 <p class="meta">FOR: TECH, MANAGER</p>
 </div>
 <h3 id="ref-status-screens">STATUS: SCREENS AND OUTPUTS</h3>
+<p class="intro">Everything that leaves the box for another screen or another app: TVs, stream overlays, lights and visuals.</p>
 <div class="feat-entry" id="f-show-control">
 <h4>SHOW CONTROL <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → SCREENS &amp; OUTPUTS → SHOW CONTROL · <code>ghostlink.local/#status/show-control</code></p>
 <p>The DJ&#x27;s tempo and bar to the room&#x27;s lights and visuals. One row per output, each a big ON / OFF, a dot that fills while it sends, help in plain words, and TEST on the OSC presets. Everything off until the owner turns it on. Nothing goes to the players or the mixer.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Unlock (owner).</li><li>Open the row for your app, fill in its address and port, TURN ON.</li><li>Press TEST before doors.</li></ol>
 <p class="meta">FOR: LIGHTS, VJ · DECISIONS #60, #64</p>
 </div>
@@ -647,21 +732,25 @@
 <h4>OSC OUT <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → SCREENS &amp; OUTPUTS → OSC OUT · <code>ghostlink.local/#status/osc</code></p>
 <p>Raw OSC to any computers you list: every beat, BPM, section, the on-air track, what&#x27;s next, the drop, and deck control presses.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Type host:port, one per line, SAVE.</li></ol>
+<p class="aside"><b>BOO:</b> Building your own patch? This is the raw feed. Go wild.</p>
 <p class="meta">FOR: LIGHTS, VJ · DECISIONS #58</p>
 </div>
 <div class="feat-entry" id="f-night-stages">
 <h4>NIGHT STAGES AND HEADS UP <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">STATUS → OSC OUT (sent to the same computers) · <code>ghostlink.local/#status/osc</code></p>
 <p>Cues for the lighting desk from tonight&#x27;s MUSIC OFF, once each per night, and HEADS UP messages the HARD STOP app sends through the box.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Plan MUSIC OFF and list the desk under OSC OUT.</li></ol>
-<p class="note">HEADS UP needs the HARD STOP app update that sends it.</p>
+<p class="note"><b>GOOD TO KNOW.</b> HEADS UP needs the HARD STOP app update that sends it.</p>
 <p class="meta">FOR: LIGHTS · DECISIONS #65</p>
 </div>
 <div class="feat-entry" id="f-screens">
 <h4>SCREENS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → SCREENS &amp; OUTPUTS → SCREENS · <code>ghostlink.local/#status/screens</code></p>
 <p>TV MODE (a booth TV or projector: the track, plus who&#x27;s on and minutes left, who&#x27;s next, and music off, amber in the last 10 minutes), STREAM OVERLAY (a see-through now-playing card for OBS), SONG PAGE (what&#x27;s playing, for the room) and PRINT STICKER (QR codes to join and open the dashboard).</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Tap one; it opens in a new tab.</li></ol>
 <p class="meta">FOR: VJ, TECH, MANAGER, HOST · DECISIONS #67</p>
 </div>
@@ -669,14 +758,17 @@
 <h4>WATCH FROM HOME <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → SCREENS &amp; OUTPUTS → WATCH FROM HOME · <code>ghostlink.local/#status/watch</code></p>
 <p>A view-only link anyone can open from anywhere. They see the decks live and can&#x27;t change anything. PLAYED stays hidden unless the tracklist is shared. Off by default and after every restart.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>The box on a Wi-Fi with internet (not its own).</li><li>Unlock, TURN ON, COPY LINK and send it.</li></ol>
 <p class="meta">FOR: OWNER, MANAGER · DECISIONS #47</p>
 </div>
 <h3 id="ref-status-box">STATUS: THE BOX</h3>
+<p class="intro">The box looking after itself: restarts, backups, updates and its own notes.</p>
 <div class="feat-entry" id="f-controls">
 <h4>CONTROLS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THE BOX → CONTROLS · <code>ghostlink.local/#status/controls</code></p>
 <p>REJOIN, RESTART READING (decks blank a few seconds and read again), LISTEN ONLY (goes quiet on the DJ network, never locked), ALLOW JOIN, RESTART, SHUT DOWN (ends on SAFE TO UNPLUG).</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Something odd: LISTEN ONLY.</li><li>RESTART and SHUT DOWN: tap, then hold 1 second.</li></ol>
 <p class="meta">FOR: TECH · DECISIONS #42, #46, #62</p>
 </div>
@@ -684,6 +776,7 @@
 <h4>BACKUP AND RESTORE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THE BOX → BACKUP · <code>ghostlink.local/#status/backup</code></p>
 <p>One file with venues, nights, played lists and the password. BACKUP + RECORDINGS adds the set recordings. RESTORE puts a backup back and restarts.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Unlock, BACKUP, keep the file on your phone.</li></ol>
 <p class="meta">FOR: OWNER</p>
 </div>
@@ -691,14 +784,16 @@
 <h4>UPDATES <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">STATUS → THE BOX → UPDATES · <code>ghostlink.local/#status/updates</code></p>
 <p>This box&#x27;s version and the one before it. CHECK looks online for a new version. INSTALL FROM FILE takes the update file from a phone or laptop when there&#x27;s no internet. GO BACK TO PREVIOUS puts the last version back. Only files signed by GHOST LINK install, never while a deck is playing.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Owner password. CHECK, then INSTALL (tap, then hold 1 second) or WHEN THE MUSIC STOPS.</li><li>No internet: get the update file from GHOST LINK support onto your phone, join the box&#x27;s Wi-Fi, INSTALL FROM FILE, then INSTALL.</li><li>GHOST LINK restarts (about 20 seconds). If the new version doesn&#x27;t start properly, the box goes back to the old one by itself.</li></ol>
-<p class="note">Venues, nights and recordings are kept either way.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Venues, nights and recordings are kept either way.</p>
 <p class="meta">FOR: OWNER · DECISIONS #66</p>
 </div>
 <div class="feat-entry" id="f-black-box">
 <h4>BLACK BOX AND LOGS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THE BOX → BACKUP · <code>ghostlink.local/#status/backup</code></p>
 <p>The black box is the night&#x27;s record of everything the box saw, kept through power pulls. LOGS are the program&#x27;s own notes. Both for after a night, or for support.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Unlock, BLACK BOX (a zip), send it to support if asked.</li></ol>
 <p class="meta">FOR: OWNER, TECH · DECISIONS #42</p>
 </div>
@@ -706,6 +801,7 @@
 <h4>BOX DETAILS <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THE BOX → BOX DETAILS · <code>ghostlink.local/#status/box</code></p>
 <p>Link state and device number, DJ cable, players, Wi-Fi name and address, uptime, temperature, venue.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Open BOX DETAILS.</li></ol>
 <p class="meta">FOR: TECH</p>
 </div>
@@ -713,6 +809,7 @@
 <h4>TOOLS: DEMO, TOUR, TEST RUN <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THE BOX → TOOLS · <code>ghostlink.local/#status/tools</code></p>
 <p>DEMO plays made-up tracks on empty players, only on this phone. SHOW THE TOUR brings the first-open tour back. TEST RUN: 16 checks that tick themselves at a new venue.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Tap DEMO, SHOW THE TOUR, or open TEST RUN and leave it open while you soundcheck.</li></ol>
 <p class="meta">FOR: TECH, EVERYONE</p>
 </div>
@@ -720,14 +817,18 @@
 <h4>BOO&#x27;S ARCADE <span class="tag">SHIPPED</span></h4>
 <p class="where">STATUS → THE BOX → TOOLS → BOO&#x27;S ARCADE · <code>ghostlink.local/#status/tools</code></p>
 <p>Games on the live decks and tonight&#x27;s tracks: RIDE THE WAVE, ON THE ONE, EQ KILL, BEATMATCH, CATCH THE DROP, TAP THE TEMPO, HIGHER OR LOWER, SET LIST, CAMELOT and DAILY RIDE. High scores for tonight, all time and this venue, a YOU card with badges, CALIBRATE for each phone&#x27;s timing, and TONIGHT ON A SCREEN for a TV by the bar. No sound.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Open BOO&#x27;S ARCADE, pick a game, type a name for the board.</li><li>First time on a phone: YOU, then CALIBRATE: tap along once so the timing games feel right.</li><li>The first ride on RIDE THE WAVE is a short lesson, and every game shows one line on how the first time.</li></ol>
+<p class="aside"><b>BOO:</b> No sound, so nobody at the bar hears you lose at BEATMATCH.</p>
 <p class="meta">FOR: EVERYONE · DECISIONS #56, #59, #63, #73</p>
 </div>
 <h3 id="ref-help">HELP</h3>
+<p class="intro">Settings for this phone only. Your phone, your rules.</p>
 <div class="feat-entry" id="f-display">
 <h4>DISPLAY (THIS PHONE) <span class="tag">SHIPPED</span></h4>
 <p class="where">HELP → DISPLAY · <code>ghostlink.local/#help/display</code></p>
 <p>NIGHT, DIM BOOTH or DAYLIGHT looks, text size, keep the screen awake, the tour, and the ghost switches. Saved on this phone.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>HELP → DISPLAY, tap what you want.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #62</p>
 </div>
@@ -735,14 +836,18 @@
 <h4>GHOST MOODS <span class="tag">SHIPPED</span></h4>
 <p class="where">HELP → DISPLAY · <code>ghostlink.local/#help/display</code></p>
 <p>The ghost nods on the downbeat, looks toward the MASTER deck, reacts to drops, loops and long blends, and shows the night so far when tapped. SMELLS RIPS (off by default) reacts to low-bitrate files.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>HELP → DISPLAY → GHOST MOODS on or off. The same switches are in STATUS → THE BOX → TOOLS.</li></ol>
+<p class="aside"><b>BOO:</b> SMELLS RIPS starts off. Some things are better left unsmelled.</p>
 <p class="meta">FOR: EVERYONE · DECISIONS #46</p>
 </div>
 <h3 id="ref-box">THE BOX ITSELF (NO SCREEN)</h3>
+<p class="intro">Things the box does with no screen at all.</p>
 <div class="feat-entry" id="f-hotspot">
 <h4>THE GHOST LINK WI-FI <span class="tag">SHIPPED</span></h4>
 <p class="where">The box</p>
 <p>When no Wi-Fi it knows is around, the box becomes its own Wi-Fi called GHOST LINK. Joining pops the dashboard up at 10.42.0.1. Phones on it have no internet.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Join GHOST LINK (password on the sticker), tap GOT IT.</li></ol>
 <p class="meta">FOR: EVERYONE · DECISIONS #42, #50</p>
 </div>
@@ -750,6 +855,7 @@
 <h4>THE GREEN LIGHT <span class="tag">SHIPPED</span></h4>
 <p class="where">The box</p>
 <p>Solid: on a Wi-Fi it knows. Slow blink: it is the GHOST LINK Wi-Fi. Fast blink: no Wi-Fi yet.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Look at the box.</li></ol>
 <p class="meta">FOR: TECH</p>
 </div>
@@ -757,13 +863,16 @@
 <h4>SELF-HEAL AND WATCHDOG <span class="tag">SHIPPED</span></h4>
 <p class="where">The box</p>
 <p>A deck whose details don&#x27;t arrive is retried by itself; a frozen program restarts by itself; phones show &quot;Restarted, back on&quot; with the reason. Power and heat are checked every 5 seconds.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Nothing to do.</li></ol>
+<p class="aside"><b>BOO:</b> If BOO trips, BOO gets back up, and tells every phone why.</p>
 <p class="meta">FOR: TECH · DECISIONS #42, #44</p>
 </div>
 <div class="feat-entry" id="f-clock-battery">
 <h4>CLOCK BATTERY <span class="tag">SHIPPED</span></h4>
 <p class="where">The box; BOOTH CHECK → CLOCK BATTERY · <code>ghostlink.local/#status/boothCheck</code></p>
 <p>With a battery on the Pi 5&#x27;s clock plug, the box keeps the right time unplugged and with no internet. BOOTH CHECK shows GOOD, LOW or FLAT.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Replace the coin cell when BOOTH CHECK says LOW or FLAT.</li></ol>
 <p class="meta">FOR: OWNER · DECISIONS #49</p>
 </div>
@@ -771,6 +880,7 @@
 <h4>BLUETOOTH BEACON <span class="tag">SHIPPED</span></h4>
 <p class="where">The box</p>
 <p>A small broadcast-only Bluetooth signal so the HARD STOP app notices the box nearby, and a listen-only scan for HARD STOP panels. The box never connects to anything over Bluetooth.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Nothing to do.</li></ol>
 <p class="meta">FOR: TECH · DECISIONS #50</p>
 </div>
@@ -778,8 +888,9 @@
 <h4>HARD STOP <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">The HARD STOP app on the same Wi-Fi</p>
 <p>HARD STOP passes the night&#x27;s times and lineup to GHOST LINK; GHOST LINK gives HARD STOP now playing, music off confirmed, deck info for its crew panels, AUTO-STOP&#x27;s countdown, and one live feed with the set, the night and the box&#x27;s health.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Box on the venue Wi-Fi, the HARD STOP app on the same Wi-Fi. Nothing to pair.</li></ol>
-<p class="note">GHOST LINK&#x27;s side is ready. The app&#x27;s side switches on with the next HARD STOP update.</p>
+<p class="note"><b>GOOD TO KNOW.</b> GHOST LINK&#x27;s side is ready. The app&#x27;s side switches on with the next HARD STOP update.</p>
 <p class="meta">FOR: TECH, MANAGER · DECISIONS #46, #58, #61, #64, #65</p>
 </div>
 <!-- /GEN:features -->
@@ -789,91 +900,108 @@
 <h2><span class="n">8</span>SHOW CONTROL</h2>
 <p>The DJ's tempo, beats and sections, out to the room's lights and visuals. Two layers: <b>SHOW CONTROL</b> (ready-made outputs, each with a big ON / OFF) and <b>OSC OUT</b> (raw messages to any computer you list). Everything is off until the owner turns it on. Nothing goes to the players or the mixer, and the box never becomes tempo master.</p>
 <p>All outputs follow the MASTER deck's beat. If the beats stop, they keep running at the last tempo. Where: <b class="ui">STATUS</b> &rarr; <b class="ui">SHOW CONTROL</b>. Unlock with the owner password, open a row, fill in the address and port, turn it on, press <b class="ui">TEST</b> before doors.</p>
+<h3 id="which-output">WHICH ONE DO I USE?</h3>
+<div class="tbl stack"><table>
+<thead><tr><th>YOU HAVE</th><th>USE</th><th>WHAT IT GIVES</th></tr></thead>
+<tbody>
+<tr><td data-label="YOU HAVE">An app with Ableton Link (Resolume, Ableton Live, Traktor, many VJ and lighting apps)</td><td data-label="USE">ABLETON LINK</td><td data-label="WHAT IT GIVES">The DJ's tempo, with the bar on the DJ's downbeat. Nothing to type.</td></tr>
+<tr><td data-label="YOU HAVE">A lighting desk or drum machine with a 5-pin MIDI IN</td><td data-label="USE">MIDI CLOCK</td><td data-label="WHAT IT GIVES">24 clocks a beat, starting on the DJ's downbeat. Needs a USB MIDI interface in the box.</td></tr>
+<tr><td data-label="YOU HAVE">One of the apps with a row below, and you want cues</td><td data-label="USE">That app's row</td><td data-label="WHAT IT GIVES">Ready-made messages: a column, cue, scene or playback on the drop or on a new track, and tempo where the app takes it.</td></tr>
+<tr><td data-label="YOU HAVE">Your own patch</td><td data-label="USE">OSC OUT</td><td data-label="WHAT IT GIVES">The raw feed: every beat, BPM, section, what's next, the drop, the on-air track.</td></tr>
+</tbody></table></div>
+<div class="callout"><b>TIP.</b><p>One tempo source per app. If Resolume follows ABLETON LINK, leave the RESOLUME row off.</p></div>
+<p><b>The drop</b> means one bar before the master deck goes into a CHORUS. Song sections and the drop need tracks analysed for phrases in rekordbox, on players that share them.</p>
+<p class="aside"><b>BOO:</b> Make the visuals drop when the DJ drops. That's the whole trick, and it's a good one.</p>
 <h3 id="presets">EVERY OUTPUT</h3>
 <!-- GEN:presets -->
 <div class="feat-entry" id="f-sc-link">
 <h4>ABLETON LINK <span class="tag">SHIPPED</span></h4>
 <p class="where">PORT: UDP 20808, multicast 224.76.78.75 (plus one random port per network)</p>
 <p>Link apps (Resolume, Ableton Live, Traktor, VJ and lighting apps) follow the DJ&#x27;s tempo, with bar lines on the DJ&#x27;s downbeat. Start / stop mirrored only.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>TURN ON here, turn Link on in the app, same network as the box.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>Link session</code></td><td data-label="WITH">tempo and beat timeline, quantum 4</td><td data-label="WHEN">on every master beat when the tempo or bar moves</td></tr></tbody></table></div>
-<p class="note">Checked against Ableton&#x27;s own Link code on a Mac: under 0.01 ms from the downbeat. Not yet tried with Ableton Live 12 or Resolume&#x27;s own Link.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Checked against Ableton&#x27;s own Link code on a Mac: under 0.01 ms from the downbeat. Not yet tried with Ableton Live 12 or Resolume&#x27;s own Link.</p>
 </div>
 <div class="feat-entry" id="f-sc-midi">
 <h4>MIDI CLOCK <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: USB MIDI interface (5-pin MIDI OUT)</p>
 <p>24 clocks a beat through a USB MIDI interface, starting on the DJ&#x27;s downbeat. Never sent to Pioneer DJ / AlphaTheta gear.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Class-compliant USB MIDI interface in the box (Roland UM-ONE mk2 set to TAB).</li><li>Its MIDI OUT to the desk&#x27;s MIDI IN.</li><li>Pick the interface, TURN ON.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>Song Position 0 + Start</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">on the next downbeat after turning on</td></tr><tr><td data-label="SENDS"><code>Clock</code></td><td data-label="WITH">24 a beat</td><td data-label="WHEN">continuously, following tempo</td></tr><tr><td data-label="SENDS"><code>Stop</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">when turned off</td></tr></tbody></table></div>
-
 </div>
 <div class="feat-entry" id="f-sc-resolume">
 <h4>RESOLUME <span class="tag">SHIPPED</span></h4>
 <p class="where">PORT: UDP 7000 (default)</p>
 <p>Resolume Arena / Avenue 7 tempo and a resync every bar; optional column on the drop or a new track.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>In Resolume: Preferences → OSC → OSC Input on (port 7000).</li><li>Type the computer&#x27;s address, TURN ON, TEST.</li><li>If Resolume follows ABLETON LINK, leave this off.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/composition/tempocontroller/tempo</code></td><td data-label="WITH">&quot;a&quot; bpm</td><td data-label="WHEN">the BPM moves</td></tr><tr><td data-label="SENDS"><code>/composition/tempocontroller/resync</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">every downbeat</td></tr><tr><td data-label="SENDS"><code>/composition/columns/N/connect</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">the drop / a new track (if a column is set)</td></tr></tbody></table></div>
-<p class="note">Checked on Resolume Arena 7.26.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Checked on Resolume Arena 7.26.</p>
+<p class="aside"><b>BOO:</b> Pick one: LINK or this row. Two hands on one tempo knob is how visuals end up dragging.</p>
 </div>
 <div class="feat-entry" id="f-sc-grandma3">
 <h4>GRANDMA3 <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP, the port on MA&#x27;s OSC line (8000 is only a suggestion)</p>
 <p>Sets a speed master to the DJ&#x27;s BPM; optional Go+ an executor on the drop.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>In MA: Menu → In &amp; Out → OSC: Enable Input, a line with this port, Receive Command = Yes.</li><li>Type the console address, the same port, TURN ON, TEST.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/&lt;prefix&gt;/cmd</code></td><td data-label="WITH">s &quot;Master 3.N At BPM x&quot;</td><td data-label="WHEN">the BPM moves 0.1 (at most every 0.5 s)</td></tr><tr><td data-label="SENDS"><code>/&lt;prefix&gt;/cmd</code></td><td data-label="WITH">s &quot;Go+ Exec X&quot;</td><td data-label="WHEN">the drop (if set)</td></tr></tbody></table></div>
-<p class="note">Built from grandMA3&#x27;s manual; no console on hand yet.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Built from grandMA3&#x27;s manual; no console on hand yet.</p>
 </div>
 <div class="feat-entry" id="f-sc-qlab">
 <h4>QLAB <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP 53000</p>
 <p>Starts QLab 5 cues numbered drop, track and test. Never sends /go.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>Number cues &quot;drop&quot;, &quot;track&quot; and &quot;test&quot;.</li><li>Workspace Settings → Network: a passcode with Control.</li><li>Type the address and passcode, TURN ON, TEST.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/connect</code></td><td data-label="WITH">passcode</td><td data-label="WHEN">first, if a passcode is set</td></tr><tr><td data-label="SENDS"><code>/cue/drop/start</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">the drop</td></tr><tr><td data-label="SENDS"><code>/cue/track/start</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">a new track on air</td></tr><tr><td data-label="SENDS"><code>/cue/test/start</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">TEST</td></tr></tbody></table></div>
-<p class="note">Built from QLab&#x27;s documentation; not tried in QLab yet.</p>
+<p class="note"><b>GOOD TO KNOW.</b> Built from QLab&#x27;s documentation; not tried in QLab yet.</p>
 </div>
 <div class="feat-entry" id="f-sc-madmapper">
 <h4>MADMAPPER <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP 8000 (usual)</p>
 <p>Sets MadMapper&#x27;s Global BPM to the DJ&#x27;s tempo and resyncs it every bar.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>In MadMapper: Preferences → OSC / MIDI, OSC input on.</li><li>Type the address and port, TURN ON, TEST.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/master/Global_BPM/BPM</code></td><td data-label="WITH">f bpm</td><td data-label="WHEN">the BPM moves 0.05</td></tr><tr><td data-label="SENDS"><code>/master/Global_BPM/Resync</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">every downbeat</td></tr></tbody></table></div>
-
 </div>
 <div class="feat-entry" id="f-sc-magicq">
 <h4>CHAMSYS MAGICQ <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP 8000 (MagicQ&#x27;s OSC Rx port)</p>
 <p>Goes a playback on the drop and / or a new track. MagicQ takes no tempo over OSC: use MIDI CLOCK for that.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>MagicQ (unlocked, not MQ40): network settings, OSC on, OSC Rx Port 8000.</li><li>Type the playback numbers, TURN ON, TEST.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/pb/N/go</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">the drop (if set)</td></tr><tr><td data-label="SENDS"><code>/pb/M/go</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">a new track (if set)</td></tr></tbody></table></div>
-
 </div>
 <div class="feat-entry" id="f-sc-millumin">
 <h4>MILLUMIN <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP, the port you type (no default)</p>
 <p>Launches a column on the drop and / or a new track. For tempo use ABLETON LINK.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>In Millumin: add an OSC input in Devices, type the same port here.</li><li>TURN ON, TEST (a ping).</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/millumin/action/launchColumn</code></td><td data-label="WITH">N</td><td data-label="WHEN">the drop / a new track (if set)</td></tr><tr><td data-label="SENDS"><code>/ping</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">TEST</td></tr></tbody></table></div>
-
 </div>
 <div class="feat-entry" id="f-sc-synesthesia">
 <h4>SYNESTHESIA <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP, the port you type (no default)</p>
 <p>A scene on the drop and / or the next playlist scene on a new track. For tempo use ABLETON LINK.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>In Synesthesia: OSC input on, the same port here.</li><li>Scene name in lower case, no spaces. TURN ON, TEST.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/scenes/NAME</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">the drop (if set)</td></tr><tr><td data-label="SENDS"><code>/playlist/next</code></td><td data-label="WITH">nothing</td><td data-label="WHEN">a new track (if ticked)</td></tr></tbody></table></div>
-
 </div>
 <div class="feat-entry" id="f-sc-touchdesigner">
 <h4>TOUCHDESIGNER <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></h4>
 <p class="where">PORT: UDP, the port you type (no default)</p>
 <p>GHOST LINK&#x27;s own layout for an OSC In CHOP or DAT, one number per message. The prefix is yours to change.</p>
+<p class="lbl">HOW</p>
 <ol class="use-steps"><li>An OSC In CHOP on a port, the same port here.</li><li>TURN ON, TEST.</li></ol>
 <div class="tbl stack"><table><thead><tr><th>SENDS</th><th>WITH</th><th>WHEN</th></tr></thead><tbody><tr><td data-label="SENDS"><code>/gl/bpm</code></td><td data-label="WITH">f bpm</td><td data-label="WHEN">the BPM moves</td></tr><tr><td data-label="SENDS"><code>/gl/beat</code></td><td data-label="WITH">i 1 to 4</td><td data-label="WHEN">every master beat</td></tr><tr><td data-label="SENDS"><code>/gl/downbeat</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">every downbeat</td></tr><tr><td data-label="SENDS"><code>/gl/drop</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">the drop</td></tr><tr><td data-label="SENDS"><code>/gl/track</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">a new track</td></tr><tr><td data-label="SENDS"><code>/gl/test</code></td><td data-label="WITH">1 then 0</td><td data-label="WHEN">TEST</td></tr></tbody></table></div>
-
 </div>
 <!-- /GEN:presets -->
-<h3 id="osc">RAW OSC</h3>
-<p>Sent to every computer under STATUS &rarr; OSC OUT (host:port, one per line), over whatever network reaches them. Never to the players.</p>
+<h3 id="osc">RAW OSC (FOR THE NERDS)</h3>
+<p>Sent to every computer under STATUS &rarr; OSC OUT (host:port, one per line), over whatever network reaches them. Never to the players. Type tags as in OSC 1.0: i a whole number, f a decimal, s text.</p>
 <!-- GEN:osc -->
 <p><b>OSC OUT</b> <span class="tag">SHIPPED</span></p>
 <div class="tbl stack"><table><thead><tr><th>ADDRESS</th><th>ARGUMENTS</th><th>SENT WHEN</th></tr></thead><tbody><tr><td data-label="ADDRESS"><code>/ghostlink/beat</code></td><td data-label="ARGUMENTS">i beat in bar, f bpm, i player</td><td data-label="SENT WHEN">every beat of the master deck</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/downbeat</code></td><td data-label="ARGUMENTS">f bpm, i player</td><td data-label="SENT WHEN">beat 1 of each bar</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/bpm</code></td><td data-label="ARGUMENTS">f bpm</td><td data-label="SENT WHEN">the master tempo moves 0.1 or more</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/phrase</code></td><td data-label="ARGUMENTS">s section, i player</td><td data-label="SENT WHEN">the master deck enters a new section</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/onair</code></td><td data-label="ARGUMENTS">s title, s artist, i player</td><td data-label="SENT WHEN">a different track becomes master</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/deck/N/beat</code></td><td data-label="ARGUMENTS">i beat in bar, f bpm</td><td data-label="SENT WHEN">every beat of deck N</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/next</code></td><td data-label="ARGUMENTS">section, bars to it</td><td data-label="SENT WHEN">the master deck&#x27;s next section</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/drop</code></td><td data-label="ARGUMENTS">none</td><td data-label="SENT WHEN">one bar before a CHORUS</td></tr><tr><td data-label="ADDRESS"><code>/ghostlink/control</code></td><td data-label="ARGUMENTS">s stopall / stop / play / load, i deck</td><td data-label="SENT WHEN">a DECK CONTROLS press</td></tr></tbody></table></div>
@@ -884,13 +1012,14 @@
 
 <section class="chapter" id="sound-in">
 <h2><span class="n">9</span>SOUND IN AND RECORDINGS</h2>
-<p>The DJ network carries data, not sound. A USB sound card lets the box hear the mixer's actual sound. <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></p>
+<p>The DJ network carries data, not sound. A USB sound card gives the box ears: it hears the mixer's actual sound. <span class="tag warn">NOT YET TRIED ON REAL GEAR</span></p>
 <h3>HOOK IT UP</h3>
 <ol>
   <li>A class-compliant USB sound card (for example a Behringer UCA202) into a USB port on the box. It's found within 5 seconds.</li>
   <li>An RCA cable from the mixer's REC OUT (or BOOTH OUT) to the card's INPUT. REC OUT already taken: an RCA Y-splitter.</li>
   <li>Play music. <b class="ui">NETWORK</b> &rarr; <b class="ui">SOUND IN</b>: the L / R meter moves. Aim for loud parts around -12 dB.</li>
 </ol>
+<div class="callout"><b>TIP.</b><p>Meter flat with music playing? Check the cable is in the card's INPUT, not its OUTPUT, and that REC OUT is turned up.</p></div>
 <h3>WHAT YOU GET</h3>
 <ul>
   <li>A live level meter.</li>
@@ -898,6 +1027,7 @@
   <li>SET RECORDINGS, only when you choose.</li>
 </ul>
 <h3>RECORDINGS: ONLY WHEN YOU CHOOSE</h3>
+<div class="callout warn"><b>CAREFUL.</b><p>A set belongs to the DJ who played it. Record only a set the DJ agreed to.</p></div>
 <ul>
   <li><b>● RECORD</b> (with the DJ's name on it) arms recording for whoever is ON THE DECKS. It needs the password or tonight's crew code.</li>
   <li>It records while music plays, and ends when ON THE DECKS changes, at the night change, after 10 minutes of silence, or on <b>■ STOP RECORDING</b>. Anyone at the venue can stop; no password.</li>
@@ -906,14 +1036,17 @@
   <li>Files are lossless FLAC, about 0.5 GB an hour, with a tracklist timed from the file's start. Download and DELETE need the password. The oldest go by themselves when under 3 GB is free; never the one being written.</li>
 </ul>
 <p class="small">Not the same as the box's session logs, which hold deck data for support and never any sound.</p>
+<p class="aside"><b>BOO:</b> Recording is opt-in, every set, every time. When TICK hands over to TICK JR, I stop and wait to be asked again.</p>
+<p class="seealso">SEE ALSO: <a href="#ref-network">NETWORK</a> (SOUND IN, SET RECORDINGS) · <a href="#privacy">PRIVACY</a></p>
 </section>
 
 <section class="chapter" id="deck-controls">
 <h2><span class="n">10</span>DECK CONTROLS AND AUTO-STOP</h2>
+<p>The one chapter where the box stops just watching. Read the two boxes below first.</p>
 <div class="callout warn"><b>OFF BY DEFAULT.</b><p>Out of the box GHOST LINK only listens. DECK CONTROLS are the one place it may send commands to players, and only after the owner turns them on with the owner password (the crew code can't). They're refused from WATCH FROM HOME.</p></div>
 <div class="callout warn"><b>NOT YET TRIED ON REAL GEAR.</b><p>The XDJ-XZ ignores every command. CDJ-3000s haven't been tried yet. Try your own decks at home before a night that depends on it. Everything else in GHOST LINK works the same either way.</p></div>
 <h3>THE BUTTONS</h3>
-<p>Every button: tap to arm, then hold 1 second.</p>
+<p>Every button: tap to arm, then hold 1 second. That's on purpose: nobody stops a set by brushing a phone.</p>
 <ul>
   <li><b>STOP ALL DECKS.</b> A network stop sends a deck back to its cue point.</li>
   <li>Per deck: <b>PLAY / STOP</b>, <b>FROM CUE</b>, <b>SYNC ON / OFF</b>, <b>MASTER</b>.</li>
@@ -932,11 +1065,14 @@
 <h3>HOUSE SETTINGS</h3>
 <p>A club-standard deck setup, editable by the owner, sent to stopped decks between DJs with <b>SEND TO STOPPED DECKS</b>. BOOTH CHECK &rarr; DECK SETUP shows decks whose jog mode or firmware is off; the other settings aren't reported back by the decks.</p>
 <p class="small">Never possible over the network: scratching, seeking, effects, or anything on the mixer.</p>
+<p class="aside"><b>BOO:</b> I'd rather watch than drive. Out of the box, watching is all I do.</p>
+<p class="seealso">SEE ALSO: <a href="#ref-status-tonight">STATUS: TONIGHT</a> · <a href="../help/hard-stop.html">USING IT WITH HARD STOP</a></p>
 </section>
 
 <section class="chapter" id="troubleshooting">
 <h2><span class="n">11</span>TROUBLESHOOTING</h2>
-<p>First, always: <b class="ui">STATUS</b>. BOOTH CHECK and the problems under it say the cause and the fix. Anything weird during a set: <b class="ui">LISTEN ONLY</b> (never locked). Last resort: pull the power; nothing breaks.</p>
+<p>Something's off? First, always: <b class="ui">STATUS</b>. BOOTH CHECK and the problems under it say the cause and the fix, in plain words. Anything weird during a set: <b class="ui">LISTEN ONLY</b> (never locked). Last resort: pull the power; nothing breaks.</p>
+<p>Still here? Find your symptom below. They're roughly in the order a night meets them: getting a phone in, the Wi-Fi, the DJ network, the decks, the box itself, then the add-ons.</p>
 <div class="tbl stack"><table>
 <thead><tr><th>SYMPTOM</th><th>LIKELY CAUSE</th><th>FIX</th></tr></thead>
 <tbody>
@@ -975,7 +1111,7 @@
 
 <section class="chapter" id="updates">
 <h2><span class="n">12</span>UPDATES AND ROLLBACK</h2>
-<p>You update the box yourself, from a phone: STATUS &rarr; THE BOX &rarr; UPDATES, with the owner password.</p>
+<p>You update the box yourself, from a phone: STATUS &rarr; THE BOX &rarr; UPDATES, with the owner password. And if you don't like what you got, the way back is one button.</p>
 <dl class="kv">
   <dt>WITH INTERNET</dt><dd>CHECK, then INSTALL (tap, then hold 1 second), or WHEN THE MUSIC STOPS. GHOST LINK restarts, about 20 seconds.</dd>
   <dt>NO INTERNET</dt><dd>Get the update file from GHOST LINK support onto your phone. Join the box's Wi-Fi, INSTALL FROM FILE, pick the file, then INSTALL.</dd>
@@ -983,7 +1119,7 @@
   <dt>GOING BACK</dt><dd>GO BACK TO PREVIOUS puts the last version back. It takes under a minute and works with no internet. Your venues, nights and recordings are kept either way.</dd>
   <dt>NEVER</dt><dd>Never wipe or reflash the memory card yourself. It erases the box and every night on it.</dd>
 </dl>
-<p class="small">Keep a BACKUP on your phone (STATUS &rarr; BACKUP). It carries venues, nights, played lists and the password to a replacement box.</p>
+<div class="callout"><b>TIP.</b><p>Keep a BACKUP on your phone (STATUS &rarr; BACKUP). It carries venues, nights, played lists and the password to a replacement box.</p></div>
 </section>
 
 <section class="chapter" id="privacy">
@@ -1049,6 +1185,7 @@
 
 <section class="chapter" id="support">
 <h2><span class="n">17</span>SUPPORT</h2>
+<p>Write to us. Say roughly when it happened, and send the BLACK BOX if you can: that's most of the detective work done.</p>
 <dl class="kv">
   <dt>EMAIL</dt><dd><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></dd>
   <dt>HELP PAGES</dt><dd><a href="../help/">ghostlink.cold.fyi/help</a>: quick start, how-tos, FAQ, known issues.</dd>
@@ -1080,7 +1217,8 @@
   <dt>MIDI CLOCK</dt><dd>24 ticks a beat over a MIDI cable, for desks and drum machines.</dd>
   <dt>REC OUT</dt><dd>The mixer's output for a recorder: the finished mix.</dd>
   <dt>CLASS COMPLIANT</dt><dd>A USB device that works without installing a driver.</dd>
-  <dt>BOO</dt><dd>The ghost's name.</dd>
+  <dt>DROP</dt><dd>In GHOST LINK: one bar before the master deck goes into a CHORUS, from rekordbox phrase analysis.</dd>
+  <dt>BOO</dt><dd>The ghost's name. Nods on the downbeat, writes the asides in this manual.</dd>
 </dl>
 </section>
 
