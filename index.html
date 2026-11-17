@@ -21,10 +21,9 @@
 <link rel="preload" href="JetBrainsMono_400Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="www.css">
 
-<!-- tpa-meta-pixel: Meta base code. Measurement only - see the footer note. -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1187380577150008');fbq('track','PageView');</script>
-<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1187380577150008&amp;ev=PageView&amp;noscript=1"/></noscript>
-<style>.px-note{display:block;margin-top:.6em;font-size:.82em;opacity:.72}.px-note a{color:inherit}</style>
+<!-- tpa-meta-pixel: Meta base code, loaded only after a YES. See the footer note. -->
+<script>(function(){var K='tpa-consent',P='1187380577150008',v=null;try{v=localStorage.getItem(K)}catch(e){}if(navigator.globalPrivacyControl)return;function load(){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',P);fbq('track','PageView')}if(v==='yes'){load();return}if(v==='no')return;function ask(){var d=document.createElement('div');d.className='px-ask';d.setAttribute('role','dialog');d.setAttribute('aria-label','Cookies');d.innerHTML='<span>Can a Meta pixel count this visit for our ads? <a href="https://thirdpolararch.com/privacy">What we collect</a></span>'+'<button type="button" data-v="no">NO THANKS</button><button type="button" data-v="yes">OK</button>';d.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;try{localStorage.setItem(K,b.dataset.v)}catch(x){}d.remove();if(b.dataset.v==='yes')load()});document.body.appendChild(d)}if(document.body)ask();else document.addEventListener('DOMContentLoaded',ask)})();</script>
+<style>.px-note{display:block;margin-top:.6em;font-size:.82em;opacity:.72}.px-note a{color:inherit}.px-ask{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:12px 14px;background:#000;color:#fff;border:1px solid #444;font:inherit;font-size:14px}.px-ask span{flex:1 1 220px}.px-ask a{color:inherit}.px-ask button{font:inherit;padding:8px 14px;background:#000;color:#fff;border:1px solid #fff;cursor:pointer}.px-ask button[data-v=yes]{background:#fff;color:#000}</style>
 </head>
 <body>
 
@@ -279,8 +278,9 @@
     <p><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a> · <a href="start-here/">Start here</a> · <a href="manual/">Manual</a> · <a href="help/">Help</a> · <a href="help/advance/">Advance kit</a></p>
     <p>Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0). Type is JetBrains Mono (OFL).</p>
     <p>Works with PRO DJ LINK players such as the CDJ-3000. Not affiliated with, certified or endorsed by Pioneer DJ or AlphaTheta. PRO DJ LINK, rekordbox and CDJ are trademarks of their respective owners. Raspberry Pi is a trademark of Raspberry Pi Ltd.</p>
-    <p>made with &lt;3 in Boston, MA by Third Polar Arch</p>
-  <span class="px-note">A Meta pixel counts visits from our ads - <a href="https://thirdpolararch.com/privacy">what we collect</a>.</span></div>
+    <p>made with &lt;3 in Boston by <a href="https://thirdpolararch.com">Third Polar Arch</a> · <a href="https://thirdpolararch.com/terms">Terms</a> · <a href="https://thirdpolararch.com/privacy">Privacy</a></p>
+    <p>Third Polar Arch, PO Box 120264, Boston, MA 02112-0264 · <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+  <span class="px-note">With your OK, a Meta pixel counts visits from our ads (never with Global Privacy Control on) - <a href="https://thirdpolararch.com/privacy">what we collect</a>. <a href="#" onclick="try{localStorage.removeItem('tpa-consent')}catch(e){}location.reload();return false">Change my answer</a>.</span></div>
 </footer>
 
 <script src="www.js"></script>
