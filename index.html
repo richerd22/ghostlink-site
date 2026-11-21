@@ -30,7 +30,11 @@
 
 <header class="top">
   <div class="wrap">
-    <a class="mark" href="#">GHOST LINK</a>
+    <a class="mark" href="#" aria-label="GHOST LINK, back to the top"><span class="mark-ghost" aria-hidden="true">  .--.
+ / oo \
+|      |
+|      |
+ \/\/\/</span><span class="mark-word">GHOST LINK</span></a>
     <nav aria-label="Sections">
       <a href="#live">SEE IT LIVE</a>
       <a href="#how">HOW IT WORKS</a>
@@ -95,7 +99,7 @@
 <!-- THE SIGNAL PATH: the page's spine. decks -> GHOST LINK -> phone / desk window / crew / room. -->
 <nav class="path" aria-label="The signal path">
   <div class="wrap">
-    <a href="#how" data-s="how">DECKS</a><i aria-hidden="true">&rarr;</i><a href="#box" data-s="box">BOX</a><i aria-hidden="true">&rarr;</i><a href="#live" data-s="live">PHONE</a><i aria-hidden="true">&rarr;</i><a href="#desk" data-s="desk">DESK</a><i aria-hidden="true">&rarr;</i><a href="#crew" data-s="crew">CREW</a><i aria-hidden="true">&rarr;</i><a href="#room" data-s="room">ROOM</a><i aria-hidden="true">&middot;</i><a href="#meet" data-s="meet">THE GHOST</a>
+    <a href="#how" data-s="how">DECKS</a><i aria-hidden="true">&rarr;</i><a href="#box" data-s="box">BOX</a><i aria-hidden="true">&rarr;</i><a href="#live" data-s="live">PHONE</a><i aria-hidden="true">&rarr;</i><a href="#desk" data-s="desk">DESK</a><i aria-hidden="true">&rarr;</i><a href="#crew" data-s="crew">CREW</a><i aria-hidden="true">&rarr;</i><a href="#room" data-s="room">ROOM</a><i aria-hidden="true">&middot;</i><a href="#meet" data-s="meet">THE GHOST</a><i aria-hidden="true">&middot;</i><a href="#arcade" data-s="arcade">ARCADE</a>
   </div>
 </nav>
 
@@ -211,15 +215,18 @@
   <div class="wrap">
     <p class="s-no">04 <span>OUT · THE DESK WINDOW</span></p>
     <h2 id="desk-h">A small window beside the lighting or video desk.</h2>
-    <p class="lead">Keep it open in the corner of the screen next to Resolume or the lighting software. Every deck fits; it picks a layout for the window's size.</p>
+    <p class="lead">Keep it open in the corner of the screen next to Resolume or the lighting software. Every deck fits; it picks a layout for the window's size. Go on: drag it by its bar and pull its corner.</p>
     <figure class="monitor">
       <div class="mon-screen">
         <div class="mon-app" aria-hidden="true"><span>YOUR LIGHTING / VIDEO SOFTWARE</span><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="mon-corner">
+        <div class="mon-corner" id="deskWin">
+          <div class="win-bar" id="deskBar" aria-label="The window's title bar. With the arrow keys you can move the window."><span class="win-t">GHOST LINK</span><span class="win-wh" id="deskWH">480 x 300</span>
+            <span class="win-btns" id="deskBtns" hidden><button type="button" data-size="S" aria-label="Small window">S</button><button type="button" data-size="M" aria-label="Medium window">M</button><button type="button" data-size="L" aria-label="Large window">L</button><button type="button" data-size="reset" aria-label="Put the window back">RESET</button></span></div>
           <iframe src="live/" title="The GHOST LINK dashboard as a small corner window, made-up decks" loading="lazy" tabindex="-1"></iframe>
+          <span class="win-grip" id="deskGrip" aria-hidden="true"></span>
         </div>
       </div>
-      <figcaption>The same dashboard in a 480 x 300 window. Beat, BPM, section and a cue before the drop can also go over OSC, Ableton Link or MIDI clock.</figcaption>
+      <figcaption>The same dashboard, in a window you can move and size (S, M, L on its bar too). Beat, BPM, section and a cue before the drop can also go over OSC, Ableton Link or MIDI clock.</figcaption>
     </figure>
   </div>
 </section>
@@ -321,9 +328,47 @@
 |      |
  \/\/\/</pre><figcaption><b>BACKED OFF</b>Something needed his spot, so he stepped aside.</figcaption></figure>
     </div>
-    <div class="arcade">
-      <div><small>BOO'S ARCADE</small><b>Ride the live waveform. Call the drop. Tap on GO.</b><p>Small games played on the music that's actually on, with one high-score board for every phone on the box. No password.</p></div>
-      <a class="btn" href="help/how-to/arcade.html">BOO'S ARCADE</a>
+  </div>
+</section>
+
+<!-- BOO'S ARCADE: the games by name, each with a tiny teaser (two you can play right here). -->
+<section id="arcade" class="stage arcade-s" aria-labelledby="arcade-h">
+  <div class="wrap">
+    <p class="s-no">AND <span>BOO'S ARCADE</span></p>
+    <h2 id="arcade-h">Games on the music that's actually on.</h2>
+    <p class="lead">BOO is the ghost. Every phone on the box can play, one high-score board for the room, no password. On NOW, at the bottom (every role but DJ).</p>
+    <div class="games">
+      <figure class="game" id="gRide">
+        <canvas class="g-cv" width="300" height="110" aria-label="RIDE THE WAVE teaser: hold to make BOO rise, let go to fall, and stay on the dotted line." role="img"></canvas>
+        <figcaption><b>RIDE THE WAVE</b>BOO surfs the playing track. Hold to rise, let go to fall, stay on the dotted line. <span class="g-try" hidden>Try it: hold the picture.</span><span class="g-score" aria-live="polite"></span></figcaption>
+      </figure>
+      <figure class="game" id="gOne">
+        <div class="g-box"><div class="g-beats" aria-hidden="true"><i></i><i></i><i></i><i></i></div><button class="g-tap" type="button" hidden>TAP ON THE 1</button><span class="g-said" aria-live="polite"></span></div>
+        <figcaption><b>ON THE ONE</b>Tap along to the room's beat. Here, tap on the 1.</figcaption>
+      </figure>
+      <figure class="game" id="gEq">
+        <div class="g-box"><div class="g-eq" aria-hidden="true"><span><i></i><small>HI</small></span><span><i></i><small>MID</small></span><span class="low"><i></i><small>LOW</small></span></div><span class="g-said">BASS IN</span></div>
+        <figcaption><b>EQ KILL</b>Kill the bass before the drop, bring it back on the drop.</figcaption>
+      </figure>
+      <figure class="game" id="gDrop">
+        <div class="g-box"><span class="g-big">4</span><span class="g-said">BARS TO THE DROP</span></div>
+        <figcaption><b>CALL THE DROP</b>The bars count down to the next change, then go dark. Tap on the 1. The drop scores double.</figcaption>
+      </figure>
+      <figure class="game" id="gGo">
+        <div class="g-box"><span class="g-big">3</span><span class="g-said">TAP ON GO</span></div>
+        <figcaption><b>ON GO</b>A countdown that goes dark at the end. Tap on GO. During a crew call it's worth double.</figcaption>
+      </figure>
+    </div>
+    <p class="after">Also on the box: BEATMATCH (line up two beat grids) and CATCH THE DROP. <a href="help/how-to/arcade.html">How to play BOO'S ARCADE</a>.</p>
+
+    <p class="s-no fun-h">AND SOME OTHER STUFF</p>
+    <div class="fun">
+      <div><b>HE DANCES</b><p>Over 30 moves, picked by the part of the track and the tempo. Never the same move twice in a row.</p></div>
+      <div><b>THE LITTLE ONE</b><p>While music plays, a little copy of the ghost floats down to the master deck. On rare occasions the two say hi. Drag him, tap him for a boop.</p></div>
+      <div><b>BOX RECORDS</b><p>Fastest track, longest blend, quickest cut, most decks at once, longest night: each held until it's beaten.</p></div>
+      <div><b>HALL OF FAME</b><p>The cleanest blends on the box, and the WILD RIDES. Names stay hidden unless the owner turns them on. There's a TV mode.</p></div>
+      <div><b>END OF NIGHT</b><p>One card for the night, new box records included, and whether the music stopped on time. Save it as a picture.</p></div>
+      <div><b>A FEW SECRETS</b><p>We're not saying. Old games had codes. So does he.</p></div>
     </div>
   </div>
 </section>
@@ -337,14 +382,20 @@
       <a href="help/how-to/with-resolume.html">RESOLUME</a>
       <a href="help/how-to/with-grandma3.html">GRANDMA3</a>
       <a href="help/how-to/with-qlab.html">QLAB</a>
-      <a href="help/how-to/with-obs.html">OBS</a>
       <a href="help/how-to/with-magicq.html">CHAMSYS MAGICQ</a>
-      <a href="help/how-to/with-titan.html">AVOLITES TITAN</a>
-      <a href="help/how-to/with-madrix.html">MADRIX</a>
-      <a href="help/how-to/with-quickshow.html">QUICKSHOW</a>
+      <a href="help/how-to/lights-and-visuals.html">MILLUMIN</a>
+      <a href="help/how-to/lights-and-visuals.html">SYNESTHESIA</a>
+      <a href="help/how-to/lights-and-visuals.html">TOUCHDESIGNER</a>
+      <a href="help/how-to/lights-and-visuals.html">MADMAPPER</a>
+      <a href="help/how-to/with-obs.html">OBS</a>
       <a href="help/how-to/lights-and-visuals.html">OSC · ABLETON LINK · MIDI CLOCK</a>
     </p>
-    <p class="after">Each one is off until you turn it on. Each page says what's been tried on real gear and what hasn't.</p>
+    <p class="after">Each one gets something real from GHOST LINK: the tempo, the bar, a cue on the drop, a now-playing card. Each one is off until you turn it on. Each page says what's been tried on real gear and what hasn't.</p>
+    <p class="s-no beside-h" id="beside">WORKS BESIDE</p>
+    <p class="talk-list beside">
+      <span>AVOLITES TITAN</span><span>MADRIX</span><span>QUICKSHOW</span><span>BEYOND</span><span>REKORDBOX</span><span>ANY LIGHTING CONSOLE</span><span>ANY VJ APP</span><span>THE GROUP CHAT</span>
+    </p>
+    <p class="after">GHOST LINK sends these nothing at all. The dashboard is a browser window: it sits in the corner next to them and looks good doing it. That's the whole integration. <a href="help/how-to/works-beside.html">Works beside, honestly</a>.</p>
   </div>
 </section>
 
@@ -480,5 +531,6 @@
 
 <script src="www.js"></script>
 <script src="home.js"></script>
+<script src="home2.js"></script>
 </body>
 </html>

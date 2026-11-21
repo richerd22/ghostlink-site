@@ -108,16 +108,34 @@ section[id] { scroll-margin-top: 40px; }
 .mon-app { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto 1fr 1fr; gap: 6px; padding: 8px; }
 .mon-app span { grid-column: 1 / -1; font-size: 10px; letter-spacing: .14em; color: #444; }
 .mon-app i { border: 1px solid #1c1c1c; }
-.mon-corner { position: absolute; right: 10px; bottom: 10px; width: 480px; height: 300px; border: 1px solid #666; background: #000;
-  transform-origin: 100% 100%; }
-.mon-corner iframe { width: 480px; height: 300px; border: 0; display: block; }
-@media (max-width: 1100px) { .mon-corner { transform: scale(.75); } }
-@media (max-width: 800px) { .mon-corner { transform: scale(.62); } }
+/* The window: a title bar (drag it), the real dashboard, a grip in the corner (pull it). Without JavaScript it sits in
+   the corner at 480 x 300, scaled down on small screens; with it (.free) it's real pixels, so the dashboard reflows. */
+.mon-corner { position: absolute; right: 10px; bottom: 10px; width: 482px; height: 326px; border: 1px solid #666; background: #000;
+  transform-origin: 100% 100%; display: flex; flex-direction: column; box-sizing: border-box; }
+.win-bar { flex: 0 0 24px; display: flex; align-items: center; gap: 10px; padding: 0 4px 0 8px; border-bottom: 1px solid #333;
+  font-size: 10px; letter-spacing: .12em; color: var(--grey); user-select: none; -webkit-user-select: none; }
+.win-t { color: var(--fg); font-weight: 600; }
+.win-wh { flex: 1 1 auto; white-space: nowrap; overflow: hidden; }
+.win-btns { display: flex; gap: 2px; }
+.win-btns button { font: inherit; font-size: 10px; letter-spacing: .08em; color: var(--fg); background: #000; border: 1px solid #444;
+  padding: 2px 6px; cursor: pointer; border-radius: 0; }
+.win-btns button:hover, .win-btns button:focus-visible { border-color: var(--fg); }
+.mon-corner iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; display: block; }
+.win-grip { position: absolute; right: 0; bottom: 0; width: 22px; height: 22px; cursor: nwse-resize; touch-action: none;
+  background: linear-gradient(135deg, transparent 50%, #888 50%, #888 56%, transparent 56%, transparent 68%, #888 68%, #888 74%, transparent 74%); }
+.free .win-bar { cursor: grab; touch-action: none; }
+.free .win-bar:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+.free.dragging .win-bar { cursor: grabbing; }
+.free.dragging iframe { pointer-events: none; }
+.mon-screen:not(.free) .win-grip { display: none; }
+@media (max-width: 1100px) { .mon-screen:not(.free) .mon-corner { transform: scale(.75); } }
+@media (max-width: 800px) { .mon-screen:not(.free) .mon-corner { transform: scale(.62); } }
 @media (max-width: 560px) {
-  .mon-screen { aspect-ratio: auto; height: 340px; }
+  .mon-screen { aspect-ratio: auto; height: 420px; }
   .mon-app { grid-template-rows: auto 1fr; }
-  .mon-corner { right: 50%; transform: translateX(50%) scale(.7); transform-origin: 50% 100%; }
+  .mon-screen:not(.free) .mon-corner { right: 50%; transform: translateX(50%) scale(.7); transform-origin: 50% 100%; }
 }
+.free .mon-corner { transform: none; right: auto; bottom: auto; }
 @media (hover: none), (pointer: coarse) { .mon-corner iframe { pointer-events: none; } }
 
 /* crew call + alerts, in the product's own black and white */
@@ -165,11 +183,42 @@ section[id] { scroll-margin-top: 40px; }
 .faces .off pre { color: var(--grey); transform: translateX(6px) rotate(6deg); transform-origin: 0 100%; }
 .faces b { display: block; letter-spacing: .1em; font-size: 13px; margin-bottom: 4px; }
 .faces figcaption { color: var(--grey); font-size: 14px; }
-.arcade { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between; border: 1px solid var(--fg); padding: 18px; }
-.arcade > div { flex: 1 1 320px; }
-.arcade small { display: block; font-size: 11px; letter-spacing: .14em; color: var(--grey); margin-bottom: 6px; }
-.arcade b { display: block; font-size: clamp(18px, 4.4vw, 26px); line-height: 1.2; margin-bottom: 8px; }
-.arcade p { color: var(--grey); margin: 0; font-size: 15px; }
+/* BOO'S ARCADE: one card per game, each with a tiny teaser (RIDE THE WAVE and ON THE ONE are playable) */
+.games { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .games { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .games { grid-template-columns: repeat(3, minmax(0, 1fr)); } .game:first-child { grid-column: span 2; } }
+.game { margin: 0; border: 1px solid var(--line); padding: 14px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.game figcaption { color: var(--grey); font-size: 14px; }
+.game figcaption b { display: block; color: var(--fg); letter-spacing: .1em; font-size: 15px; margin-bottom: 4px; }
+.g-cv { display: block; width: 100%; height: 110px; background: #050505; touch-action: pan-y; cursor: pointer; -webkit-user-select: none; user-select: none; }
+.g-try { color: var(--fg); }
+.g-score { display: block; color: var(--fg); margin-top: 4px; min-height: 1.4em; }
+.g-box { height: 110px; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.g-beats { display: flex; gap: 8px; }
+.g-beats i { width: 26px; height: 26px; border: 1px solid #444; }
+.g-beats i.on { background: var(--fg); border-color: var(--fg); }
+.g-tap { font: inherit; font-weight: 600; font-size: 12px; letter-spacing: .1em; padding: 6px 12px; background: var(--fg); color: var(--bg); border: 0; cursor: pointer; }
+.g-said { font-size: 11px; letter-spacing: .14em; color: var(--grey); min-height: 1.2em; }
+.g-big { font-size: 44px; font-weight: 600; line-height: 1; }
+.g-big.dark { color: #1a1a1a; }
+.g-big.go { color: var(--fg); }
+.g-eq { display: flex; gap: 18px; align-items: flex-end; height: 64px; }
+.g-eq span { display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.g-eq i { display: block; width: 14px; height: 70%; background: #9a9a9a; transition: height .18s ease-out; }
+.g-eq .low i { background: var(--fg); }
+.g-eq .low.killed i { height: 4%; }
+.g-eq small { font-size: 9px; letter-spacing: .12em; color: var(--grey); }
+.fun-h { margin-top: 40px; }
+.fun { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .fun { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .fun { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.fun div { border: 1px solid var(--line); padding: 16px; }
+.fun b { display: block; letter-spacing: .1em; font-size: 14px; margin-bottom: 6px; }
+.fun p { color: var(--grey); margin: 0; font-size: 14px; }
+/* WORKS BESIDE: the same voice as PLAYS WELL WITH, but plain words, no links: nothing is sent */
+.beside-h { margin-top: 36px; }
+.talk-list.beside span { color: var(--grey); }
+.talk-list.beside span + span::before { content: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .dancer { transition: none; }

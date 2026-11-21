@@ -13,6 +13,7 @@
 <link rel="apple-touch-icon" href="../icon-180.png">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="soundsetup.css">
+<link rel="stylesheet" href="announce.css">
 </head>
 <body>
 <header>
@@ -121,6 +122,7 @@
         <div class="mrow"><span>R</span><i><b id="mR"></b><u id="mRp"></u></i><em id="mRv">--</em></div>
       </div>
       <div class="row" id="sndCtl" hidden><button type="button" id="sndRec" class="local-only">● RECORD THIS SET</button><span class="note" id="sndRecNow"></span></div>
+      <div class="row snd-ask" id="sndAsk" hidden><span class="note" id="sndAskText"></span><button type="button" id="sndSplit" class="local-only">NEW FILE</button><button type="button" id="sndKeep">KEEP GOING</button></div>
       <h3 class="arch-h" id="sndListH" hidden>SET RECORDINGS</h3>
       <ol class="played snd-list" id="sndList"></ol>
     </div>
@@ -265,6 +267,30 @@
         <ul class="gd-log" id="gdLog"></ul>
         <div class="note">Tap, then hold 1 s. <button type="button" class="q" data-tip aria-label="More">?</button></div>
         <div class="note tip" hidden>The deck plays through its own channel: the fader has to be up. STOP sends a deck back to its cue point. SYNC and MASTER ask first if the change could move the tempo of music on air. Decks numbered 5-6 can't be stopped or started from the network. An XDJ-XZ only takes LOAD when rekordbox is on the network too.</div>
+      </div>
+    </div>
+    <h2 class="local-only" data-k="announce">ANNOUNCEMENTS</h2>
+    <div class="local-only announce" id="annBox">
+      <div class="buttons"><button type="button" id="annToggle">TURN ON</button><a class="btn" href="https://ghostlink.cold.fyi/help/how-to/announcements.html" target="_blank" rel="noopener">GEAR + WIRING</a></div>
+      <div class="note">The box plays saved announcements through the USB sound card into a spare mixer channel. Off until the owner turns it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>The sound card's OUTPUT goes into a spare LINE channel or the AUX / booth input, never the master. The channel fader is the volume: the DJ and FOH stay in charge. Before doors: fader down, TEST TONE, bring it up. Nothing plays unless someone holds a button.</div>
+      <div class="ann-now" id="annNow" hidden><span id="annNowText"></span><button type="button" class="stop" id="annStop">■ STOP</button></div>
+      <div class="note warn" id="annCard" hidden></div>
+      <div id="annBody" hidden>
+        <ul class="ann-list" id="annList"></ul>
+        <div class="buttons"><button type="button" class="hold" id="annTone">TEST TONE</button></div>
+        <div class="gd-ask" id="annAsk" hidden><span id="annAskText"></span>
+          <button type="button" id="annAskYes">PLAY IT</button><button type="button" id="annAskNo">CANCEL</button></div>
+        <details class="gd-house" id="annAdd">
+          <summary>ADD AN ANNOUNCEMENT</summary>
+          <div class="row"><input id="annName" placeholder="NAME: LAST CALL" maxlength="40" aria-label="Name of the announcement" autocapitalize="characters"></div>
+          <div class="buttons"><button type="button" id="annRec" hidden>● RECORD</button><label class="btn" id="annPick">UPLOAD A FILE<input type="file" id="annFile" accept="audio/*,.wav,.mp3,.m4a,.aac,.ogg,.webm" hidden></label></div>
+          <div class="note" id="annHow">Up to 30 s. Make a voice memo on your phone, then UPLOAD A FILE (or RECORD where the page allows it).</div>
+          <audio id="annPreview" controls hidden></audio>
+          <div class="buttons"><button type="button" id="annSave" hidden>SAVE ON THE BOX</button><button type="button" id="annDiscard" hidden>DISCARD</button></div>
+        </details>
+        <div class="note" id="annNote"></div>
+        <div class="note">PLAY and TEST TONE: tap, then hold 1 s. One at a time. Anyone here can STOP.</div>
       </div>
     </div>
     <h2 class="local-only" data-k="song-id">SONG ID FOR THE CROWD</h2>
@@ -519,6 +545,7 @@
 <script src="archive.js"></script>
 <script src="sound.js"></script>
 <script src="soundsetup.js"></script>
+<script src="announce.js"></script>
 <script src="dances.js"></script>
 <script src="fun.js"></script>
 <script src="updates.js"></script>

@@ -20,6 +20,10 @@ p { margin: 0 0 14px; }
 .top { border-bottom: 1px solid var(--line); }
 .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
 .top .mark { font-weight: 600; letter-spacing: .12em; text-decoration: none; font-size: 14px; }
+/* The small ASCII ghost beside the wordmark, like the dashboard's header (#96). Whole pixels so it stays crisp. */
+.top .mark { display: inline-flex; align-items: center; gap: 10px; }
+.mark-ghost { display: block; white-space: pre; font: 600 8px/8px "JetBrains Mono", ui-monospace, Menlo, monospace; letter-spacing: 0;
+  animation: float 4s ease-in-out infinite; }
 .top nav { display: flex; gap: 20px; font-size: 13px; letter-spacing: .08em; }
 .top nav a { color: var(--grey); text-decoration: none; }
 .top nav a:hover { color: var(--fg); }
@@ -190,5 +194,5 @@ footer .main { color: var(--fg); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ghost { animation: none !important; }
+  .ghost, .mark-ghost { animation: none !important; }
 }

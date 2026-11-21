@@ -293,7 +293,7 @@ const SoundSetup = (() => {
   function step4() {
     inner.append(el('h3', 'ssu-h', '4 · DONE'));
     inner.append(p('SOUND IN is set up. The meter lives in NETWORK > SOUND IN, and the box warns on SILENCE by itself.'));
-    inner.append(p('Recording a set: ask the DJ first. Nothing records until someone taps ● RECORD <DJ>, it records only that DJ, and it stops when the DJ changes. The next DJ is asked again.', 'ssu-warn'));
+    inner.append(p('Recording a set: ask the DJ first. Nothing records until someone taps ● RECORD <DJ>, it keeps going until someone taps STOP. If the DJ changes it asks NEW FILE or KEEP GOING, it never cuts off.', 'ssu-warn'));
     inner.append(p('This guide won\'t pop up again. It\'s always under NETWORK > SOUND IN > SET UP GUIDE.', 'ssu-dim'));
   }
 

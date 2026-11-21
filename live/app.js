@@ -2653,6 +2653,7 @@ const GOTO = [
   ['DECK CONTROLS · stop all, play, load', 'status/deck-controls', 'stop play load sync master ghost deck'],
   ['AUTO-STOP AT MUSIC OFF', 'status/deck-controls', 'curfew music off stop autostop'],
   ['HOUSE SETTINGS · club standard', 'status/deck-controls', 'house settings jog quantize'],
+  ['ANNOUNCEMENTS · last call, test tone', 'status/announce', 'announcement announce last call lights on coat check test tone sound card output pa mic voice'],
   ['SONG ID FOR THE CROWD', 'status/song-id', 'song id crowd what playing qr'],
   ['VENUE · address, gear, contacts', 'status/venue', 'venue address gear contacts booth notes'],
   ['MUSIC AT THIS VENUE · BPM, not here', 'status/venue', 'bpm not here repeat usual start notes music'],

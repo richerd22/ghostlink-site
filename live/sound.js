@@ -41,8 +41,16 @@ const Sound = (() => {
       const who = (S.status && S.status.dj) || 'this set';
       $('sndRec').textContent = a.recordOn ? '■ STOP RECORDING' : '● RECORD ' + who.toUpperCase();
       $('sndRec').classList.toggle('rec-on', !!a.recordOn);
-      $('sndRecNow').textContent = a.recording ? 'Recording ' + (a.recording.dj || 'the set') + ' since ' + clock(a.recording.since) + '. Stops when the DJ changes.'
+      $('sndRecNow').textContent = a.recording ? 'Recording ' + (a.recording.dj || 'the set') + ' since ' + clock(a.recording.since) + '. Keeps going until you tap STOP.'
         : a.recordOn ? 'Armed: starts when the music does.' : 'Nothing records unless you tap. One set at a time, the DJ\'s choice.';
+    }
+    // Nov 21: ON THE DECKS changed mid-recording: it carries on; ask, never cut.
+    const ask = $('sndAsk');
+    if (ask) {
+      const q = a && a.ask;
+      ask.hidden = !q;
+      if (q) $('sndAskText').textContent = (q.dj || 'Someone new') + ' is on the decks now. Still recording (nothing was cut).';
+      if (q) $('sndSplit').textContent = 'NEW FILE FOR ' + (q.dj || 'THIS SET').toUpperCase();
     }
     if (!pill.hidden && a && !a.recording) pill.hidden = true;
     loadList();
@@ -72,6 +80,11 @@ const Sound = (() => {
     if (on && !unlocked) return needUnlock();   // starting needs the crew password; anyone here can STOP
     await post('/api/audio', { record: on });
   });
+  $('sndSplit') && $('sndSplit').addEventListener('click', async () => {
+    if (!unlocked) return needUnlock();
+    await post('/api/audio', { split: true });
+  });
+  $('sndKeep') && $('sndKeep').addEventListener('click', () => post('/api/audio', { keep: true }));
   $('sndList').addEventListener('click', async e => {
     const b = e.target.closest('[data-del]');
     if (!b) return;
