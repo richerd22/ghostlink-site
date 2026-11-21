@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="GHOST LINK">
+<title>GHOST LINK · DEMO</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="soundsetup.css">
+</head>
+<body>
+<header>
+  <pre class="ghost" id="ghost" aria-hidden="true"></pre>
+  <button class="mark" id="shareBtn" aria-label="Share the dashboard address">GHOST LINK</button>
+  <nav>
+    <a href="#now" data-view="now" title="NOW (key 1)">NOW</a>
+    <a href="#decks" data-view="decks" title="DECKS (key 2)">DECKS</a>
+    <a href="#network" data-view="network" title="NETWORK (key 3)">NETWORK</a>
+    <a href="#played" data-view="played" title="PLAYED (key 4)">PLAYED</a>
+    <a href="#status" data-view="status" title="STATUS (key 5, / to GO TO)">STATUS</a>
+    <a href="#help" data-view="help" aria-label="Help" title="HELP (key 6)"><span class="nav-l">HELP</span><span class="nav-s">?</span></a>
+  </nav>
+  <div class="link" id="link"></div>
+</header>
+
+<div id="alert" class="alert" hidden></div>
+<div id="away" class="alert away" hidden></div>
+<div id="curfewBar" class="alert curfew local-only" hidden><span id="curfewText"></span><button type="button" class="mini" id="curfewCancel">CANCEL AUTO-STOP</button></div>
+<div class="demo-bar" id="demoBar" hidden><span>DEMO · made-up tracks on empty players, only on this phone</span><button type="button" id="demoEnd">END DEMO</button></div>
+<div class="tour" id="tour" hidden role="dialog" aria-labelledby="tourTitle">
+  <small id="tourStep"></small><b id="tourTitle"></b><p id="tourText"></p>
+  <div class="row"><button type="button" id="tourSkip" class="ghostbtn">SKIP</button><button type="button" id="tourDemo" hidden>SEE A DEMO</button><button type="button" id="tourNext">NEXT</button></div>
+</div>
+<div id="showAlerts" class="show-alerts" aria-live="assertive"></div>
+<div id="crewCalls" class="crew-calls" aria-live="polite" hidden></div>
+<div id="eonReady" class="eon-ready" hidden></div>
+
+<main>
+  <section id="now" class="view now" hidden>
+    <div class="rooms-strip" id="roomsStrip" hidden></div>
+    <div class="roles" id="roles" role="tablist" aria-label="Who is watching">
+      <button data-role="dj">DJ</button><button data-role="photo">PHOTO</button><button data-role="vj">VJ</button>
+      <button data-role="lights">LIGHTS</button><button data-role="sound">SOUND</button><button data-role="tech">TECH</button>
+      <button data-role="manager">MANAGER</button><button data-role="host">HOST</button>
+      <button data-edit class="edit">EDIT</button>
+    </div>
+    <div id="nowEdit" class="now-edit" hidden></div>
+    <div id="nowBody"></div>
+    <div class="here-bar" id="nowHere"><button type="button" class="want-btn" id="wantNow" hidden title="Save this track to your WANTLIST (on this phone)">+ WANT</button><a class="btn arcade-door" id="arcadeDoor" href="arcade.html" hidden>BOO'S ARCADE</a></div>
+    <div id="crewSend"></div>
+  </section>
+
+  <section id="decks" class="view">
+    <div class="deckbar"><span id="deckPreset"></span><button id="layoutBtn" aria-expanded="false">LAYOUT</button></div>
+    <div class="layout-panel" id="layoutPanel" hidden>
+      <div class="lp-row"><small>VIEW</small><div class="buttons" data-dv="view">
+        <button data-v="auto">AUTO</button><button data-v="corner">CORNER</button><button data-v="side">SIDE</button><button data-v="booth">BOOTH</button><button data-v="tv">TV</button></div></div>
+      <div class="lp-quick">
+        <div class="lp-row"><small>WAVE SIZE</small><div class="buttons" data-dv="wave">
+          <button data-v="s">S</button><button data-v="m">M</button><button data-v="l">L</button></div></div>
+        <div class="lp-row"><small>ZOOM (BARS)</small><div class="buttons" data-dv="zoom">
+          <button data-v="4">4</button><button data-v="8">8</button><button data-v="16">16</button><button data-v="32">32</button></div></div>
+        <div class="lp-row"><small>SHOW</small><div class="buttons" data-dv="show">
+          <button data-v="artist">ARTIST</button><button data-v="overview">WHOLE TRACK</button></div></div>
+        <div class="lp-row"><small>GHOST</small><div class="buttons">
+          <button type="button" data-roam>GHOST: GOES TO THE DECKS</button><button type="button" data-fun>GHOST MOODS: ON</button></div></div>
+      </div>
+      <small class="lp-more">MORE</small>
+      <div class="lp-row"><small>PRESET</small><div class="buttons" data-dv="preset">
+        <button data-v="classic">CLASSIC</button><button data-v="big">BIG WAVES</button><button data-v="stack">STACKED</button><button data-v="waves">WAVES ONLY</button><button data-v="compact">COMPACT</button></div></div>
+      <div class="lp-row"><small>LAYOUT</small><div class="buttons" data-dv="mode">
+        <button data-v="tiles">TILES</button><button data-v="stack">STACKED WAVES</button><button data-v="waves">WAVES ONLY</button></div></div>
+      <div class="lp-row"><small>STACKED IN A SMALL WINDOW</small><div class="buttons" data-dv="fit">
+        <button data-v="auto">EVERY DECK FITS</button><button data-v="off">DECK TILES BELOW</button></div></div>
+      <div class="lp-row"><small>DECKS ACROSS</small><div class="buttons" data-dv="cols">
+        <button data-v="auto">AUTO</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button></div></div>
+      <div class="lp-row"><small>WAVEFORM HEIGHT</small><div class="buttons" data-dv="wave">
+        <button data-v="s">S</button><button data-v="m">M</button><button data-v="l">L</button><button data-v="xl">XL</button><button data-v="giant">GIANT</button></div></div>
+      <div class="lp-row"><small>WAVEFORM ZOOM (BARS ACROSS)</small><div class="buttons" data-dv="zoom">
+        <button data-v="4">4</button><button data-v="8">8</button><button data-v="16">16</button><button data-v="32">32</button></div></div>
+      <div class="lp-row"><small>DECK TEXT</small><div class="buttons" data-dv="text">
+        <button data-v="s">S</button><button data-v="m">M</button><button data-v="l">L</button><button data-v="xl">XL</button></div></div>
+      <div class="lp-row"><small>SHOW</small><div class="buttons" data-dv="show">
+        <button data-v="art">ART</button><button data-v="artist">ARTIST</button><button data-v="meta">KEY + TAGS</button><button data-v="nums">BPM / PITCH / TIME</button><button data-v="overview">WHOLE TRACK</button><button data-v="phrase">BEATS + SECTIONS</button></div></div>
+      <div class="lp-row"><small>WAVEFORM COLOUR</small><div class="buttons" data-dv="color">
+        <button data-v="rgb">FULL COLOUR</button><button data-v="blue">BLUE</button><button data-v="mono">WHITE</button></div></div>
+      <div class="lp-row"><small>TIME</small><div class="buttons" data-dv="time">
+        <button data-v="remain">REMAINING</button><button data-v="elapsed">ELAPSED</button></div></div>
+      <div class="lp-row"><small>DECKS NOT ON AIR</small><div class="buttons" data-dv="dim">
+        <button data-v="0">NORMAL</button><button data-v="1">DIMMED</button></div></div>
+      <div class="lp-row"><small>WHICH DECKS</small><div class="buttons" data-dv="hide">
+        <button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button></div></div>
+      <div class="buttons"><button type="button" id="layoutLink">COPY LINK TO THIS LAYOUT</button></div>
+      <div class="note" id="layoutLinkNote"></div>
+      <div class="note">Saved on this phone only. Tap a waveform to zoom. A link can pick a view: ?view=side&amp;zoom=8</div>
+    </div>
+    <div class="stack" id="stack" hidden></div>
+    <div class="decks" id="deckgrid"></div>
+  </section>
+
+  <section id="network" class="view" hidden>
+    <div class="traffic" id="traffic"></div>
+    <table class="devices">
+      <thead><tr><th>#</th><th>DEVICE</th><th>KIND</th><th>ADDRESS</th></tr></thead>
+      <tbody id="devices"></tbody>
+    </table>
+    <h2 id="go-mixer">MIXER (USB MIDI)</h2>
+    <div class="note" id="mixerNote"></div>
+    <div class="mixer" id="mixer"></div>
+    <h2 id="go-sound">SOUND IN · SET RECORDINGS</h2>
+    <div class="sound" id="sound">
+      <div class="note" id="sndNote">No sound card. Plug a USB sound card (UCA202 / UCA222) into the box: SET UP GUIDE shows which plug on the mixer.</div>
+      <div class="meter" id="sndMeter" hidden>
+        <div class="mrow"><span>L</span><i><b id="mL"></b><u id="mLp"></u></i><em id="mLv">--</em></div>
+        <div class="mrow"><span>R</span><i><b id="mR"></b><u id="mRp"></u></i><em id="mRv">--</em></div>
+      </div>
+      <div class="row" id="sndCtl" hidden><button type="button" id="sndRec" class="local-only">● RECORD THIS SET</button><span class="note" id="sndRecNow"></span></div>
+      <h3 class="arch-h" id="sndListH" hidden>SET RECORDINGS</h3>
+      <ol class="played snd-list" id="sndList"></ol>
+    </div>
+    <h2 id="go-events">EVENTS</h2>
+    <ol class="events" id="events"></ol>
+  </section>
+
+  <section id="played" class="view" hidden>
+    <div class="bar">
+      <select id="nightPick" aria-label="Which night"></select>
+      <span class="actions">
+        <button id="eonBtn" title="One card for the night: tracks, hours, DJs, highlights, HARD STOP kept or not">END OF NIGHT</button>
+        <button id="recapBtn">RECAP IMAGE</button>
+        <details class="more-menu" id="playedMore"><summary>COPY · SAVE</summary><div class="more-box">
+          <button id="setlistBtn">COPY SETLIST</button>
+          <button id="tracklistBtn" title="Times from the start of each set, for Mixcloud / 1001Tracklists">COPY TRACKLIST</button>
+          <a class="btn" id="m3uLink" href="/api/history?format=m3u8" download title="Playlist for rekordbox / Serato">PLAYLIST</a>
+          <a class="btn" id="csvLink" href="/api/history?format=csv" download>CSV</a>
+          <a class="btn" id="jsonLink" href="/api/history" download="played.json">JSON</a>
+          <button id="shareTl" class="local-only" title="The DJ decides: WATCH FROM HOME shows PLAYED only when shared, tonight only">TRACKLIST: CREW ONLY</button>
+        </div></details>
+      </span>
+    </div>
+    <div class="archive" id="archive" hidden>
+      <div class="row arch-filters">
+        <select id="aVenue" aria-label="Venue"></select>
+        <select id="aDj" aria-label="DJ"></select>
+        <input id="aQ" placeholder="Search track, artist, DJ" aria-label="Search" maxlength="60" autocomplete="off">
+        <button type="button" id="aClear" class="mini">CLEAR</button>
+      </div>
+      <div class="recap" id="aSum"></div>
+      <div class="insights" id="aCards"></div>
+      <h3 class="arch-h">NIGHTS</h3><div class="arch-nights" id="aNights"></div>
+      <h3 class="arch-h">TRACKS <span id="aTrN"></span></h3>
+      <div class="arch-sort"><button type="button" class="mini on" data-sort="plays">MOST PLAYED</button><button type="button" class="mini" data-sort="last">LATEST</button><button type="button" class="mini" data-sort="az">A-Z</button></div>
+      <ol class="played arch-tracks" id="aTracks"></ol>
+    </div>
+    <details class="wantlist" id="go-wantlist" hidden><summary>WANTLIST <span id="wantN"></span></summary>
+      <div class="note">Tracks you tapped + WANT on. On this phone only: nothing goes to the box or the DJ. Search links open that site's search in a new tab.</div>
+      <div class="buttons"><button type="button" id="wantCopy">COPY</button><button type="button" id="wantShare">SHARE</button><button type="button" id="wantClear">CLEAR</button></div>
+      <ol class="want-list" id="wantList"></ol>
+    </details>
+    <p class="small" id="tlPrivate" hidden>The DJ hasn't shared tonight's tracklist. The decks are live above.</p>
+    <form class="lineup" id="djForm">
+      <small>ON THE DECKS</small><b id="djNow">not set</b>
+      <input id="djName" placeholder="Next DJ" aria-label="Next DJ" maxlength="60" autocomplete="off">
+      <button type="submit">SET</button>
+      <button type="button" id="djSuggest" class="mini" hidden title="The USB's own name: tap if that's the DJ"></button>
+    </form>
+    <details class="sticks" id="sticksBox" hidden><summary>USBS TONIGHT</summary><div id="sticksList"></div>
+      <div class="note">Each USB that went on air tonight. Say whose it is once: next time it plays, GHOST LINK names the set by itself.</div></details>
+    <div class="plan-now note" id="planNow"></div>
+    <div class="recap" id="recap"></div>
+    <canvas class="bpmchart" id="bpmChart"></canvas>
+    <canvas class="setline" id="setLine" aria-label="Timeline of the night"></canvas>
+    <ol class="played" id="playedList"></ol>
+    <div class="insights" id="insights"></div>
+  </section>
+
+  <section id="status" class="view" hidden>
+    <div class="remote-banner" id="remoteBanner" hidden>VIEW ONLY · watching from afar. Changes can only be made at the venue.</div>
+    <div class="ready" id="ready" aria-live="polite"></div>
+    <div class="goto" id="goto">
+      <input id="goQ" type="search" placeholder="GO TO: wifi, record, venue..." aria-label="Go to a setting" autocomplete="off" enterkeyhint="go" maxlength="30">
+      <ol class="go-list" id="goList" hidden></ol>
+    </div>
+    <div class="booth-check" id="boothCheck"></div>
+    <div class="booth-check local-only" id="nearby" hidden></div>
+    <ul class="problems" id="problems"></ul>
+    <div class="gear-care" id="gearCare" hidden><small>GEAR CARE · FYI</small><ul id="gearList"></ul>
+      <div class="note">From mixer controls named on the box and the files on air. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>The box can't hear the sound: the red light on the mixer is the truth.</div></div>
+    <div class="lock" id="lock">
+      <form id="unlockForm" class="row">
+        <span class="lbl">CONTROLS LOCKED</span>
+        <input type="password" id="pw" placeholder="password or crew code" autocomplete="current-password" aria-label="GHOST LINK password or tonight's crew code">
+        <button type="submit">UNLOCK</button>
+      </form>
+      <div id="unlocked" class="row" hidden>
+        <span class="lbl">CONTROLS UNLOCKED</span>
+        <button type="button" id="lockBtn">LOCK</button>
+        <button type="button" id="pwChangeBtn">CHANGE PASSWORD</button>
+        <div class="note" id="crewCode" hidden></div>
+      </div>
+      <form id="pwForm" class="row" hidden>
+        <input type="password" id="pwCur" placeholder="current" autocomplete="current-password" aria-label="current password">
+        <input type="password" id="pwNew" placeholder="new (8+)" autocomplete="new-password" aria-label="new password">
+        <button type="submit">SAVE</button>
+      </form>
+      <div class="note" id="lockNote"></div>
+    </div>
+
+    <h3 class="group" id="g-tonight">TONIGHT</h3>
+    <h2 data-k="nights">NIGHTS</h2>
+    <div class="nights" id="nightsList"></div>
+    <div class="row"><button type="button" id="nightNewBtn">PLAN A NIGHT</button></div>
+    <form id="nightForm" class="night-form" hidden>
+      <div class="row"><input id="nDate" type="date" aria-label="Night of"><select id="nVenue" aria-label="Venue"></select></div>
+      <div class="row"><span class="lbl">STARTS</span><input id="nDoors" placeholder="22:00 (before = soundcheck)" aria-label="Night starts" maxlength="8"><span class="lbl">MUSIC OFF</span><input id="nOff" placeholder="2:00 (optional)" aria-label="Music off time" maxlength="8"></div>
+      <textarea id="nLineup" rows="5" placeholder="Lineup, one per line:&#10;22:00 OPENER&#10;23:30 RICHERD&#10;01:00 CLOSER&#10;Or no time: a night's name or one artist all night" aria-label="Lineup"></textarea>
+      <textarea id="nNotes" rows="2" placeholder="Notes: doors, load-in, contacts for the night" aria-label="Night notes"></textarea>
+      <div class="note">Switches ON THE DECKS at each time. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>On the night, GHOST LINK picks this venue and switches ON THE DECKS at each time. SET in PLAYED still overrides until the next slot.</div>
+      <div class="row"><button type="submit">SAVE</button><button type="button" id="nightDelBtn">DELETE</button><button type="button" id="nightCancel">CANCEL</button></div>
+      <div class="note" id="nightNote"></div>
+    </form>
+    <h2 class="local-only" data-k="deck-controls">DECK CONTROLS</h2>
+    <div class="local-only ghostdeck" id="ghostDeck">
+      <div class="buttons"><button type="button" id="gdToggle">TURN ON</button></div>
+      <div class="note">Stop, play or load decks from here. Off until the owner turns it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>GHOST LINK tells the decks to stop, play or load a track: a mix before doors, or the music off fast. Every button: tap, then hold 1 second.</div>
+      <div id="gdBody" hidden>
+        <div class="buttons"><button type="button" class="hold stop" id="gdStop">STOP ALL DECKS</button></div>
+        <div class="gd-curfew">
+          <div class="lbl">AUTO-STOP AT MUSIC OFF</div>
+          <div class="note" id="gdCurfewText"></div>
+          <div class="buttons"><button type="button" class="hold" id="gdArm">ARM FOR TONIGHT</button><button type="button" id="gdDisarm" hidden>CANCEL AUTO-STOP</button>
+            <button type="button" id="gdHsMay">HARD STOP CAN STOP IT: OFF</button></div>
+        </div>
+        <div class="gd-decks" id="gdPlay"></div>
+        <div class="row"><select id="gdSrc" aria-label="Which USB or SD"></select>
+          <input id="gdQ" placeholder="search it" aria-label="Search the USB or SD" maxlength="40" enterkeyhint="search">
+          <button type="button" id="gdFind">FIND</button></div>
+        <ol class="gd-results" id="gdResults"></ol>
+        <div class="row"><span class="lbl">LOAD ONTO</span><select id="gdTarget" aria-label="Load onto deck"></select>
+          <button type="button" class="hold" id="gdLoad">LOAD</button></div>
+        <div class="gd-ask" id="gdAsk" hidden><span id="gdAskText"></span>
+          <button type="button" id="gdAskYes">YES</button><button type="button" id="gdAskNo">CANCEL</button></div>
+        <details class="gd-house" id="gdHouse">
+          <summary>HOUSE SETTINGS</summary>
+          <div class="note">Our club standard for every deck (owner password to change). <button type="button" class="q" data-tip aria-label="More">?</button></div>
+          <div class="note tip" hidden>Change any line, then SEND TO STOPPED DECKS between DJs. Decks only report jog mode and firmware back: BOOTH CHECK -> DECK SETUP shows when those are off.</div>
+          <div class="gd-house-list" id="gdHouseList"></div>
+          <div class="buttons"><button type="button" id="gdHouseSave">SAVE</button><button type="button" id="gdHouseReset">BACK TO THE STANDARD</button><button type="button" class="hold" id="gdHouseSend">SEND TO STOPPED DECKS</button></div>
+        </details>
+        <details class="gd-house" id="gdTest">
+          <summary>HOME TEST: SEND AS</summary>
+          <div class="note">The XZ ignored commands from GHOST LINK's own number (15). This signs them as a deck number nobody is using, to see if the decks listen then. Home only; goes back to NORMAL when the box restarts.</div>
+          <div class="buttons" id="gdSendAs"><button type="button" data-as="0">NORMAL (15)</button><button type="button" data-as="3">AS DECK 3</button><button type="button" data-as="4">AS DECK 4</button></div>
+        </details>
+        <div class="note" id="gdNote"></div>
+        <ul class="gd-log" id="gdLog"></ul>
+        <div class="note">Tap, then hold 1 s. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+        <div class="note tip" hidden>The deck plays through its own channel: the fader has to be up. STOP sends a deck back to its cue point. SYNC and MASTER ask first if the change could move the tempo of music on air. Decks numbered 5-6 can't be stopped or started from the network. An XDJ-XZ only takes LOAD when rekordbox is on the network too.</div>
+      </div>
+    </div>
+    <h2 class="local-only" data-k="song-id">SONG ID FOR THE CROWD</h2>
+    <div class="local-only">
+      <div class="buttons"><button type="button" id="songIdBtn">TURN ON</button><a class="btn" href="song.html" target="_blank">OPEN</a></div>
+      <div class="note" id="songIdNote">A "what's playing" page and QR for the room. Only if the DJ is OK with IDs going out.</div>
+      <img class="share-qr" id="songIdQr" alt="" hidden>
+    </div>
+    <h2 class="local-only" data-k="wantlist">WANTLIST</h2>
+    <div class="local-only" id="wantSwitchBox">
+      <div class="buttons"><button type="button" id="wantSwitch">WANTLIST BUTTONS: OFF</button></div>
+      <div class="note" id="wantNote">A + WANT button on NOW and DECKS: anyone can save the track playing to a list on their own phone, with search links. Nothing goes to the DJ. Off until the owner turns it on.</div>
+    </div>
+
+    <h3 class="group" id="g-venue">THIS VENUE</h3>
+    <h2 data-k="venue">VENUE</h2>
+    <div class="venue" id="venueBox">
+      <div class="venue-now"><b id="venueName">No venue set</b><dl class="venue-info" id="venueInfo"></dl><div class="note" id="venueNotes"></div></div>
+      <div class="row">
+        <select id="venuePick" aria-label="Venue"></select>
+        <button type="button" id="venueEditBtn">EDIT</button>
+        <button type="button" id="venueNewBtn">NEW</button>
+      </div>
+      <form id="venueForm" hidden>
+        <div class="row"><input id="vName" placeholder="Venue name" aria-label="Venue name" maxlength="60">
+          <input id="vPlayers" type="number" min="0" max="6" placeholder="players" aria-label="Players expected" style="max-width:110px"></div>
+        <input id="vAddress" placeholder="Address" aria-label="Address" maxlength="120">
+        <input id="vRooms" placeholder="Rooms (e.g. UPSTAIRS, DOWNSTAIRS, THE GREEN ROOM)" aria-label="Rooms" maxlength="160">
+        <textarea id="vGear" rows="2" placeholder="Gear: players, mixer, switch, where the DJ network cable is" aria-label="Gear"></textarea>
+        <textarea id="vContacts" rows="2" placeholder="Contacts: manager, sound tech, door - names and numbers" aria-label="Contacts"></textarea>
+        <textarea id="vNotes" rows="3" placeholder="Booth notes: load-in, power, quirks, set times" aria-label="Booth notes"></textarea>
+        <div class="venue-wifi" id="vWifi"></div>
+        <div class="wifi-near" id="vWifiNear" hidden></div>
+        <datalist id="wifiNearbyList"></datalist>
+        <div class="row"><button type="button" id="vWifiAdd">+ VENUE WI-FI</button></div>
+        <div class="note">The box joins any saved venue Wi-Fi it can see. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+        <div class="note tip" hidden>Passwords stay on the box and only show to unlocked phones.</div>
+        <div class="row"><button type="submit">SAVE</button><button type="button" id="venueDelBtn">DELETE</button><button type="button" id="venueCancel">CANCEL</button></div>
+        <div class="note" id="venueNote"></div>
+    </form>
+    </div>
+    <details class="vmusic" id="vMusic"><summary>MUSIC AT THIS VENUE <span id="vmSum"></span></summary>
+      <form id="vmForm">
+        <div class="row"><span class="lbl">USUAL START</span><input id="vmDoors" placeholder="22:00" aria-label="Usual start" maxlength="5">
+          <span class="lbl">MUSIC OFF</span><input id="vmOff" placeholder="2:00" aria-label="Usual music off" maxlength="5"></div>
+        <div class="row"><span class="lbl">BPM HERE</span><input id="vmLo" type="number" min="0" max="250" placeholder="from" aria-label="BPM from" style="max-width:90px">
+          <input id="vmHi" type="number" min="0" max="250" placeholder="to" aria-label="BPM to" style="max-width:90px">
+          <span class="lbl">REPEAT WARNING</span><input id="vmRep" type="number" min="0" max="365" placeholder="30" aria-label="Days" style="max-width:80px"><span class="lbl">DAYS</span></div>
+        <textarea id="vmNo" rows="3" placeholder="Not here, one per line: a title, an artist, or artist - title" aria-label="Not at this venue"></textarea>
+        <textarea id="vmNotes" rows="2" placeholder="The room's music, in words (e.g. house till 1, no hard techno, last track always a classic)" aria-label="Music notes" maxlength="600"></textarea>
+        <div class="note">Notes for the venue above. GHOST LINK never stops a DJ for them. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+        <div class="note tip" hidden>Usual times fill in any night without a plan (AUTO-STOP and set starts use them). Decks show PLAYED HERE, NOT HERE and BPM notes.</div>
+        <div class="row"><button type="submit">SAVE</button></div>
+        <div class="note" id="vmNote"></div>
+      </form>
+    </details>
+    <h2 data-k="wifi">WI-FI</h2>
+    <div class="buttons wifi" id="wifiModes">
+      <button data-wifi="auto">AUTO</button>
+      <button data-wifi="hotspot">BE THE HOTSPOT</button>
+      <button data-wifi="client">KNOWN WI-FI ONLY</button>
+    </div>
+    <div class="note" id="wifiNote"></div>
+    <h2 data-k="rooms">ROOMS</h2>
+    <div class="note">More than one GHOST LINK box? Name the rooms; NOW shows them all. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+    <div class="note tip" hidden>One box per room. Name this room and list the others (e.g. 51 = ghostlink-51.local); every phone then shows all rooms on NOW. Boxes must be on the same venue Wi-Fi.</div>
+    <form id="roomsForm" class="night-form local-only">
+      <input id="roomSelf" placeholder="This room's name (e.g. UPSTAIRS)" aria-label="This room's name" maxlength="40">
+      <textarea id="roomOthers" rows="3" placeholder="Other rooms, one per line:&#10;51 = ghostlink-51.local" aria-label="Other rooms"></textarea>
+      <div class="row"><button type="submit">SAVE ROOMS</button></div>
+    </form>
+    <div class="note" id="roomsNote"></div>
+
+    <h3 class="group" id="g-screens">SCREENS &amp; OUTPUTS</h3>
+    <h2 class="local-only" data-k="show-control">SHOW CONTROL</h2>
+    <div class="local-only showctl" id="showctl">
+      <div class="note">The DJ's tempo and bar, to the room's lights and visuals. All off until you turn it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>GHOST LINK never sends anything to the decks or the mixer. ABLETON LINK and MIDI CLOCK follow the master deck's beat; the OSC presets send ready-made messages to Resolume, grandMA3 or QLab.</div>
+      <div id="scRows"></div>
+      <div class="note" id="scNote"></div>
+    </div>
+    <h2 class="local-only" data-k="osc">OSC OUT (LIGHTS / VISUALS)</h2>
+    <form id="oscForm" class="night-form local-only">
+      <textarea id="oscTargets" rows="2" placeholder="Computers to send to, one per line:&#10;192.168.1.20:7000" aria-label="OSC targets"></textarea>
+      <div class="row"><button type="submit">SAVE</button></div>
+      <div class="note">Every beat, BPM, section and the on-air track as raw OSC. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>/ghostlink/beat (i beat, f bpm, i deck), /ghostlink/downbeat, /ghostlink/bpm, /ghostlink/phrase (s section), /ghostlink/onair (s title, s artist), /ghostlink/deck/N/beat, /ghostlink/next, /ghostlink/drop, and DECK CONTROLS presses as /ghostlink/control (s stopall/stop/play/load, i deck). For Resolume, TouchDesigner, MadMapper, QLC+, lighting desks.</div>
+      <div class="note" id="oscNote"></div>
+    </form>
+    <h2 data-k="screens">SCREENS</h2>
+    <div class="buttons">
+      <a class="btn" href="tv.html" target="_blank">TV MODE</a>
+      <a class="btn" href="overlay.html" target="_blank">STREAM OVERLAY</a>
+      <a class="btn" href="crewtv.html" target="_blank">CREW SCREEN</a>
+      <a class="btn" href="whatson.html" target="_blank">WHAT'S ON</a>
+      <a class="btn local-only" href="song.html" target="_blank">SONG PAGE</a>
+      <a class="btn" href="sticker.html" target="_blank">PRINT STICKER</a>
+    </div>
+    <div class="note">A booth TV, a stream, the crowd, the box's sticker. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: a see-through now-playing card for OBS (Browser Source; ?pos=br, ?bg=green, ?scale=1.5). CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown, who's on, who's next, the next drop, crew calls; no track titles. WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR.</div>
+    <h2 class="local-only" data-k="watch">WATCH FROM HOME</h2>
+    <div class="local-only">
+      <div class="buttons"><button type="button" id="remoteBtn">TURN ON</button></div>
+      <div class="note" id="remoteNote">A view-only link anyone can open from anywhere. Needs the box on a Wi-Fi with internet.</div>
+      <div class="remote-box" id="remoteBox" hidden>
+        <div class="share-addr" id="remoteUrl"></div>
+        <img class="share-qr" id="remoteQr" alt="">
+        <div class="buttons"><button type="button" id="remoteCopy">COPY LINK</button></div>
+      </div>
+      <form class="row" id="watchTokenForm">
+        <input type="password" id="watchToken" placeholder="GitHub token for gl.cold.fyi/watch" aria-label="GitHub token" autocomplete="off">
+        <button type="submit">SAVE</button>
+      </form>
+    </div>
+
+    <h3 class="group" id="g-box">THE BOX</h3>
+    <h2 data-k="controls">CONTROLS</h2>
+    <div class="buttons">
+      <button data-post="/api/rejoin">REJOIN</button>
+      <button data-post="/api/reader/restart">RESTART READING</button>
+      <button data-post="/api/listen-only">LISTEN ONLY</button>
+      <button data-post="/api/join">ALLOW JOIN</button>
+      <button data-post="/api/restart" class="hold">RESTART</button>
+      <button data-post="/api/shutdown" class="hold stop">SHUT DOWN</button>
+    </div>
+    <div class="note" id="ctlNote"></div>
+    <div class="note">Something odd: LISTEN ONLY. RESTART and SHUT DOWN: tap, then hold 1 s. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+    <div class="note tip" hidden>REJOIN: back on the DJ network after LISTEN ONLY or a back-off. RESTART READING: decks blank a few seconds and read again (the box and Wi-Fi stay up). LISTEN ONLY: GHOST LINK goes quiet on the DJ network (never locked). ALLOW JOIN: lets it join again. RESTART: the whole program, about 20 s. SHUT DOWN: the screen says when it's safe to unplug.</div>
+    <h2 data-k="backup">BACKUP</h2>
+    <div class="buttons">
+      <a class="btn" id="backupBtn" href="/api/backup.zip" download>BACKUP</a>
+      <a class="btn" id="backupRecBtn" href="/api/backup.zip?recordings=1" download>BACKUP + RECORDINGS</a>
+      <label class="btn" id="restoreBtn">RESTORE<input type="file" id="restoreFile" accept=".zip" hidden></label>
+      <a class="btn" href="/api/blackbox.zip" download>BLACK BOX</a>
+      <a class="btn" href="/api/logs" download>LOGS</a>
+    </div>
+    <div class="note" id="backupNote">Venues, nights, played lists and the password in one file. Keep one on your phone.</div>
+    <div class="note">BLACK BOX and LOGS: what the box saw, for after a night. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+    <div class="note tip" hidden>BACKUP + RECORDINGS adds the set recordings (big). RESTORE puts a backup back and restarts GHOST LINK. BLACK BOX is the night's record of everything that happened; LOGS are the program's own notes.</div>
+    <h2 data-k="updates">UPDATES</h2>
+    <div id="updBox"></div>
+    <h2 data-k="box">BOX DETAILS</h2>
+    <dl class="facts" id="facts"></dl>
+    <h2 data-k="tools">TOOLS</h2>
+    <div class="buttons"><button type="button" data-demo>DEMO</button><button type="button" data-tour>SHOW THE TOUR</button><a class="btn" href="arcade.html" id="arcadeLink" onclick="if(/[?&]embed/.test(location.search))this.href='arcade.html?embed=1'">BOO'S ARCADE</a></div>
+    <div class="buttons ghost-row"><small>GHOST</small><button type="button" data-fun>GHOST MOODS: ON</button><button type="button" data-roam>GHOST: GOES TO THE DECKS</button><button type="button" data-gsize>GHOST SIZE: M</button><button type="button" data-rips>GHOST SMELLS RIPS: OFF</button></div>
+    <div class="note">DEMO: made-up tracks on empty players, only on this phone. Theme and text size: HELP → DISPLAY. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+    <div class="note tip" hidden>DEMO plays made-up tracks on any empty player so you can show someone everything with nothing plugged in. Nothing is saved or sent. TEST RUN is for setting up a box at a new venue: each line ticks itself as that part works.</div>
+    <details class="testrun" id="testRun">
+      <summary>TEST RUN <b id="testCount"></b></summary>
+      <ol class="tests" id="testList"></ol>
+      <div class="row"><button type="button" id="testReset">START OVER</button></div>
+    </details>
+    <footer>made with &lt;3 in Boston, MA by Third Polar Arch</footer>
+  </section>
+
+<section id="help" class="view help" hidden>
+    <h2 id="go-display">DISPLAY (THIS PHONE)</h2>
+    <div class="buttons"><button type="button" data-tour>SHOW THE TOUR</button><button type="button" data-fun>GHOST MOODS: ON</button><button type="button" data-roam>GHOST: GOES TO THE DECKS</button><button type="button" data-gsize>GHOST SIZE: M</button><button type="button" data-rips>GHOST SMELLS RIPS: OFF</button></div>
+    <div class="buttons" id="themeBtns">
+      <button data-theme-set="night">NIGHT</button><button data-theme-set="dim">DIM BOOTH</button><button data-theme-set="day">DAYLIGHT</button>
+    </div>
+    <div class="buttons" id="sizeBtns">
+      <button data-size-set="s">TEXT S</button><button data-size-set="m">M</button><button data-size-set="l">L</button><button data-size-set="xl">XL</button>
+    </div>
+    <label class="check"><input type="checkbox" id="awake"> Keep this screen awake</label>
+
+    <h2>WHERE THINGS ARE</h2>
+    <dl class="facts">
+      <dt>STATUS, top</dt><dd>READY FOR TONIGHT (the one thing to fix first, then anything worth a look), GO TO (type wifi, record, venue... and it opens there), BOOTH CHECK, warnings, the lock.</dd>
+      <dt>STATUS &rarr; TONIGHT</dt><dd>NIGHTS (plan a lineup), DECK CONTROLS (stop all, AUTO-STOP at music off), SONG ID FOR THE CROWD.</dd>
+      <dt>STATUS &rarr; THIS VENUE</dt><dd>VENUE (+ MUSIC AT THIS VENUE), WI-FI, ROOMS.</dd>
+      <dt>STATUS &rarr; SCREENS &amp; OUTPUTS</dt><dd>SHOW CONTROL (Link, MIDI clock, Resolume, grandMA3, QLab), OSC OUT, SCREENS (TV mode, stream overlay, song page, sticker), WATCH FROM HOME.</dd>
+      <dt>STATUS &rarr; THE BOX</dt><dd>CONTROLS (rejoin, listen only, restart, shut down), BACKUP (+ black box, logs), UPDATES (check, install, from a file, go back), BOX DETAILS, TOOLS (demo, tour, arcade, test run).</dd>
+      <dt>NETWORK</dt><dd>Devices, MIXER (USB MIDI), SOUND IN + SET RECORDINGS, EVENTS.</dd>
+      <dt>Keys (laptop)</dt><dd>1-6 or &larr; &rarr; switch tabs (on a phone: swipe the page sideways), / opens GO TO, Esc closes it, R = READY FOR TONIGHT, P = plan tonight. The page opens on the tab you used last.</dd>
+      <dt>Links</dt><dd>Add a place to the address to open it: #status/venue, #status/wifi, #network/sound, #now/vj.</dd>
+    </dl>
+
+    <h2>AT THE BOOTH</h2>
+    <ol class="steps">
+      <li>Power the box. Give it a minute.</li>
+      <li>Cable from the box to the DJ switch or the mixer's LINK port (where the players plug in).</li>
+      <li>Phones: join the venue/phone hotspot the box knows, or the <b>GHOST LINK</b> Wi-Fi (STATUS &rarr; BE THE HOTSPOT). The dashboard pops up.</li>
+      <li>STATUS should say: DJ cable connected, DJ Link data arriving, players found.</li>
+      <li>Load a track: title, art and waveform appear on DECKS.</li>
+    </ol>
+
+    <h2>SCREENS</h2>
+    <dl class="facts">
+      <dt>NOW</dt><dd>One big readout of what's on air. Pick who you are: DJ (set time left, next DJ, the other deck), PHOTO (big drop countdown), VJ and LIGHTS (section, next, bars to the drop, show control), SOUND (sound-in level, room dB), TECH (box health), MANAGER (the night in numbers, lineup), HOST (who's on next, music off). EDIT to show or hide anything. Saved on this phone. Share a role: add <code>?role=photo</code> to the address. ALL DECKS shows every deck on one screen.</dd>
+      <dt>DECKS</dt><dd>Every player: track, art, BPM, pitch, time left, key, waveform, song sections (intro, up, chorus, down...) when rekordbox has phrase analysis, and a beat counter.</dd>
+      <dt>NETWORK</dt><dd>Everything on the DJ network and how busy it is. GHOST LINK sits on a number 7-15 and never takes a player's number.</dd>
+      <dt>PLAYED</dt><dd>Every track that was on air 10+ seconds. Past nights, recap numbers, BPM across the night, CSV/JSON, a recap image to post, and END OF NIGHT: one card per night with MUSIC OFF kept or not. ON THE DECKS: type the next DJ and SET at each changeover; tracks get grouped by DJ.</dd>
+      <dt>STATUS</dt><dd>Health, then four groups: TONIGHT, THIS VENUE, SCREENS &amp; OUTPUTS, THE BOX. GO TO at the top finds any setting. Watching is open to anyone; changing anything needs the password once per phone. LISTEN ONLY never needs it. VENUE keeps address, rooms, gear, contacts and venue Wi-Fi (the box joins it by itself). NIGHTS: plan a date, venue and lineup with times; on the night it switches by itself.</dd>
+      <dt>Share the dashboard</dt><dd>Tap GHOST LINK at the top: the address on this network, a QR code and COPY. Off-site: <b>gl.cold.fyi</b>.</dd>
+      <dt>ghostlink.local doesn't open</dt><dd>Some phones or guest Wi-Fi don't support it. Tap GHOST LINK at the top for the number address and QR, or use the GHOST LINK Wi-Fi (10.42.0.1).</dd>
+      <dt>Watch from home</dt><dd>STATUS &rarr; WATCH FROM HOME &rarr; TURN ON (box on a Wi-Fi with internet). Send the link; it's view only. TURN OFF ends it.</dd>
+      <dt>Rooms</dt><dd>More than one box? STATUS &rarr; ROOMS: name this room, list the others (e.g. 51 = ghostlink-51.local). NOW shows them all.</dd>
+      <dt>Mixer FX</dt><dd>USB cable from the DJM's USB port to the box (venue's OK first). NETWORK &rarr; MIXER: touch a control, NAME it, WATCH it for FX LEFT ON warnings. Listen only.</dd>
+      <dt>PLAYED / MIX tags</dt><dd>On a deck: PLAYED 23:14 means it was on air earlier tonight; LAST PLAYED is a past night. MIX 8A→9A ✓ +2.1% on a cued deck: the key fits what's on air and the tempo change needed.</dd>
+      <dt>TV mode / stream</dt><dd>STATUS &rarr; SCREENS &rarr; TV MODE for a booth screen or projector (tap for full screen). STREAM OVERLAY is a see-through now-playing card for OBS (Browser Source; ?pos=br, ?bg=green, ?scale=1.5).</dd>
+      <dt>Lights & visuals (OSC)</dt><dd>STATUS &rarr; OSC OUT: add the lighting/visuals computer as host:port. It gets every beat, downbeat, BPM, section and the on-air track.</dd>
+      <dt>Song ID</dt><dd>STATUS &rarr; SONG ID FOR THE CROWD: a "what's playing" page and QR for the room. Off unless the DJ says yes.</dd>
+      <dt>Layout</dt><dd>DECKS &rarr; LAYOUT: tiles or stacked waveforms, decks across, waveform height, zoom and colour (full, blue, white), text size, what shows, remaining or elapsed time, dim decks not on air, which decks. COPY LINK TO THIS LAYOUT sends it to another phone or screen. Tap a waveform to zoom. Saved per phone. Bookmark ?layout=stack (or big, waves, compact) for a booth screen. STACKED in a small window: every deck fits, the one out loud is biggest, mixing and NEXT decks grow, empty ones are a thin line.</dd>
+      <dt>Demo</dt><dd>STATUS &rarr; THE BOX &rarr; TOOLS &rarr; DEMO: made-up tracks on empty players to show someone the whole thing. Only on that phone. END DEMO at the top.</dd>
+      <dt>Ghost moods</dt><dd>The ghost dances to the beat (calm in a breakdown, bigger on the drop, a new move every few bars), smiles at each new track, and tells you the night so far when you tap it. Keep tapping for a little lore. HELP &rarr; DISPLAY &rarr; GHOST MOODS to switch off; GHOST: GOES TO THE DECKS lets him leave the corner and sit on whichever deck is MASTER.</dd>
+      <dt>Wantlist</dt><dd>Off until the owner turns it on (STATUS &rarr; TONIGHT &rarr; WANTLIST). Then + WANT on NOW and DECKS saves the track playing to a list on your own phone (nothing goes to the DJ). PLAYED &rarr; WANTLIST: copy, share, search links.</dd>
+      <dt>&#9881;&#xFE0E;</dt><dd>On NOW and DECKS: the few switches for that screen (the ghost, the look, text size, WANTLIST). STATUS still has every setting.</dd>
+      <dt>Test run</dt><dd>STATUS &rarr; THE BOX &rarr; TOOLS &rarr; TEST RUN ticks itself as each part works. START OVER to run it again.</dd>
+      <dt>Backup</dt><dd>STATUS &rarr; THE BOX &rarr; BACKUP keeps venues, nights, played lists and lineups in one file. RESTORE puts it back.</dd>
+    </dl>
+
+    <h2>IF SOMETHING'S WRONG</h2>
+    <dl class="facts">
+      <dt>BACKED OFF</dt><dd>Another device used our number. GHOST LINK stepped aside and comes back on a free number in about 30 seconds. Nothing to do.</dd>
+      <dt>No DJ Link data</dt><dd>Cable on the wrong switch, or the gear is in laptop/controller mode (Serato, rekordbox USB-to-laptop). Players must be in standalone/LINK mode.</dd>
+      <dt>No DJ cable</dt><dd>Cable out or switch off. Plug it back; it recovers in seconds.</dd>
+      <dt>Two players, one number</dt><dd>On one player: Menu/Utility &rarr; PLAYER No. &rarr; a free number.</dd>
+      <dt>No titles, only BPM</dt><dd>LISTEN ONLY is on, or GHOST LINK is backed off. STATUS &rarr; REJOIN.</dd>
+      <dt>Can't reach the box</dt><dd>Phone on a different Wi-Fi. Join the box's Wi-Fi, or scan the sticker (STATUS &rarr; SCREENS &rarr; PRINT STICKER).</dd>
+      <dt>USB OUT</dt><dd>The USB or SD card a playing track comes from is being pulled. The track keeps going; plug it back before loading the next one.</dd>
+      <dt>Anything weird</dt><dd>STATUS &rarr; LISTEN ONLY. The box goes quiet on the DJ network. Last resort: pull the power; nothing breaks.</dd>
+    </dl>
+    <p class="note">Every change and problem is in NETWORK &rarr; EVENTS and in STATUS &rarr; BACKUP &rarr; LOGS.</p>
+  </section>
+</main>
+<button type="button" class="to-top" id="toTop" hidden aria-label="Back to top">TOP</button>
+
+<div class="share" id="share" hidden>
+  <div class="share-box">
+    <small>DASHBOARD ADDRESS ON THIS NETWORK</small>
+    <div class="share-addr" id="shareAddr"></div>
+    <img class="share-qr" id="shareQr" alt="">
+    <small id="shareWifi"></small>
+    <small>SHORT LINK · works on this Wi-Fi, or from home when WATCH FROM HOME is on</small>
+    <div class="share-addr" id="shareShort"></div>
+    <small>Add a role: <span id="shareRoles"></span></small>
+    <form id="unitForm" class="row" hidden><input id="unitName" maxlength="24" autocapitalize="none" autocomplete="off" aria-label="Short name"><button type="submit">SAVE</button></form>
+    <div class="note" id="unitNote"></div>
+    <div class="buttons"><button id="shareCopy">COPY</button><button type="button" id="unitEdit">CHANGE NAME</button><button id="shareClose">CLOSE</button></div>
+  </div>
+</div>
+<script src="waves.js"></script>
+<script src="views.js"></script>
+<script src="shim.js"></script>
+<script src="app.js"></script>
+<script src="showctl.js"></script>
+<script src="demo.js"></script>
+<script src="tour.js"></script>
+<script src="insights.js"></script>
+<script src="archive.js"></script>
+<script src="sound.js"></script>
+<script src="soundsetup.js"></script>
+<script src="dances.js"></script>
+<script src="fun.js"></script>
+<script src="updates.js"></script>
+<script src="crew.js"></script>
+<script>Crew.start(document.getElementById('crewCalls'), () => S.crew || (S.status && S.status.crew), () => S.skew, { max: 3, goKeep: 8000 });</script>
+<script src="crewsend.js"></script>
+<script src="endnight.js"></script>
+<script>EndNight.dashboard();</script>
+<script src="easy.js"></script>
+<script src="wantlist.js"></script>
+<script src="here.js"></script>
+<script src="why.js"></script>
+<div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
+ / -- \
+|      |
+|      |
+ \/\/\/</pre><h2 id="offTitle">SHUTTING DOWN</h2><p id="offText">Don't unplug yet.</p></div>
+</body>
+</html>

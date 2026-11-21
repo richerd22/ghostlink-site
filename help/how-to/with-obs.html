@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>USING GHOST LINK WITH OBS - GHOST LINK HELP</title>
+<meta name="description" content="GHOST LINK help: a see-through now-playing card and who's-on text for an OBS stream.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://ghostlink.cold.fyi/help/how-to/with-obs.html">
+<link rel="icon" href="../../icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../icon-180.png">
+<link rel="preload" href="../../JetBrainsMono_400Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="../../www.css">
+<link rel="stylesheet" href="../help.css">
+
+<!-- tpa-meta-pixel: Meta base code, loaded only after a YES. See the footer note. -->
+<script>(function(){var K='tpa-consent',P='1187380577150008',v=null;try{v=localStorage.getItem(K)}catch(e){}if(navigator.globalPrivacyControl)return;function load(){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',P);fbq('track','PageView')}if(v==='yes'){load();return}if(v==='no')return;function ask(){var d=document.createElement('div');d.className='px-ask';d.setAttribute('role','dialog');d.setAttribute('aria-label','Cookies');d.innerHTML='<span>Can a Meta pixel count this visit for our ads? <a href="https://thirdpolararch.com/privacy">What we collect</a></span>'+'<button type="button" data-v="no">NO THANKS</button><button type="button" data-v="yes">OK</button>';d.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;try{localStorage.setItem(K,b.dataset.v)}catch(x){}d.remove();if(b.dataset.v==='yes')load()});document.body.appendChild(d)}if(document.body)ask();else document.addEventListener('DOMContentLoaded',ask)})();</script>
+<style>.px-note{display:block;margin-top:.6em;font-size:.82em;opacity:.72}.px-note a{color:inherit}.px-ask{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:12px 14px;background:#000;color:#fff;border:1px solid #444;font:inherit;font-size:14px}.px-ask span{flex:1 1 220px}.px-ask a{color:inherit}.px-ask button{font:inherit;padding:8px 14px;background:#000;color:#fff;border:1px solid #fff;cursor:pointer}.px-ask button[data-v=yes]{background:#fff;color:#000}</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../../">GHOST LINK</a>
+    <nav aria-label="Help">
+      <a href="../quick-start.html">QUICK START</a>
+      <a href="../guide.html">GUIDE</a>
+      <a href="../how-to/index.html">HOW TO</a>
+      <a href="../faq.html">FAQ</a>
+      <a class="wl" href="../index.html">HELP</a>
+    </nav>
+  </div>
+</header>
+
+<main class="help-main">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">HELP</a> / <a href="../how-to/index.html">HOW TO</a></p>
+    <article class="doc">
+<h1>USING GHOST LINK WITH OBS</h1>
+
+<p class="lead">For a stream: a see-through now-playing card and a who's-on line, as OBS Browser Sources.</p>
+<h2 id="what">WHAT IT GIVES OBS</h2>
+<ul>
+  <li><b class="ui">STREAM OVERLAY</b>: art, title, artist and BPM of what the room hears, in a corner. Fades on a new track.</li>
+  <li><b class="ui">WHAT'S ON</b>: see-through text with who's on and who's next (the track only while <b class="ui">SONG ID</b> is on).</li>
+  <li>GHOST LINK sends nothing to OBS itself: OBS just shows the page.</li>
+</ul>
+<h2 id="steps">SET IT UP</h2>
+<ol class="how">
+  <li><p>The OBS computer on the same Wi-Fi as the box.</p></li>
+  <li><p>The address is the box's address plus <code>/overlay.html</code> (or <code>/whatson.html</code>), for example <code>http://ghostlink.local/overlay.html</code>. Tap <b class="ui">GHOST LINK</b> at the top of the dashboard for the box's address on this Wi-Fi.</p></li>
+  <li><p>In OBS: <b>Sources</b> &rarr; <b>+</b> &rarr; <b>Browser</b>, paste the address, width 1920, height 1080.</p></li>
+  <li><p>Options go on the end of the address: <code>?pos=br</code> (corner: bl, br, tl, tr), <code>?scale=1.5</code>, <code>?bpm=0</code> (no BPM), <code>?bg=green</code> (green screen).</p></li>
+</ol>
+<h2 id="off">TURN IT OFF</h2>
+<p>Hide the source in OBS (the eye), or delete it. GHOST LINK never changes OBS's settings or scenes.</p>
+<p class="small">Made for an OBS Browser Source; not tried in OBS by us yet. The tracklist is the DJ's: show titles on a stream only when the DJ says yes.</p>
+
+<div class="pager"><a class="btn" href="index.html#apps">ALL APPS</a> <a class="btn" href="lights-and-visuals.html">LIGHTS AND VISUALS</a></div>
+
+    </article>
+    <p class="stuck">Still stuck? <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a> · <a href="../index.html">All help</a></p>
+  </div>
+</main>
+
+<div class="venue-link">
+  <div class="wrap"><a href="https://gl.cold.fyi">AT A VENUE? <span>OPEN THE DASHBOARD &rarr;</span></a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="tpa" href="https://thirdpolararch.com" aria-label="Third Polar Arch"><img src="../../tpa-lockup-on-dark.svg" alt="Third Polar Arch" width="160" height="22"></a>
+    <p class="main">GHOST LINK is a Third Polar Arch device. Boston.</p>
+    <p><a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+    <p>Built on <a href="https://github.com/Deep-Symmetry/beat-link">beat-link</a> by Deep Symmetry (EPL-2.0). Type is JetBrains Mono (OFL).</p>
+    <p>Not affiliated with Pioneer DJ or AlphaTheta.</p>
+    <p>made with &lt;3 in Boston by <a href="https://thirdpolararch.com">Third Polar Arch</a> · <a href="https://thirdpolararch.com/terms">Terms</a> · <a href="https://thirdpolararch.com/privacy">Privacy</a></p>
+  <span class="px-note">With your OK, a Meta pixel counts visits from our ads (never with Global Privacy Control on) - <a href="https://thirdpolararch.com/privacy">what we collect</a>. <a href="#" onclick="try{localStorage.removeItem('tpa-consent')}catch(e){}location.reload();return false">Change my answer</a>.</span></div>
+</footer>
+
+<script src="../help.js" defer></script>
+</body>
+</html>

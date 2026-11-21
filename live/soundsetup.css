@@ -1,0 +1,41 @@
+/* SET UP SOUND IN (#91, soundsetup.js). Own file so app.css merges stay clean. */
+.ssu-line { margin: 8px 16px 0; padding: 6px 10px; border: 1px solid var(--line); color: var(--grey); font-size: 13px;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ssu-line[hidden] { display: none; }
+.ssu-line .ssu-go { margin-left: 0; color: var(--fg); }
+.ssu-line .ssu-x, .ssu-head .ssu-x { margin-left: auto; min-width: 2.2em; }
+.ssu { z-index: 12; align-items: start; overflow-y: auto; }
+.ssu[hidden] { display: none; }
+.ssu-box { width: min(460px, 100%); gap: 8px; margin: auto 0; padding: 14px; }
+.ssu-head { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .06em; }
+.ssu-head b { margin-right: auto; }
+.ssu-head .ssu-x { margin-left: 0; }
+.ssu-h { margin: 4px 0 0; font-size: 15px; letter-spacing: .06em; }
+.ssu-p { margin: 0; font-size: 14px; line-height: 1.4; }
+.ssu-dim { color: var(--grey); font-size: 13px; }
+.ssu-ok { color: var(--fg); }
+.ssu-warn { color: var(--warn); }
+.ssu-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.ssu-pick .mini { margin-left: 0; }
+.ssu-steps { margin: 0; padding-left: 1.4em; font-size: 14px; line-height: 1.4; display: grid; gap: 4px; }
+.ssu-meter { display: grid; gap: 6px; }
+.ssu-mrow { display: grid; grid-template-columns: 2ch 1fr 7ch; gap: 8px; align-items: center; font-size: 12px; }
+.ssu-mrow span { color: var(--grey); }
+.ssu-mrow em { font-style: normal; text-align: right; }
+.ssu-bar { height: 12px; border: 1px solid var(--dim); position: relative; }
+.ssu-bar b { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--fg); }
+.ssu-bar b.hot { background: var(--bad); }
+.ssu-tick { margin: 0; font-size: 14px; color: var(--grey); }
+.ssu-tick.yes { color: var(--fg); font-weight: 600; }
+.ssu-audio { width: 100%; }
+.ssu-test { justify-self: start; }
+.ssu-nav { display: flex; gap: 8px; margin-top: 4px; }
+.ssu-nav .ssu-next { margin-left: auto; }
+.ssu-again { margin: 0 0 8px; }
+body.remote .ssu-line, body.remote .ssu-again { display: none; }
+@media (max-height: 420px) {
+  .ssu-box { padding: 10px; gap: 6px; }
+  .ssu-p, .ssu-steps { font-size: 13px; }
+}
+.ssu-box > .mini { justify-self: start; margin-left: 0; }
+.ssu-pick .mini.on { background: var(--fg); color: var(--bg); }

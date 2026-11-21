@@ -88,6 +88,7 @@ dl.kv dd { margin: 0; color: var(--grey); }
 .pager { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 .stuck { margin-top: 36px; color: var(--grey); font-size: 14px; }
 
+.doc ul.tick { list-style: none; padding-left: 0; }
 @media print {
   :root { --bg: #fff; --fg: #0b0b0c; --grey: #333; --dim: #777; --line: #bbb; color-scheme: light; }
   .top, footer, .venue-link, .pager, .stuck, .copybox .bar, .no-print { display: none !important; }

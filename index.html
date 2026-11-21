@@ -31,7 +31,7 @@
   <div class="wrap">
     <a class="mark" href="#">GHOST LINK</a>
     <nav aria-label="Sections">
-      <a href="#shows">WHAT IT SHOWS</a>
+      <a href="#live">SEE IT LIVE</a>
       <a href="#how">HOW IT WORKS</a>
       <a href="#faq">FAQ</a>
       <a href="start-here/">START HERE</a>
@@ -46,29 +46,57 @@
 
 <div class="hero">
   <div class="wrap">
+    <div class="hero-name">
 <pre class="ghost" aria-hidden="true">  .--.
  / oo \
 |      |
 |      |
  \/\/\/</pre>
-    <h1>GHOST LINK</h1>
-    <p class="line">Every deck, live, on every phone in the room.</p>
-    <p class="sub">A small box for the DJ booth. Plug it into the DJ network and anyone in the room opens what's playing in their phone's browser: track, BPM, time left, waveforms, and when the next chorus hits. No app. It only listens.</p>
+      <h1>GHOST LINK</h1>
+    </div>
+    <p class="line">A small box for the DJ booth that puts every deck, live, on every phone in the room.</p>
+    <figure class="live" id="live">
+      <div class="screen">
+        <iframe src="live/" title="The GHOST LINK dashboard running on made-up decks" loading="eager"></iframe>
+        <a class="tap" href="live/"><span>TAP TO TRY IT</span></a>
+      </div>
+      <figcaption><span class="dot" aria-hidden="true"></span>SEE IT LIVE · the real dashboard on made-up decks. No box needed.</figcaption>
+    </figure>
+    <p class="sub">Plug it into the DJ network and anyone in the room opens it in their phone's browser: track, BPM, time left, waveforms, and when the next chorus hits. No app. It only listens.</p>
     <div class="buttons">
-      <a class="btn solid" href="#waitlist">JOIN THE WAITLIST</a>
-      <a class="btn" href="#see">SEE IT</a>
+      <a class="btn solid" href="live/">SEE IT LIVE</a>
+      <a class="btn" href="#how">HOW IT SETS UP</a>
     </div>
   </div>
 </div>
 
-<section id="see" aria-labelledby="see-h">
+<section id="how" aria-labelledby="how-h">
   <div class="wrap">
-    <p class="label">ALL DECKS</p>
-    <h2 id="see-h">The whole booth on one screen.</h2>
-    <p class="lead">Who's on air, who's master, how long is left, and what's coming next. Waveforms scroll in time. The beat counter flashes on the beat.</p>
-    <div class="demo-head"><span class="live">SIMULATED · 124 BPM</span><span>DECKS</span></div>
-    <div class="decks" id="decks"></div>
-    <p class="demo-note">Running in your browser. The box reads the same things off the network, from the players themselves.</p>
+    <p class="label">HOW IT WORKS</p>
+    <h2 id="how-h">Plug in. Power. Join.</h2>
+    <ol class="steps">
+      <li><h3>PLUG IN</h3><p>Run a cable from the box to a spare port on the DJ network switch.</p></li>
+      <li><h3>POWER</h3><p>Plug in power. The box finds the players and mixer by itself.</p></li>
+      <li><h3>JOIN THE WI-FI</h3><p>On your phone, join <b>GHOST LINK</b>. The dashboard pops up. Share it with the room.</p></li>
+    </ol>
+    <p class="after">Got venue Wi-Fi? Save it once and the box joins it on the next visit, so everyone stays on their usual network. No known Wi-Fi around, it makes its own. No internet needed either way. <a href="start-here/">Getting started, step by step</a>.</p>
+  </div>
+</section>
+
+<section id="roles" aria-labelledby="roles-h">
+  <div class="wrap">
+    <p class="label">WHO IT'S FOR</p>
+    <h2 id="roles-h">What each person in the room gets.</h2>
+    <p class="lead">One box, a view for every job. Pick yours on the NOW tab. Anyone can see everything and rearrange their own screen.</p>
+    <div class="grid three">
+      <div class="cell role"><h3>DJ</h3><p>Time left, BPM, key and the next section on every deck. Know what the other deck is doing without leaning over.</p></div>
+      <div class="cell role"><h3>LIGHTS &amp; VJ</h3><p>Big beat squares, master BPM and the phrase you're in. Cut on the one. The same beat can go over OSC to Resolume, TouchDesigner or a lighting desk.</p></div>
+      <div class="cell role"><h3>PHOTO</h3><p>A countdown to the next chorus. Be in position before the drop, not after.</p></div>
+      <div class="cell role"><h3>MANAGER</h3><p>Who's on, every track played, set times, and a recap of the night to post.</p></div>
+      <div class="cell role"><h3>CROWD</h3><p>A "what's playing" page and QR code for the room. Off until someone turns it on, and only if the DJ is OK with IDs going out.</p></div>
+      <div class="cell role"><h3>HARD STOP</h3><p>Works with HARD STOP, the booth countdown panel. Enter the night once and both know the lineup and the cutoff. <a href="help/hard-stop.html">How they work together</a>.</p></div>
+    </div>
+    <p class="after">There are TECH, SOUND and HOST views too. <a href="help/roles/dj.html">Every role, in detail</a>.</p>
   </div>
 </section>
 
@@ -90,7 +118,8 @@
       <li><b>THE ROOM'S RULES</b><span>Each venue's usual times, tempo and a not-here list. Decks flag a repeat or a track the room doesn't want.</span></li>
       <li><b>SET RECORDINGS</b><span>Add a small USB sound card and the box hears the mixer: a level meter, a warning when the room goes silent, and a lossless recording of any set you choose, with its tracklist.</span></li>
       <li><b>LIGHTS &amp; VISUALS</b><span>Beat, BPM, section, what's next and a cue one bar before the drop, sent over OSC to Resolume, TouchDesigner or a lighting desk.</span></li>
-      <li><b>BOO'S ARCADE</b><span>Ride the live waveform, beatmatch, catch the drop. High scores live on the box.</span></li>
+      <li><b>CREW CALLS</b><span>"LIGHTS ON in 2", "THE DROP", "LAST CALL": a countdown to GO on every phone and the TV, sent by the crew.</span></li>
+      <li><b>BOO'S ARCADE</b><span>Ride the live waveform, call the drop, tap on GO. High scores live on the box.</span></li>
     </ul>
   </div>
 </section>
@@ -109,35 +138,6 @@
       <figure><img src="shots/welcome.png" width="390" height="844" loading="lazy" alt="Welcome page after joining the GHOST LINK Wi-Fi: joined the DJ network, 3 players, deck 1 on air, dashboard address 10.42.0.1."><figcaption><b>WALK-IN WI-FI</b>Join, and it pops up.</figcaption></figure>
     </div>
     <p class="scroll-hint">SWIPE FOR MORE &rarr;</p>
-  </div>
-</section>
-
-<section id="roles" aria-labelledby="roles-h">
-  <div class="wrap">
-    <p class="label">WHO IT'S FOR</p>
-    <h2 id="roles-h">One box. A view for everyone in the room.</h2>
-    <p class="lead">Pick a role on the NOW tab and get a starting layout. Anyone can see everything and rearrange their own screen.</p>
-    <div class="grid three">
-      <div class="cell role"><h3>DJ</h3><p>Time left, next section, BPM and key on every deck. Know what the other deck is doing without leaning over.</p></div>
-      <div class="cell role"><h3>PHOTO</h3><p>A countdown to the chorus. Be in position before the drop, not after.</p></div>
-      <div class="cell role"><h3>VJ</h3><p>Beat counter, phrase and master BPM. Cut on the one.</p></div>
-      <div class="cell role"><h3>LIGHTS</h3><p>Big beat squares, the section you're in and the one that's next.</p></div>
-      <div class="cell role"><h3>TECH</h3><p>The network in plain English. Two players on one number, a missing mixer, a pulled USB.</p></div>
-      <div class="cell role"><h3>MANAGER</h3><p>Who's on, what's played, set times, and a recap to post at the end of the night.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="how" aria-labelledby="how-h">
-  <div class="wrap">
-    <p class="label">HOW IT WORKS</p>
-    <h2 id="how-h">Plug in. Power. Join.</h2>
-    <ol class="steps">
-      <li><h3>PLUG IN</h3><p>Run a cable from the box to a spare port on the DJ network switch.</p></li>
-      <li><h3>POWER</h3><p>Plug in power. The box finds the players and mixer by itself.</p></li>
-      <li><h3>JOIN THE WI-FI</h3><p>On your phone, join <b>GHOST LINK</b>. The dashboard pops up. Share it with the room.</p></li>
-    </ol>
-    <p class="after">Got venue Wi-Fi? Save it once and the box joins it on the next visit, so everyone stays on their usual network. No known Wi-Fi around, it makes its own. No internet needed either way.</p>
   </div>
 </section>
 
@@ -198,7 +198,7 @@
     <p class="lead">Set it up once per room. It runs the night by itself and keeps the paperwork.</p>
     <div class="grid three">
       <div class="cell"><small>PLAYED TONIGHT</small><p>Every track that went out, grouped by DJ. Past nights kept. CSV export. A BPM-across-the-night chart.</p></div>
-      <div class="cell"><small>RECAP</small><p>A recap image of the night, ready to post.</p></div>
+      <div class="cell"><small>END OF NIGHT</small><p>One card: tracks, hours, DJs, the best blend, and whether the music stopped on time. Ready to post.</p></div>
       <div class="cell"><small>LINEUP</small><p>Set who's on the decks. Tracks land under the right name.</p></div>
       <div class="cell"><small>PLAN AHEAD</small><p>Date, venue, lineup with set times. On the night it switches over by itself.</p></div>
       <div class="cell"><small>VENUE PROFILES</small><p>Address, rooms, gear, contacts and the venue Wi-Fi, saved on the box.</p></div>
