@@ -18,46 +18,22 @@ const SoundSetup = (() => {
   let shownKey = '', boxDone = null, hiddenHere = false, step = 1, pick = null, lv = null, okSince = 0, heard = false, recent = [], testTimer = null;
   try { hiddenHere = localStorage.getItem(KEY) === '1'; } catch (e) {}
 
-  // Each mixer's rear panel, from Pioneer DJ's published specs / manuals (read 2026-11-21). Same table on the public
-  // help page (help/how-to/record-with-a-sound-card.html) and docs/wiki/sound-in.md: keep the three in step.
-  const RCA = 'An RCA to RCA cable (red and white, both ends).';
-  const JACK = 'A 2 x 1/4-inch jack to 2 x RCA cable (BOOTH is two 1/4-inch jacks, L and R).';
-  const DJM = {
-    use: 'REC OUT', where: 'the pair of RCA jacks marked REC OUT on the back',
-    cable: RCA,
-    why: "REC OUT is there for recording: it carries the mix and nobody else is using it, most nights.",
-    taken: 'REC OUT already used (a venue recorder)? MASTER 2 (RCA) works too. Both busy: a Y splitter on REC OUT.',
-    level: "REC OUT has no knob of its own. The loud parts sit wherever the DJ's mix sits; that's normal.",
-    loud: "Red on the loud parts: the DJ's mix is running hot (check the mixer's MASTER meter). A few flashes are fine. Steady red: move the cable to BOOTH (2 x 1/4-inch to 2 x RCA) and set it with the BOOTH level knob, only if the booth monitors aren't on BOOTH.",
-    quiet: 'Quiet: check the mixer is really sending (channel faders up, crossfader). REC OUT follows the mix, not a knob. A quiet recording is still usable; it can be turned up after.'
-  };
-  const MIXERS = [
-    { id: 'DJM-A9', name: 'DJM-A9', ...DJM },
-    { id: 'DJM-V10', name: 'DJM-V10', ...DJM },
-    { id: 'DJM-900NXS2', name: 'DJM-900NXS2', ...DJM },
-    { id: 'XDJ-XZ', name: 'XDJ-XZ', use: 'MASTER 2', where: 'the pair of RCA jacks marked MASTER 2 on the back (MASTER 1 is the big XLR pair)',
-      cable: RCA,
-      why: 'The XDJ-XZ has no REC OUT. MASTER 2 is the RCA copy of the master.',
-      taken: 'MASTER 2 already used? BOOTH (2 x 1/4-inch to 2 x RCA) works too, with its own BOOTH level knob.',
-      level: 'MASTER 2 follows the MASTER LEVEL knob: turning the room up turns the recording up.',
-      loud: 'Red on the loud parts: turn MASTER LEVEL down a little, or move to BOOTH and set the recording with the BOOTH level knob on its own.',
-      quiet: 'Quiet: turn MASTER LEVEL up, or move to BOOTH and turn the BOOTH level knob up (the room stays the same).' },
-    { id: 'OTHER', name: 'OTHER', use: 'REC OUT', where: 'REC OUT on the back if it has one (it is made for recording). No REC OUT: a spare RCA master out (MASTER 2), or BOOTH',
-      cable: RCA + ' For BOOTH (1/4-inch jacks): 2 x 1/4-inch to 2 x RCA.',
-      why: "Never the headphone jack: it carries whatever the DJ cues, not the mix.",
-      taken: 'Everything busy: a Y splitter on REC OUT or the RCA master.',
-      level: 'REC OUT usually has no knob. A master or booth out follows its own level knob.',
-      loud: 'Red on the loud parts: turn the level knob for the output you used down a little (BOOTH, or MASTER if you used a master out). REC OUT has no knob: a few flashes are fine.',
-      quiet: 'Quiet: turn the level knob for that output up (BOOTH, or MASTER). REC OUT follows the mix; a quiet recording is still usable.' }
-  ];
-  const OTHER = MIXERS[MIXERS.length - 1];
+  // Which output on which mixer: gear.js (#105, the whole list, from the makers' spec pages and manuals). Same list
+  // on the public help page (help/mixers/) and docs/wiki/gear.md. The pick is remembered per venue on this phone.
+  const OTHER = Gear.sound(Gear.byId('OTHER'));
   const seen = () => {
     const m = (S.devices || []).find(d => d.kind === 'MIXER');
     if (!m || !m.name) return null;
-    const n = String(m.name).toUpperCase().replace(/\s+/g, '');
-    return { name: m.name, model: MIXERS.find(x => x.id !== 'OTHER' && n.startsWith(x.id)) || OTHER };
+    const x = Gear.fromName(m.name) || Gear.byId('OTHER');
+    return { name: m.name, model: Gear.sound(x) };
   };
-  const model = () => MIXERS.find(x => x.id === pick) || (seen() || {}).model || null;
+  const venue = () => (S.status && S.status.venue) || null;
+  const model = () => {
+    if (pick) return Gear.sound(Gear.byId(pick));
+    const c = Gear.current(S.devices, venue());
+    return c ? Gear.sound(c.entry) : null;
+  };
+  const MIXERS = Gear.LIST;
 
   // ---------- the quiet line ----------
   const line = el('div', 'ssu-line local-only');
@@ -160,20 +136,21 @@ const SoundSetup = (() => {
   function step1() {
     inner.append(el('h3', 'ssu-h', '1 · PLUG THE MIXER INTO THE CARD'), cardLine());
     const s = seen();
-    const pickRow = el('div', 'ssu-pick');
-    MIXERS.forEach(m => {
-      const b = btn(m.name, () => { pick = m.id; render(); }, 'mini');
-      if (model() === m) b.classList.add('on');
-      pickRow.append(b);
-    });
-    inner.append(p(s ? 'Mixer on the DJ network: ' + s.name + (pick ? '' : ' (picked for you).') : 'Which mixer? (None on the DJ network right now: pick it.)'), pickRow);
+    const c = Gear.current(S.devices, venue());
+    const cur = pick || (c && c.entry.id);
+    const pickRow = GearPick.picker(cur, x => { pick = x.id; const v = venue(); Gear.store.set(v && v.id, x.id); render(); });
+    inner.append(p(s ? 'Mixer on the DJ network: ' + s.name + (pick ? '' : ' (picked for you).')
+      : c && c.from === 'venue' ? 'Which mixer? From this venue\'s GEAR notes: ' + c.entry.name + '. Different tonight? Tap it.'
+      : c ? 'Which mixer? Last time here: ' + c.entry.name + '.' : 'Which mixer? (None on the DJ network right now: pick it.)'), pickRow);
     const m = model();
     if (!m) { inner.append(p('Pick the mixer above and the guide says which plug to use.')); return; }
     const ol = el('ol', 'ssu-steps');
-    ol.append(el('li', null, 'On the ' + (m.id === 'OTHER' ? 'mixer' : m.name) + ': use ' + m.where + '.'));
+    ol.append(el('li', null, 'On the ' + (m.id === 'OTHER' || m.id === 'LAPTOP' || m.id === 'NONE' ? 'mixer' : m.name) + ': use ' + m.where + '.'));
     ol.append(el('li', null, m.cable));
     ol.append(el('li', null, 'Other end into the sound card\'s INPUT (the RCA pair marked INPUT). Never OUTPUT. Red = R, white = L.'));
-    inner.append(ol, p(m.why), p(m.taken, 'ssu-dim'));
+    inner.append(ol);
+    if (m.why) inner.append(p(m.why));
+    inner.append(p(m.taken, 'ssu-dim'));
   }
 
   // Live meter in the guide (Sound.levels is wrapped below, about 5 times a second).
@@ -297,9 +274,82 @@ const SoundSetup = (() => {
     inner.append(p('This guide won\'t pop up again. It\'s always under NETWORK > SOUND IN > SET UP GUIDE.', 'ssu-dim'));
   }
 
+  // ---------- the chip (#105) ----------
+  // Richard at a club: "lil too hidden when it's plugged in ... If it was just plugged in the persons prob looking for
+  // it." One small row inside the header, on every view (the corner window too), never over deck data:
+  //  - SOUND CARD IN · ● RECORD · SET UP: the card appeared while this page was open, or within 2 min of the page
+  //    loading (status.audio.cardAt, box clock). Shows even when the guide was done before. Goes by itself after 60 s,
+  //    on ×, or once recording is armed / running. Seen once per plug-in per phone.
+  //  - RECORDING BUT HEARING NOTHING · CHECK THE CABLE: status.audio.deaf (#103). Stays while it's true; × hides it
+  //    until the next time. CHECK THE CABLE opens the plug step for their mixer.
+  const CHIP_SEEN = 'sndChipSeen', CHIP_MS = 60_000, FRESH_MS = 120_000;
+  const chip = el('div', 'ssu-chip');
+  chip.id = 'soundChip';
+  chip.hidden = true;
+  chip.setAttribute('role', 'status');
+  const chipText = el('span', 'ssu-chip-t');
+  const chipRec = btn('● RECORD', () => record(), 'mini ssu-chip-rec');
+  const chipGo = btn('SET UP', () => open(1), 'mini');
+  const chipX = btn('×', () => chipAway(), 'mini ssu-x');
+  chipX.setAttribute('aria-label', 'Hide');
+  chip.append(chipText, chipRec, chipGo, chipX);
+  (document.querySelector('header') || document.body).append(chip);
+  let chipKind = null, chipUntil = 0, chipCardAt = null, prevCard, deafAway = false, chipT = 0;
+  const seenAt = () => { try { return +localStorage.getItem(CHIP_SEEN) || 0; } catch (e) { return 0; } };
+  const markSeen = at => { try { localStorage.setItem(CHIP_SEEN, String(at)); } catch (e) {} };
+
+  function record() {
+    const r = $('sndRec');
+    if (!r) return;
+    const a = S.status && S.status.audio;
+    if (a && a.recordOn) return chipAway();
+    // The same arm flow as SOUND IN: the crew code / password still applies; once in, it carries on by itself.
+    if (!unlocked) { pending = { click: () => { if (!(S.status && S.status.audio && S.status.audio.recordOn)) r.click(); } }; return needUnlock(); }
+    r.click();
+  }
+  function chipAway() {
+    if (chipKind === 'deaf') deafAway = true;
+    if (chipKind === 'in' && chipCardAt) markSeen(chipCardAt);
+    chipKind = null;
+    renderChip();
+  }
+  const chipFor = (a, o) => Gear.chipFor(a, Object.assign({ fresh: FRESH_MS }, o));
+  function updateChip() {
+    const a = S.status && S.status.audio;
+    if (!a) return;
+    if (!a.deaf) deafAway = false;
+    const now = Date.now();
+    if (chipKind === 'in' && (now > chipUntil || !a.card || a.recordOn || a.recording || a.cardAt !== chipCardAt)) {
+      if (chipCardAt) markSeen(chipCardAt);
+      chipKind = null;
+    }
+    const want = chipFor(a, { deafAway, seen: seenAt(), prevCard, boxNow: now - (S.skew || 0) });
+    prevCard = a.card || null;
+    if (want === 'deaf') chipKind = 'deaf';
+    else if (chipKind === 'deaf') chipKind = null;
+    if (want === 'in' && chipKind !== 'in') { chipKind = 'in'; chipCardAt = a.cardAt; chipUntil = now + CHIP_MS; markSeen(a.cardAt); }
+    renderChip();
+  }
+  function renderChip() {
+    const remote = document.body.classList.contains('remote') || document.body.classList.contains('embed');
+    chip.hidden = !chipKind || remote;
+    chip.classList.toggle('warn', chipKind === 'deaf');
+    if (chipKind === 'deaf') { chipText.textContent = 'RECORDING BUT HEARING NOTHING'; chipGo.textContent = 'CHECK THE CABLE'; }
+    else { chipText.textContent = 'SOUND CARD IN'; chipGo.textContent = 'SET UP'; }
+    chipRec.hidden = chipKind !== 'in';
+    clearTimeout(chipT);
+    if (chipKind === 'in') chipT = setTimeout(() => { try { updateChip(); } catch (e) {} }, Math.max(500, chipUntil - Date.now() + 50));
+  }
+
   // SET UP GUIDE button in NETWORK -> SOUND IN, always there.
   const again = btn('SET UP GUIDE', () => open(1), 'mini ssu-again local-only');
   if ($('sndNote')) $('sndNote').insertAdjacentElement('afterend', again);
+  // #105: recording but the card hears nothing (status.audio.deaf, #103), said on SOUND IN too.
+  const deafRow = el('div', 'ssu-deaf');
+  deafRow.hidden = true;
+  deafRow.append(el('span', null, 'RECORDING BUT HEARING NOTHING. The decks are playing and the card has heard nothing for 20 s: check the cable is in the mixer\'s output and the card\'s INPUT.'),
+    btn('CHECK THE CABLE', () => open(1), 'mini'));
+  if ($('sndNote')) $('sndNote').insertAdjacentElement('beforebegin', deafRow);
 
   // ---------- hooks ----------
   if (typeof Sound !== 'undefined') {
@@ -313,11 +363,13 @@ const SoundSetup = (() => {
       const a = S.status && S.status.audio;
       if (a && a.card && boxDone === null) { boxDone = undefined; loadDone(); }
       renderLine();
+      deafRow.hidden = !(a && a.deaf);
+      updateChip();
       // Redraw only when what the guide shows changed (card, reading, the mixer seen): never under a finger or a playing clip.
       const k = JSON.stringify([a && a.card, a && a.live, (seen() || {}).name]);
       if (!box.hidden && k !== shownKey && step !== 3) { shownKey = k; render(); }
     } catch (e) { console.warn('soundsetup', e); }
   };
   addEventListener('hashchange', () => { try { renderLine(); } catch (e) {} });
-  return { open, close, levels, MIXERS };
+  return { open, close, levels, MIXERS, chipFor };
 })();

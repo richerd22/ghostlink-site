@@ -13,6 +13,8 @@
 <link rel="apple-touch-icon" href="../icon-180.png">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="soundsetup.css">
+<link rel="stylesheet" href="nightshape.css"><!-- #107 THE NIGHT'S SHAPE + GOODNIGHT, own file -->
+<link rel="stylesheet" href="gear.css">
 <link rel="stylesheet" href="announce.css">
 <link rel="stylesheet" href="soundboard.css">
 </head>
@@ -41,6 +43,7 @@
 </div>
 <div id="showAlerts" class="show-alerts" aria-live="assertive"></div>
 <div id="crewCalls" class="crew-calls" aria-live="polite" hidden></div>
+<div id="boothAsks" class="booth-asks" aria-live="polite" hidden></div>
 <div id="eonReady" class="eon-ready" hidden></div>
 
 <main>
@@ -337,6 +340,7 @@
         <textarea id="vGear" rows="2" placeholder="Gear: players, mixer, switch, where the DJ network cable is" aria-label="Gear"></textarea>
         <textarea id="vContacts" rows="2" placeholder="Contacts: manager, sound tech, door - names and numbers" aria-label="Contacts"></textarea>
         <textarea id="vNotes" rows="3" placeholder="Booth notes: load-in, power, quirks, set times" aria-label="Booth notes"></textarea>
+        <label class="check"><input type="checkbox" id="vHome"> HOME: practice nights here are kept, marked HOME, never count as a show or a record</label>
         <div class="venue-wifi" id="vWifi"></div>
         <div class="wifi-near" id="vWifiNear" hidden></div>
         <datalist id="wifiNearbyList"></datalist>
@@ -369,6 +373,7 @@
       <button data-wifi="client">KNOWN WI-FI ONLY</button>
     </div>
     <div class="note" id="wifiNote"></div>
+    <div class="wq" id="wifiQuiet"></div><!-- #104 WI-FI QUIET (wifiquiet.js) -->
     <h2 data-k="rooms">ROOMS</h2>
     <div class="note">More than one GHOST LINK box? Name the rooms; NOW shows them all. <button type="button" class="q" data-tip aria-label="More">?</button></div>
     <div class="note tip" hidden>One box per room. Name this room and list the others (e.g. 51 = ghostlink-51.local); every phone then shows all rooms on NOW. Boxes must be on the same venue Wi-Fi.</div>
@@ -564,6 +569,8 @@
 <script src="insights.js"></script>
 <script src="archive.js"></script>
 <script src="sound.js"></script>
+<script src="gear.js"></script>
+<script src="gearpick.js"></script>
 <script src="soundsetup.js"></script>
 <script src="announce.js"></script>
 <script src="hardstoppa.js"></script>
@@ -572,15 +579,19 @@
 <script src="fun.js"></script>
 <script src="updates.js"></script>
 <script src="crew.js"></script>
-<script>Crew.start(document.getElementById('crewCalls'), () => S.crew || (S.status && S.status.crew), () => S.skew, { max: 3, goKeep: 8000 });</script>
+<script>Crew.start(document.getElementById('crewCalls'), () => S.crew || (S.status && S.status.crew), () => S.skew, { max: 3, goKeep: 8000, held: () => S.status && S.status.dropCalls });</script>
 <script src="crewsend.js"></script>
+<script src="asks.js"></script>
 <script src="endnight.js"></script>
 <script>EndNight.dashboard();</script>
+<script src="wifiquiet.js"></script>
 <script src="easy.js"></script>
+<script src="nightshape.js"></script><script>NightShape.dashboard();</script><!-- #107 THE NIGHT'S SHAPE + GOODNIGHT -->
 <script src="wantlist.js"></script>
 <script src="here.js"></script>
 <script src="why.js"></script>
 <script src="sharelinks.js"></script>
+<script src="ear.js"></script><!-- THE EAR (#108): BPM by ear for laptop DJs, own file -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \
 |      |

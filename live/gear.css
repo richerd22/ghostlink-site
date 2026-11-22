@@ -1,0 +1,19 @@
+/* GEAR GUIDES (#105, gearpick.js): the mixer picker and WHICH MIXER?. Own file so app.css merges stay clean. */
+.gp { display: grid; gap: 6px; }
+.gp-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.gp .mini { margin-left: 0; }
+.gp .mini.on { background: var(--fg); color: var(--bg); }
+.gp-more { display: grid; gap: 6px; padding: 6px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.gp-more[hidden] { display: none; }
+.gp-maker { color: var(--grey); font-size: 11px; letter-spacing: .1em; flex-basis: 100%; }
+.gp-lines { display: grid; gap: 4px; }
+.gp-box .ssu-nav { flex-wrap: wrap; }
+.gp-box .ssu-nav .mini { margin-left: 0; }
+.alert .gp-ask, #problems .gp-ask { display: inline-block; margin: .5em .5em 0 0; color: var(--fg); }
+#problems .gp-ask { display: block; }
+body.remote .gp-ask { display: none; }
+.alert .gp-ask { max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1; }
+@media (max-height: 420px) {
+  .gp { gap: 4px; }
+  .gp-row { gap: 4px; }
+}

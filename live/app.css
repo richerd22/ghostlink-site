@@ -401,6 +401,8 @@ header { position: relative; }
   font-size: 8px; line-height: 8px; cursor: grab; text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg);
   transition: left 1.4s ease-in-out, top 1.4s ease-in-out, opacity 1.2s ease; }
 @media (prefers-reduced-motion: reduce) { .ghost.rover { transition: none; } }
+/* THE VISIT (#106): up top he lands in free space, and always draws in front of the wordmark and the tabs. */
+.ghost.rover.visiting { z-index: 5; text-shadow: 0 0 2px var(--bg), 0 0 4px var(--bg), 0 0 6px var(--bg); }
 /* BOOTH CHECK: word + colour, never colour alone. */
 .booth-check dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0 0 14px; }
 .booth-check dt { color: var(--grey); font-size: 12px; letter-spacing: .08em; align-self: center; }
@@ -856,3 +858,47 @@ button.here-gear.on { color: var(--fg); background: none; border-color: var(--fg
 #decks.fit[data-text="l"] .stack .srow.tall .stt, #decks.fit[data-text="l"] .stack .srow.tall .sn { font-size: 16px; }
 #decks.fit[data-text="xl"] .stack .srow .st { font-size: 17px; line-height: 22px; }
 #decks.fit[data-text="xl"] .stack .srow.tall .stt, #decks.fit[data-text="xl"] .stack .srow.tall .sn { font-size: 20px; }
+
+/* #104 WI-FI QUIET (wifiquiet.js): where the box shows up, and the quiet controls under WI-FI */
+.wq { margin: 10px 0 4px; }
+.wq .wq-h { font-size: 13px; letter-spacing: .08em; margin: 12px 0 6px; font-weight: 700; }
+.wq .wq-where { font-size: 14px; line-height: 1.35; margin-bottom: 8px; overflow-wrap: anywhere; }
+.wq .wq-where.on { border-left: 2px solid var(--warn); padding-left: 8px; }
+.wq .wq-row { margin: 6px 0; }
+.share .wq-share { display: block; max-width: 34em; overflow-wrap: anywhere; }
+/* #109 BOOTH ASKS (asks.js): under the crew calls on every tab. Amber border = waiting (the OK / ON MY WAY buttons say it too). */
+.booth-asks { margin: 6px 16px 0; display: grid; gap: 6px; }
+.booth-asks[hidden] { display: none; }
+.booth-ask { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 10px; align-items: baseline; padding: 6px 12px; border: 1px solid var(--warn); }
+.booth-ask .who { color: var(--grey); font-size: .8em; letter-spacing: .06em; }
+.booth-ask b { overflow-wrap: anywhere; }
+.booth-ask .when { color: var(--grey); font-size: .8em; font-variant-numeric: tabular-nums; }
+.booth-ask .btns, .booth-ask .ans { grid-column: 1 / -1; }
+.booth-ask .btns .mini:first-child { margin-left: 0; }
+.booth-ask .ans { color: var(--grey); font-size: .85em; letter-spacing: .04em; }
+.booth-ask.done { border-color: var(--line); }
+body.fit-decks[data-view=decks] .booth-asks { margin: 2px 10px 0; gap: 0; }
+body.fit-decks[data-view=decks] .booth-ask { grid-template-columns: auto minmax(0, 1fr) auto auto; padding: 2px 8px; font-size: 12px; line-height: 16px; }
+body.fit-decks[data-view=decks] .booth-ask b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.fit-decks[data-view=decks] .booth-ask .btns, body.fit-decks[data-view=decks] .booth-ask .ans { grid-column: auto; white-space: nowrap; }
+body.fit-decks[data-view=decks] .booth-ask .btns .mini { font-size: 11px; padding: 0 6px; margin-left: 4px; }
+body.fit-decks[data-view=decks] .booth-ask .btns .mini + .mini { display: none; }
+body.fit-decks[data-view=decks] .booth-ask:nth-child(n+2) { display: none; }
+body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(2)) > :first-child .when::after { content: ' · +1'; }
+body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(3)) > :first-child .when::after { content: ' · +2'; }
+@media (max-height: 560px) {
+  .booth-asks { margin: 2px 10px 0; gap: 0; }
+  .booth-ask { grid-template-columns: auto minmax(0, 1fr) auto auto; padding: 2px 8px; font-size: 12px; line-height: 16px; }
+  .booth-ask b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .booth-ask .btns, .booth-ask .ans { grid-column: auto; white-space: nowrap; }
+  .booth-ask .btns .mini { font-size: 11px; padding: 0 6px; margin-left: 4px; }
+  .booth-ask:nth-child(n+2) { display: none; }
+  .booth-asks:has(> :nth-child(2)) > :first-child .when::after { content: ' · +1'; }
+  .booth-asks:has(> :nth-child(3)) > :first-child .when::after { content: ' · +2'; }
+}
+/* #109 HOME: PLAYED's practice-night line. */
+.home-night { margin: 0 0 10px; font-size: .85em; }
+.home-night[hidden] { display: none; }
+.home-night .tag { border: 1px solid var(--fg); padding: 0 .4em; letter-spacing: .1em; }
+.home-night.quiet { text-align: right; }
+.home-night.quiet .mini { color: var(--grey); }

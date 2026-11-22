@@ -38,7 +38,8 @@ const Easy = (() => {
     wifiAsked = Date.now(); readySig = ''; renderReady();
   }
   let wifiAsked = 0;
-  const GO = { venue: () => go('#status/venue'), controls: () => go('#status/controls'), plan: planTonight, joinwifi: joinWifi };
+  const GO = { venue: () => go('#status/venue'), controls: () => go('#status/controls'), plan: planTonight, joinwifi: joinWifi,
+    quietend: () => WifiQuiet.end() }; // #104 WI-FI QUIET
 
   /** What to say about the venue Wi-Fi while the box isn't on it: is a saved name around, or something close to it? */
   function wifiAdvice(s) {
@@ -80,7 +81,8 @@ const Easy = (() => {
     if (!v.name) add('VENUE', 'look', 'None set. VENUE -> NEW: the box remembers its Wi-Fi, gear and contacts for next time.', 'venue', 'VENUE');
     else if (!s.venueOk) add('VENUE', 'look', 'Still ' + v.name + '? Change it under VENUE if not.', 'venue', 'VENUE');
     else add('VENUE', 'ok', v.name);
-    if (w.state === 'hotspot' || w.state === 'none') {
+    if (s.wifiQuiet && typeof WifiQuiet !== 'undefined') add('WI-FI', 'look', WifiQuiet.say(s), 'quietend', s.wifiQuiet.kind === 'off' ? 'WI-FI BACK ON' : 'BACK ON THEIR WI-FI'); // #104
+    else if (w.state === 'hotspot' || w.state === 'none') {
       const a = wifiAdvice(s);
       if (Date.now() - wifiAsked < 60000) add('WI-FI', 'look', 'Looking for the venue Wi-Fi now (up to a minute). If it joins, this phone loses the GHOST LINK hotspot: join the venue Wi-Fi and open gl.cold.fyi.');
       else add('WI-FI', 'look', (w.state === 'none' ? 'Not on Wi-Fi yet. ' : 'On its own hotspot. ') + a.say, a.join ? 'joinwifi' : 'venue', a.join ? 'JOIN VENUE WI-FI NOW' : 'VENUE WI-FI');

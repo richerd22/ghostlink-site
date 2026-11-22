@@ -3,10 +3,13 @@
 // count-in), as the phone's role (NOW -> DJ / LIGHTS / PHOTO / MANAGER ...; DJ calls as BOOTH). Needs the crew code or
 // the owner password. The box gives each one an id starting "gl-"; the HARD STOP app reads them from
 // /api/hardstop/live `crew` and can pass them to its panels. Live calls can be cancelled here. Owner: THE DROP by itself.
+// #107 AT THE DROP: the time row's last choice holds the call for the next drop of the deck on air (the box fires it on
+// the downbeat); with no drop to aim at, the box says why and offers NEXT 16-BAR PHRASE / NOW here.
 // Lives in NOW (#crewSend); uses app.js globals (role, ROLES, unlocked, post, needUnlock, pending, S). Text nodes only.
 const CrewSend = (() => {
   const PICKS = [
     { txt: 'THE DROP', in: 16, mo: true },
+    { txt: 'CO2', drop: true, mo: true },
     { txt: 'LIGHTS ON', in: 120, mo: false },
     { txt: 'LAST CALL', in: 60, mo: false },
     { txt: 'PHOTO COUNT-IN', in: 10, mo: true },
@@ -35,20 +38,31 @@ const CrewSend = (() => {
 
   PICKS.forEach(p => {
     const b = el('button', 'mini', p.txt); b.type = 'button';
-    b.addEventListener('click', () => { txt.value = p.txt; secs.value = p.in; ciBox.checked = p.mo; mark(); });
+    b.addEventListener('click', () => { txt.value = p.txt; atDrop = !!p.drop; if (!p.drop) secs.value = p.in; ciBox.checked = p.mo; mark(); });
     picks.append(b);
   });
   TIMES.forEach(([s, l]) => {
     const b = el('button', 'mini', l); b.type = 'button'; b.dataset.s = s;
-    b.addEventListener('click', () => { secs.value = s; mark(); });
+    b.addEventListener('click', () => { secs.value = s; atDrop = false; mark(); });
     times.append(b);
   });
   times.append(secs, el('span', 'cs-unit', 's'));
-  secs.addEventListener('input', mark);
-  function mark() { times.querySelectorAll('[data-s]').forEach(b => b.classList.toggle('on', b.dataset.s === String(secs.value))); }
+  let atDrop = false;
+  const dropBtn = el('button', 'mini cs-drop', 'AT THE DROP'); dropBtn.type = 'button';
+  dropBtn.title = 'Held by the box, sent on the downbeat of the next drop of the deck on air';
+  dropBtn.addEventListener('click', () => { atDrop = true; ciBox.checked = true; mark(); });
+  times.append(dropBtn);
+  const offer = el('div', 'cs-offer'); offer.hidden = true;
+  secs.addEventListener('input', () => { atDrop = false; mark(); });
+  function mark() {
+    times.querySelectorAll('[data-s]').forEach(b => b.classList.toggle('on', !atDrop && b.dataset.s === String(secs.value)));
+    dropBtn.classList.toggle('on', atDrop);
+    secs.disabled = atDrop;
+    offer.hidden = true;
+  }
   mark();
 
-  wrap.append(sum, as, picks, txt, times, ci, send, note, liveH, live, auto);
+  wrap.append(sum, as, picks, txt, times, ci, send, note, offer, liveH, live, auto);
   box.append(wrap);
 
   function say(t, warn) { note.textContent = t; note.classList.toggle('warn', !!warn); }
@@ -57,22 +71,50 @@ const CrewSend = (() => {
     if (!t) { say('Type what to call, or tap one above.', true); return; }
     if (!(s >= 0 && s <= 3600)) { say('Seconds to GO: 0 to 3600.', true); return; }
     if (!unlocked) { pending = send; return needUnlock(); }
+    if (atDrop) return sendAtDrop(t, '');
     const r = await post('/api/crew/call', { txt: t, in: s, mo: ciBox.checked, from: who() });
     if (r.ok) { say('Sent: ' + t + (s ? ' in ' + s + ' s' : ' NOW') + '.'); txt.value = ''; }
     else if (r.status !== 401) { let e = 'Not sent.'; try { e = (await r.json()).error || e; } catch (x) {} say(e, true); }
   });
 
+  /** AT THE DROP: held by the box. No drop to aim at: say why, offer what the box can do instead. */
+  async function sendAtDrop(t, orElse) {
+    offer.hidden = true;
+    const r = await post('/api/crew/call', { txt: t, at: 'drop', orElse, mo: ciBox.checked, from: who() });
+    let j = {}; try { j = await r.json(); } catch (x) {}
+    if (r.ok) {
+      txt.value = '';
+      if (j.at === 'now') say((j.why || '') + ' ' + t + ' sent NOW.');
+      else if (j.state === 'WAITING') say(t + ' AT THE DROP: waiting. ' + (j.why || ''));
+      else say(t + (j.at === 'phrase' ? ' AT THE NEXT 16-BAR PHRASE' : ' AT THE DROP') + ': deck ' + j.deck + ', ' + j.bars + (j.bars === 1 ? ' bar' : ' bars') + ' away.');
+      return;
+    }
+    if (r.status === 401) return;
+    say(j.why || 'Not sent.', true);
+    if (r.status !== 409 || !j.offer) return;
+    const bs = j.offer.map(o => {
+      const b = el('button', 'mini', o === 'phrase' ? 'NEXT 16-BAR PHRASE' + (j.phraseBars ? ' (' + j.phraseBars + ' BARS)' : '') : 'NOW');
+      b.type = 'button';
+      b.addEventListener('click', () => sendAtDrop(t, o));
+      return b;
+    });
+    const x = el('button', 'mini', 'NOT NOW'); x.type = 'button'; x.addEventListener('click', () => { offer.hidden = true; say(''); });
+    offer.replaceChildren(...bs, x);
+    offer.hidden = false;
+  }
+
   let liveKey = '';
   function renderLive() {
     as.textContent = 'AS ' + who() + ' · change it with the role buttons above';
-    const calls = (S.crew || (S.status && S.status.crew) || []).filter(c => !c.go);
-    const k = calls.map(c => c.id).join('|') + unlocked;
+    const calls = (S.crew || (S.status && S.status.crew) || []).filter(c => !c.go)
+      .concat(((S.status && S.status.dropCalls) || []).filter(h => h.state === 'WAITING'));
+    const k = calls.map(c => c.id + (c.state || '')).join('|') + unlocked;
     liveH.hidden = !calls.length;
     if (k === liveKey) return;
     liveKey = k;
     live.replaceChildren(...calls.map(c => {
       const row = el('div', 'cs-row');
-      row.append(el('span', 'who', c.from || 'CREW'), el('b', null, c.txt));
+      row.append(el('span', 'who', c.from || 'CREW'), el('b', null, Crew.label ? Crew.label(c) + (c.state === 'WAITING' ? ' · WAITING' : '') : c.txt));
       const x = el('button', 'mini', 'CANCEL'); x.type = 'button';
       x.addEventListener('click', async () => {
         if (!unlocked) { pending = x; return needUnlock(); }

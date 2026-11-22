@@ -40,7 +40,8 @@ const EndNight = (() => {
     const head = el('div', 'head');
     head.append(el('pre', 'boo', GHOST.join('\n')));
     const t = el('div');
-    t.append(el('h1', null, 'END OF NIGHT'), el('div', 'sub', (c.venue ? c.venue.toUpperCase() + ' · ' : '') + 'NIGHT OF ' + c.night));
+    t.append(el('h1', null, c.home ? 'END OF NIGHT · PRACTICE' : 'END OF NIGHT'), el('div', 'sub', (c.venue ? c.venue.toUpperCase() + ' · ' : '') + 'NIGHT OF ' + c.night));
+    if (c.home) t.append(el('div', 'line', 'A practice night: kept, never counted as a show or a record.'));
     head.append(t);
     const nums = el('div', 'nums');
     [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG BPM', c.avgBpm == null ? '--' : c.avgBpm]].forEach(([k, v]) => {
@@ -81,7 +82,7 @@ const EndNight = (() => {
     g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
     g.textBaseline = 'top'; g.fillStyle = '#fff';
     g.font = F(600, 22); GHOST.forEach((l, i) => g.fillText(l, 72, 72 + i * 22));
-    g.font = F(600, 44); g.fillText('END OF NIGHT', 220, 84);
+    g.font = F(600, 44); g.fillText(c.home ? 'END OF NIGHT · PRACTICE' : 'END OF NIGHT', 220, 84);
     g.fillStyle = '#9a9a9a'; g.font = F(400, 26);
     g.fillText(fit((c.venue ? c.venue.toUpperCase() + ' · ' : '') + 'NIGHT OF ' + c.night, W - 300), 220, 144);
     [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG', c.avgBpm == null ? '--' : c.avgBpm]].forEach(([k, v], i) => {

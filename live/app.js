@@ -840,10 +840,11 @@ function frameNight(q, set, setH) {
   }
   if (q('.n-box') && s) {
     const a = s.audio, lv = S.audioLv, w = s.wifi || {};
-    const sig = L && L.box && L.box.wifi != null ? L.box.wifi + '%' : w.ssid ? 'ON' : w.state === 'hotspot' ? 'HOTSPOT' : 'NONE';
+    const quiet = typeof WifiQuiet !== 'undefined' ? WifiQuiet.short(s) : null; // #104 WI-FI QUIET
+    const sig = quiet || (L && L.box && L.box.wifi != null ? L.box.wifi + '%' : w.ssid ? 'ON' : w.state === 'hotspot' ? 'HOTSPOT' : 'NONE');
     const snd = !a || !a.card ? 'NO CARD' : lv ? (Math.max(lv.rl, lv.rr) <= -119 ? '--' : Math.max(lv.rl, lv.rr).toFixed(0) + ' dB') : 'ON';
     const st = [['TEMP', s.cpuTempC == null ? '--' : s.cpuTempC.toFixed(0) + '°C', s.cpuTempC >= 75],
-      ['WI-FI', sig, w.state === 'hotspot'], ['PLAYERS', String(s.players || 0), !s.players],
+      ['WI-FI', sig, w.state === 'hotspot' || !!quiet], ['PLAYERS', String(s.players || 0), !s.players],
       ['SOUND IN', snd, false], ['REC', a && a.recording ? '● ON' : 'OFF', false],
       ['UP', Math.floor(s.uptimeSeconds / 3600) + 'h ' + Math.floor(s.uptimeSeconds % 3600 / 60) + 'm', false]];
     setH('.n-box', st.map(([k, v, warn]) => `<span${warn ? ' class="look"' : ''}><small>${k}</small><b${k === 'REC' && v !== 'OFF' ? ' class="rec"' : ''}>${esc(v)}</b></span>`).join(''));
@@ -1200,7 +1201,7 @@ function renderStatus() {
     ['DJ CABLE', s.cable == null ? 'unknown' : s.cable ? 'connected' + (s.djAddress ? ' · ' + s.djAddress : ' · no address') : 'unplugged'],
     ['DJ LINK DATA', s.djLinkTraffic.arriving ? 'arriving' : 'none'],
     ['PLAYERS', s.players],
-    ['WI-FI', s.wifi && s.wifi.ssid ? s.wifi.ssid + (s.wifi.ip ? ' · ' + s.wifi.ip : '') : 'not connected'],
+    ['WI-FI', (s.wifiQuiet ? s.wifiQuiet.words + ' · ' : '') + (s.wifi && s.wifi.ssid ? s.wifi.ssid + (s.wifi.ip ? ' · ' + s.wifi.ip : '') : 'not connected')],
     ['UPTIME', Math.floor(up / 3600) + 'h ' + Math.floor(up % 3600 / 60) + 'm'],
     ['CPU TEMP', s.cpuTempC == null ? '--' : s.cpuTempC.toFixed(0) + '°C'],
     ['VENUE', s.venue ? s.venue.name : 'none set'],
@@ -1986,7 +1987,7 @@ async function loadVenues() {
 }
 function renderVenue() {
   const v = venues.venues.find(x => x.id === venues.current);
-  $('venueName').textContent = v ? v.name + (v.players ? ' · ' + v.players + ' players expected' : '') : 'No venue set';
+  $('venueName').textContent = v ? v.name + (v.home ? ' · HOME' : '') + (v.players ? ' · ' + v.players + ' players expected' : '') : 'No venue set';
   $('venueNotes').textContent = v ? v.notes : 'Add one to keep booth notes and tag tonight with it.';
   const wifi = v && v.wifi && v.wifi.length ? v.wifi.map(w => esc(w.ssid) + (w.password ? ' · <span class="pw">' + esc(w.password) + '</span>'
     : w.saved ? ' · password saved' : '')).join('<br>') : '';
@@ -2013,6 +2014,7 @@ function openVenueForm(v) {
   $('vRooms').value = v ? v.rooms || '' : '';
   $('vGear').value = v ? v.gear || '' : '';
   $('vContacts').value = v ? v.contacts || '' : '';
+  $('vHome').checked = !!(v && v.home); // #109 HOME
   $('vWifi').innerHTML = '';
   (v && v.wifi || []).forEach(w => addWifiRow(w));
   $('venueDelBtn').hidden = !v;
@@ -2069,7 +2071,8 @@ $('venueForm').addEventListener('submit', async e => {
   const wifi = [...$('vWifi').children].map(r => ({ ssid: r.querySelector('.ssid').value.trim(), password: r.querySelector('.pw').value || null }))
     .filter(w => w.ssid);
   const r = await post('/api/venues', { id: venueEditing, name: $('vName').value, notes: $('vNotes').value, players: +$('vPlayers').value || 0,
-    address: $('vAddress').value, rooms: $('vRooms').value, gear: $('vGear').value, contacts: $('vContacts').value, wifi });
+    address: $('vAddress').value, rooms: $('vRooms').value, gear: $('vGear').value, contacts: $('vContacts').value, wifi,
+    home: $('vHome').checked });
   if (r.ok) { venues = await r.json(); $('venueForm').hidden = true; note('venueNote', ''); renderVenue(); }
   else if (r.status === 400) note('venueNote', (await r.json()).error, true);
   else if (r.status !== 401) note('venueNote', "Didn't save (" + r.status + '). Try again.', true);
@@ -2110,6 +2113,7 @@ function renderWifi() {
     (mode === 'auto' ? 'AUTO keeps it on until KNOWN WI-FI ONLY (or a reboot).' : t);
   else if (w.state === 'none' && mode === 'auto') t = 'No Wi-Fi right now. Retrying known Wi-Fi; the hotspot starts only if none is in range. ';
   note('wifiNote', t);
+  if (typeof WifiQuiet !== 'undefined') WifiQuiet.render(); // #104
 }
 refreshAuth();
 
@@ -2660,6 +2664,7 @@ const GOTO = [
   ['MUSIC AT THIS VENUE · BPM, not here', 'status/venue', 'bpm not here repeat usual start notes music'],
   ['VENUE WI-FI · saved passwords', 'status/venue', 'wifi password ssid venue'],
   ['WI-FI MODE · hotspot', 'status/wifi', 'wifi hotspot network internet auto'],
+  ['STAND BY · Wi-Fi quiet: stay off their Wi-Fi, all Wi-Fi off', 'status/wifi', 'wifi quiet stand by standby off venue network trouble interference radio airplane manager'],
   ['ROOMS · more than one box', 'status/rooms', 'rooms boxes room'],
   ['SHOW CONTROL · Link, MIDI clock', 'status/show-control', 'show control ableton link midi clock resolume grandma ma3 qlab lights visuals tempo'],
   ['OSC OUT', 'status/osc', 'osc lights visuals touchdesigner madmapper'],
@@ -2837,7 +2842,8 @@ function renderBoothCheck(s) {
     ['CLOCK', s.clockOk ? ['ok', 'CONFIRMED'] : ['look', 'NOT CONFIRMED · open this page on a phone']],
     ...(s.clockBattery ? [['CLOCK BATTERY', clockBattery(s.clockBattery)]] : []),
     ['VENUE', !v.name ? ['none', 'NONE SET'] : s.venueOk ? ['ok', v.name.toUpperCase()] : ['look', v.name.toUpperCase() + '? · not checked tonight · change it under VENUE if wrong']],
-    ['WI-FI', w.state === 'hotspot' ? ['look', 'ON ITS OWN HOTSPOT · venue Wi-Fi saved?'] : w.ssid ? ['ok', w.ssid] : ['none', 'NONE']],
+    ['WI-FI', s.wifiQuiet ? ['look', s.wifiQuiet.words + (s.wifiQuiet.until ? ' UNTIL ' + clock(s.wifiQuiet.until) : ' UNTIL YOU END IT')] // #104
+      : w.state === 'hotspot' ? ['look', 'ON ITS OWN HOTSPOT · venue Wi-Fi saved?'] : w.ssid ? ['ok', w.ssid] : ['none', 'NONE']],
     ['DJ CABLE', s.cable === false ? ['look', 'UNPLUGGED'] : s.cable && s.djAddress ? ['ok', 'IN'] : s.cable ? ['look', 'IN, NO ADDRESS YET'] : ['none', '--']],
     ['JOINED', s.link === 'LINKED' ? ['ok', 'AS DEVICE ' + s.deviceNumber] : s.link === 'LISTENING' ? ['look', 'LISTENING'] : ['look', s.link || '--']],
     ['PLAYERS', !players ? ['none', 'NONE YET'] : want && players < want ? ['look', players + ' OF ' + want] : ['ok', players + (want ? ' OF ' + want : '')]],

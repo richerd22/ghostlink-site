@@ -216,6 +216,35 @@ const Fun = (() => {
     return { left: r.left + scrollX + r.width / 2 - w / 2, top: r.top + scrollY + 4 };
   }
   function home() { const r = g.getBoundingClientRect(); return { left: r.left + scrollX + 4, top: r.top + scrollY + 4 }; }
+  // THE VISIT (#106, a club Nov 21: "small ghost is going behind the GHOST LINK logo text when popping up to the top").
+  // He used to land right after the big one, which is where the wordmark is. Now he lands in the first free gap of
+  // the top bar to the right of the big one (after the wordmark, between the tabs and the link, wherever it fits at
+  // this window size), level with the big one. No gap wide enough (a narrow phone): no visit, they just say hi.
+  function visitSpot() {
+    if (!rover) return null;
+    const hb = g.getBoundingClientRect(), bar = g.parentElement.getBoundingClientRect();
+    const w = rover.offsetWidth, h = rover.offsetHeight, top = hb.top + 4;
+    // the ink, not the boxes: the wordmark's button stretches across its whole grid column
+    const ink = e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect(); };
+    const blocks = [...g.parentElement.querySelectorAll('.mark, nav a, .link')]
+      .map(ink)
+      .filter(r => r.width > 0 && r.height > 0 && r.bottom > top && r.top < top + h)
+      .sort((a, b) => a.left - b.left);
+    let x = hb.right + 6;
+    for (const r of blocks) {
+      if (r.right + 6 <= x) continue;
+      if (r.left >= x + w + 6) break;
+      x = r.right + 8;
+    }
+    if (x + w > Math.min(bar.right, innerWidth) - 4) return null;
+    return { left: x + scrollX, top: top + scrollY };
+  }
+  /** Pop up to visit the big one for ms (also from the console: Fun.visit()). False = no room up top right now. */
+  function visit(ms) {
+    if (!rover || parked || rdrag || !visitSpot()) return false;
+    visitUntil = performance.now() + ms; setRoverFace('^^', ms); happy(ms);
+    return true;
+  }
 
   function roam(m) {
     const now = performance.now();
@@ -240,15 +269,16 @@ const Fun = (() => {
     // Rare moments between the two.
     if (now > nextChat && !rdrag && !parked) {
       nextChat = now + 150000 + Math.random() * 240000;
-      if (Math.random() < 0.5) { setRoverFace('^^', 2500); setTimeout(() => happy(1800), 700); } // hi / hi back
-      else { visitUntil = now + 3500; setRoverFace('^^', 3500); happy(3500); }        // pops up to visit
+      if (Math.random() < 0.5 || !visit(3500)) { setRoverFace('^^', 2500); setTimeout(() => happy(1800), 700); } // hi / hi back
     }
     let text = g.textContent;
     if (roverFace && now < roverFaceUntil) text = faceWith(text, roverFace);
     if (rover.textContent !== text) rover.textContent = text;
     if (rdrag) return;
+    const vs = !parked && now < visitUntil ? visitSpot() : null;
+    rover.classList.toggle('visiting', !!vs);
     const at = parked ? { left: Math.max(2, Math.min(innerWidth - rover.offsetWidth - 2, parked.fx * innerWidth)) + scrollX,
-                          top: Math.max(0, Math.min(innerHeight - rover.offsetHeight - 2, parked.fy * innerHeight)) + scrollY } : (now < visitUntil ? (() => { const h0 = home(); return { left: h0.left + g.offsetWidth + 6, top: h0.top }; })() : spot);
+                          top: Math.max(0, Math.min(innerHeight - rover.offsetHeight - 2, parked.fy * innerHeight)) + scrollY } : (vs || spot);
     if (!at) return;
     rover.style.left = Math.round(at.left) + 'px';
     rover.style.top = Math.round(at.top) + 'px';
@@ -441,5 +471,5 @@ const Fun = (() => {
     label(); renderHeader();
   }));
   label();
-  return { get on() { return on; } };
+  return { get on() { return on; }, visit: ms => visit(ms || 3500) };
 })();

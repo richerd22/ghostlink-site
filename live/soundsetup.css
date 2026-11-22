@@ -39,3 +39,17 @@ body.remote .ssu-line, body.remote .ssu-again { display: none; }
 }
 .ssu-box > .mini { justify-self: start; margin-left: 0; }
 .ssu-pick .mini.on { background: var(--fg); color: var(--bg); }
+/* #105: SOUND CARD IN / HEARING NOTHING, a row inside the header (every view, never over deck data). */
+.ssu-chip { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 0 0 6px;
+  font-size: 12px; letter-spacing: .06em; color: var(--fg); }
+.ssu-chip[hidden] { display: none; }
+.ssu-chip .mini { margin-left: 0; padding-top: 2px; padding-bottom: 2px; }
+.ssu-chip .ssu-x { min-width: 2.2em; }
+.ssu-chip .ssu-chip-rec { color: var(--air, #c22); }
+.ssu-chip.warn .ssu-chip-t { color: var(--warn); }
+.ssu-chip .mini[hidden] { display: none; }
+.ssu-deaf { border: 1px solid var(--warn); color: var(--warn); padding: 8px 10px; margin: 0 0 8px; font-size: 13px;
+  display: grid; gap: 6px; }
+.ssu-deaf[hidden] { display: none; }
+.ssu-deaf .mini { justify-self: start; margin-left: 0; }
+body.remote .ssu-chip, body.embed .ssu-chip { display: none; }
