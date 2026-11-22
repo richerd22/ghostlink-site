@@ -2678,6 +2678,7 @@ const GOTO = [
   ['WATCH FROM HOME', 'status/watch', 'remote watch home link share'],
   ['CONTROLS · rejoin, listen only, restart', 'status/controls', 'rejoin listen only restart shut down shutdown power reading'],
   ['BACKUP · restore, black box, logs', 'status/backup', 'backup restore black box blackbox logs'],
+  ['GET READY TO SELL · hand the box on', 'status/sell', 'sell selling sold reset factory wipe erase new owner give away hand on'],
   ['BOX DETAILS · uptime, temperature', 'status/box', 'uptime temp temperature cpu source facts'],
   ['TOOLS · demo, tour, arcade, test run', 'status/tools', 'demo tour arcade games boo test run'],
   ['PASSWORD · lock, crew code', 'status/lock', 'password lock unlock crew code'],

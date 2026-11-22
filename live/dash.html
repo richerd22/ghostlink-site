@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="gear.css">
 <link rel="stylesheet" href="announce.css">
 <link rel="stylesheet" href="soundboard.css">
+<link rel="stylesheet" href="sell.css"><!-- #112 GET READY TO SELL -->
 </head>
 <body>
 <header>
@@ -454,6 +455,8 @@
     <div class="note" id="backupNote">Venues, nights, played lists and the password in one file. Keep one on your phone.</div>
     <div class="note">BLACK BOX and LOGS: what the box saw, for after a night. <button type="button" class="q" data-tip aria-label="More">?</button></div>
     <div class="note tip" hidden>BACKUP + RECORDINGS adds the set recordings (big). RESTORE puts a backup back and restarts GHOST LINK. BLACK BOX is the night's record of everything that happened; LOGS are the program's own notes.</div>
+    <h2 class="local-only" data-k="sell">GET READY TO SELL</h2><!-- #112, sell.js -->
+    <div class="local-only" id="sellBox"></div>
     <h2 data-k="updates">UPDATES</h2>
     <div id="updBox"></div>
     <h2 data-k="box">BOX DETAILS</h2>
@@ -593,6 +596,7 @@
 <script src="why.js"></script>
 <script src="sharelinks.js"></script>
 <script src="ear.js"></script><!-- THE EAR (#108): BPM by ear for laptop DJs, own file -->
+<script src="sell.js"></script><!-- GET READY TO SELL (#112), own file -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \
 |      |

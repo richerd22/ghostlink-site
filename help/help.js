@@ -16,6 +16,7 @@
     ["how-to/share-the-tracklist.html", "SHARE THE TRACKLIST", "HOW TO"],
     ["how-to/get-the-tracklist.html", "GET THE TRACKLIST OR PLAYLIST", "HOW TO"],
     ["how-to/black-box.html", "DOWNLOAD THE BLACK BOX", "HOW TO"],
+    ["how-to/sell-or-hand-on.html", "SELLING OR HANDING ON A GHOST LINK", "HOW TO"],
     ["how-to/crew-code.html", "GIVE THE CREW CODE", "HOW TO"],
     ["how-to/restart-reading.html", "RESTART READING A DECK", "HOW TO"],
     ["how-to/turn-it-off.html", "TURN IT OFF", "HOW TO"],
