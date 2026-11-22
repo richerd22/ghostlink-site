@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="soundsetup.css">
 <link rel="stylesheet" href="announce.css">
+<link rel="stylesheet" href="soundboard.css">
 </head>
 <body>
 <header>
@@ -115,6 +116,7 @@
     <div class="note" id="mixerNote"></div>
     <div class="mixer" id="mixer"></div>
     <h2 id="go-sound">SOUND IN · SET RECORDINGS</h2>
+    <div class="note local-only" id="sbNoCard" hidden>No sound card: the <a href="#status/soundboard">SOUNDBOARD</a> can play on this phone.</div>
     <div class="sound" id="sound">
       <div class="note" id="sndNote">No sound card. Plug a USB sound card (UCA202 / UCA222) into the box: SET UP GUIDE shows which plug on the mixer.</div>
       <div class="meter" id="sndMeter" hidden>
@@ -277,20 +279,33 @@
       <div class="ann-now" id="annNow" hidden><span id="annNowText"></span><button type="button" class="stop" id="annStop">■ STOP</button></div>
       <div class="note warn" id="annCard" hidden></div>
       <div id="annBody" hidden>
-        <ul class="ann-list" id="annList"></ul>
-        <div class="buttons"><button type="button" class="hold" id="annTone">TEST TONE</button></div>
+        <ul class="ann-list" id="annList" hidden></ul>
+        <div class="buttons" hidden><button type="button" class="hold" id="annTone">TEST TONE</button></div>
         <div class="gd-ask" id="annAsk" hidden><span id="annAskText"></span>
           <button type="button" id="annAskYes">PLAY IT</button><button type="button" id="annAskNo">CANCEL</button></div>
         <details class="gd-house" id="annAdd">
-          <summary>ADD AN ANNOUNCEMENT</summary>
-          <div class="row"><input id="annName" placeholder="NAME: LAST CALL" maxlength="40" aria-label="Name of the announcement" autocapitalize="characters"></div>
-          <div class="buttons"><button type="button" id="annRec" hidden>● RECORD</button><label class="btn" id="annPick">UPLOAD A FILE<input type="file" id="annFile" accept="audio/*,.wav,.mp3,.m4a,.aac,.ogg,.webm" hidden></label></div>
-          <div class="note" id="annHow">Up to 30 s. Make a voice memo on your phone, then UPLOAD A FILE (or RECORD where the page allows it).</div>
+          <summary>+ ADD A SOUND</summary>
+          <div class="buttons ann-kind" id="annKind" role="radiogroup" aria-label="What kind"><button type="button" data-kind="sfx">SFX</button><button type="button" data-kind="pa">PA</button><button type="button" data-kind="piece">PIECE (for BUILD)</button></div>
+          <div class="row"><input id="annName" placeholder="NAME: LAST CALL" maxlength="40" aria-label="Name of the sound" autocapitalize="characters"></div>
+          <div class="buttons"><button type="button" id="annRec" hidden>● RECORD</button><label class="btn" id="annPick">PICK FILES<input type="file" id="annFile" accept="audio/*,.wav,.mp3,.m4a,.aac,.ogg,.webm" multiple hidden></label></div>
+          <div class="note" id="annHow">Up to 2 minutes each. Pick one file or several (voice memos, mp3, wav): names come from the file names.</div>
           <audio id="annPreview" controls hidden></audio>
           <div class="buttons"><button type="button" id="annSave" hidden>SAVE ON THE BOX</button><button type="button" id="annDiscard" hidden>DISCARD</button></div>
         </details>
+        <details class="gd-house hs-pa" id="hsPa">
+          <summary>HARD STOP</summary>
+          <div class="note" id="hsPaApp">HARD STOP app: not heard from.</div>
+          <div class="hs-sw"><b>AUTO CALLS</b><button type="button" id="hsPaAuto">TURN ON</button></div>
+          <div class="note" id="hsPaAutoNote"></div>
+          <div class="hs-stages" id="hsPaStages"></div>
+          <div class="hs-sw"><b>LET HARD STOP CALL THE PA</b><button type="button" id="hsPaCall">TURN ON</button></div>
+          <div class="note" id="hsPaCallNote"></div>
+          <div class="gd-ask" id="hsPaAsk" hidden><span id="hsPaAskText"></span>
+            <button type="button" id="hsPaYes">TURN ON</button><button type="button" id="hsPaNo">CANCEL</button></div>
+          <div class="note" id="hsPaNote"></div>
+        </details>
         <div class="note" id="annNote"></div>
-        <div class="note">PLAY and TEST TONE: tap, then hold 1 s. One at a time. Anyone here can STOP.</div>
+        <div class="note">PA and TEST: hold 1 s. SFX: hold 1 s, or ARM and tap. EMERGENCY: hold 2 s, then confirm. One at a time. Anyone here can STOP.</div>
       </div>
     </div>
     <h2 class="local-only" data-k="song-id">SONG ID FOR THE CROWD</h2>
@@ -388,9 +403,11 @@
       <a class="btn" href="whatson.html" target="_blank">WHAT'S ON</a>
       <a class="btn local-only" href="song.html" target="_blank">SONG PAGE</a>
       <a class="btn" href="sticker.html" target="_blank">PRINT STICKER</a>
+      <a class="btn" href="tv.html?vis=1" target="_blank">VISUALIZER</a>
+      <a class="btn" href="pocket.html" target="_blank">NOW PLAYING</a>
     </div>
     <div class="note">A booth TV, a stream, the crowd, the box's sticker. <button type="button" class="q" data-tip aria-label="More">?</button></div>
-    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: a see-through now-playing card for OBS (Browser Source; ?pos=br, ?bg=green, ?scale=1.5). CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown, who's on, who's next, the next drop, crew calls; no track titles. WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR.</div>
+    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: a see-through now-playing card for OBS (Browser Source; ?pos=br, ?bg=green, ?scale=1.5). CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown, who's on, who's next, the next drop, crew calls; no track titles. WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR. VISUALIZER: TV MODE as a full-screen picture of the music for a spare screen (tv.html?vis=1). NOW PLAYING: a lock-screen style card for a phone (art, title, time left; KEEP AWAKE).</div>
     <h2 class="local-only" data-k="watch">WATCH FROM HOME</h2>
     <div class="local-only">
       <div class="buttons"><button type="button" id="remoteBtn">TURN ON</button></div>
@@ -405,6 +422,8 @@
         <button type="submit">SAVE</button>
       </form>
     </div>
+    <h2 class="local-only" data-k="share">SHARE</h2>
+    <div class="local-only" id="shareLinks"></div>
 
     <h3 class="group" id="g-box">THE BOX</h3>
     <h2 data-k="controls">CONTROLS</h2>
@@ -487,6 +506,7 @@
       <dt>PLAYED</dt><dd>Every track that was on air 10+ seconds. Past nights, recap numbers, BPM across the night, CSV/JSON, a recap image to post, and END OF NIGHT: one card per night with MUSIC OFF kept or not. ON THE DECKS: type the next DJ and SET at each changeover; tracks get grouped by DJ.</dd>
       <dt>STATUS</dt><dd>Health, then four groups: TONIGHT, THIS VENUE, SCREENS &amp; OUTPUTS, THE BOX. GO TO at the top finds any setting. Watching is open to anyone; changing anything needs the password once per phone. LISTEN ONLY never needs it. VENUE keeps address, rooms, gear, contacts and venue Wi-Fi (the box joins it by itself). NIGHTS: plan a date, venue and lineup with times; on the night it switches by itself.</dd>
       <dt>Share the dashboard</dt><dd>Tap GHOST LINK at the top: the address on this network, a QR code and COPY. Off-site: <b>gl.cold.fyi</b>.</dd>
+      <dt>Share links</dt><dd>STATUS &rarr; SHARE (owner): NEW LINK gives someone a link instead of the password, doing only what you tick (WATCH, CREW CALLS, STOP / START THE DECKS, SETTINGS), until the end of the night unless you choose longer. REVOKE ends one at once; REMOTE OFF refuses them from outside the venue, or all of them.</dd>
       <dt>ghostlink.local doesn't open</dt><dd>Some phones or guest Wi-Fi don't support it. Tap GHOST LINK at the top for the number address and QR, or use the GHOST LINK Wi-Fi (10.42.0.1).</dd>
       <dt>Watch from home</dt><dd>STATUS &rarr; WATCH FROM HOME &rarr; TURN ON (box on a Wi-Fi with internet). Send the link; it's view only. TURN OFF ends it.</dd>
       <dt>Rooms</dt><dd>More than one box? STATUS &rarr; ROOMS: name this room, list the others (e.g. 51 = ghostlink-51.local). NOW shows them all.</dd>
@@ -531,7 +551,7 @@
     <small>Add a role: <span id="shareRoles"></span></small>
     <form id="unitForm" class="row" hidden><input id="unitName" maxlength="24" autocapitalize="none" autocomplete="off" aria-label="Short name"><button type="submit">SAVE</button></form>
     <div class="note" id="unitNote"></div>
-    <div class="buttons"><button id="shareCopy">COPY</button><button type="button" id="unitEdit">CHANGE NAME</button><button id="shareClose">CLOSE</button></div>
+    <div class="buttons"><button id="shareCopy">COPY</button><button type="button" id="unitEdit">CHANGE NAME</button><button type="button" id="shareLinksBtn" class="local-only">SHARE LINKS</button><button id="shareClose">CLOSE</button></div>
   </div>
 </div>
 <script src="waves.js"></script>
@@ -546,6 +566,8 @@
 <script src="sound.js"></script>
 <script src="soundsetup.js"></script>
 <script src="announce.js"></script>
+<script src="hardstoppa.js"></script>
+<script src="soundboard.js"></script>
 <script src="dances.js"></script>
 <script src="fun.js"></script>
 <script src="updates.js"></script>
@@ -558,6 +580,7 @@
 <script src="wantlist.js"></script>
 <script src="here.js"></script>
 <script src="why.js"></script>
+<script src="sharelinks.js"></script>
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \
 |      |

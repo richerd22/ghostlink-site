@@ -21,6 +21,7 @@
     ["how-to/turn-it-off.html", "TURN IT OFF", "HOW TO"],
     ["how-to/share-the-dashboard.html", "SHARE THE DASHBOARD", "HOW TO"],
     ["how-to/watch-from-home.html", "WATCH FROM HOME", "HOW TO"],
+    ["how-to/share-links.html", "SHARE LINKS", "HOW TO"],
     ["how-to/listen-only.html", "MAKE IT GO QUIET", "HOW TO"],
     ["how-to/record-a-set.html", "RECORD A SET", "HOW TO"],
     ["how-to/lights-and-visuals.html", "HOOK UP LIGHTS AND VISUALS", "HOW TO"],
