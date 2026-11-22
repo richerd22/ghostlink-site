@@ -117,6 +117,50 @@ const EndNight = (() => {
     return new Promise(res => cv.toBlob(res, 'image/png'));
   }
 
+  // ---- SHARE THIS NIGHT (#111): gl.cold.fyi/<unit>/night/<date> finds the box (this Wi-Fi or WATCH FROM HOME) and
+  // opens this card. Only for a night whose tracklist was shared; the box shows "not shared" for any other. ----
+
+  /** The night's link: the short form when the unit's short links are set up, else this box's own address. */
+  function nightUrl(unit, night) {
+    if (unit && unit.short) return 'https://' + unit.short + '/night/' + night;
+    return location.origin + '/endnight.html?night=' + encodeURIComponent(night);
+  }
+
+  async function copyText(text, btn) {
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    if (btn) { const was = btn.textContent; btn.textContent = 'COPIED'; setTimeout(() => { btn.textContent = was; }, 1500); }
+  }
+
+  async function shareNight(c) {
+    const btn = document.getElementById('nightLink'), priv = document.getElementById('nightPrivate'), note = document.getElementById('nightNote');
+    if (!btn) return;
+    let unit = null, tl = null;
+    try { unit = await (await fetch('/api/unit', { cache: 'no-store' })).json(); } catch (e) {}
+    try { tl = await (await fetch('/api/tracklist?night=' + encodeURIComponent(c.night), { cache: 'no-store' })).json(); } catch (e) {}
+    const remote = !!(tl && tl.remote);
+    const say = t => { note.textContent = t; note.hidden = !t; };
+    const show = shared => {
+      btn.hidden = !shared && remote; // from outside: only a shared night has a link to pass on
+      btn.textContent = shared ? 'SHARE THIS NIGHT' : 'SHARE THIS NIGHT…';
+      priv.hidden = !shared || remote;
+      btn.dataset.shared = shared ? '1' : '';
+    };
+    show(!!(tl && tl.shared));
+    btn.addEventListener('click', async () => {
+      if (btn.dataset.shared) { copyText(nightUrl(unit, c.night), btn); say('Copied: ' + nightUrl(unit, c.night).replace(/^https?:\/\//, '')); return; }
+      if (!confirm('Share this night\'s card and tracklist? Only if the DJ says yes. Anyone with the link sees it.')) return;
+      const r = await fetch('/api/tracklist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ night: c.night, shared: true }) }).catch(() => null);
+      if (!r || !r.ok) { say(r && r.status === 401 ? 'Unlock on the dashboard first (STATUS, password or crew code), then try again.' : 'Didn\'t work.'); return; }
+      location.reload(); // the card now has its tracklist
+    });
+    priv.addEventListener('click', async () => {
+      const r = await fetch('/api/tracklist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ night: c.night, shared: false }) }).catch(() => null);
+      if (!r || !r.ok) { say(r && r.status === 401 ? 'Unlock on the dashboard first (STATUS), then try again.' : 'Didn\'t work.'); return; }
+      location.reload();
+    });
+  }
+
   /** endnight.html */
   async function page() {
     const night = new URLSearchParams(location.search).get('night') || '';
@@ -125,7 +169,7 @@ const EndNight = (() => {
     try {
       const r = await fetch('/api/endofnight' + (night ? '?night=' + encodeURIComponent(night) : ''), { cache: 'no-store' });
       const j = await r.json();
-      if (!r.ok) { msg.textContent = j.tracklist === 'private' ? 'The DJ hasn\'t shared tonight\'s tracklist.' : (j.error || 'Couldn\'t load that night.'); return; }
+      if (!r.ok) { msg.textContent = j.tracklist === 'private' ? (night ? 'The DJ hasn\'t shared this night.' : 'The DJ hasn\'t shared tonight\'s tracklist.') : (j.error || 'Couldn\'t load that night.'); return; }
       c = j;
     } catch (e) { msg.textContent = 'Couldn\'t reach GHOST LINK.'; return; }
     msg.hidden = true; card.hidden = false;
@@ -137,6 +181,7 @@ const EndNight = (() => {
       a.href = URL.createObjectURL(b); a.download = name; a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     });
+    shareNight(c);
     const sh = document.getElementById('share');
     if (navigator.canShare && navigator.canShare({ files: [new File([''], name, { type: 'image/png' })] })) {
       sh.hidden = false;
@@ -153,6 +198,21 @@ const EndNight = (() => {
       const n = (typeof viewNight !== 'undefined' && viewNight) || (S.status && S.status.night) || '';
       location.href = 'endnight.html' + (n ? '?night=' + encodeURIComponent(n) : '');
     });
+    // #111 PLAYED: SHARE THIS NIGHT beside TRACKLIST: SHARED (tonight, while it's shared): copies tonight's night link.
+    const tlBtn = document.getElementById('shareTl');
+    if (tlBtn && !document.getElementById('nightLinkTl')) {
+      const nb = el('button', 'local-only', 'SHARE THIS NIGHT'); nb.type = 'button'; nb.id = 'nightLinkTl'; nb.hidden = true;
+      nb.title = "Copies tonight's link: it opens the END OF NIGHT card, here or from anywhere";
+      tlBtn.after(nb);
+      let unit = null;
+      fetch('/api/unit').then(r => r.json()).then(u => { unit = u; }).catch(() => {});
+      nb.addEventListener('click', () => { const n = S.status && S.status.night; if (n) copyText(nightUrl(unit, n), nb); });
+      setInterval(() => {
+        const tonight = S.status && S.status.night;
+        const viewing = (typeof viewNight !== 'undefined' && viewNight) || tonight;
+        nb.hidden = !(typeof tlShared !== 'undefined' && tlShared && tonight && viewing === tonight);
+      }, 1500);
+    }
     if (!ready) return;
     const seen = () => { try { return localStorage.getItem('eonSeen'); } catch (e) { return null; } };
     const see = n => { try { localStorage.setItem('eonSeen', n); } catch (e) {} };

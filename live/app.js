@@ -1680,7 +1680,7 @@ async function loadRemote() {
   $('remoteBtn').textContent = r.on ? 'TURN OFF' : 'TURN ON';
   $('remoteBtn').classList.toggle('on', !!r.on);
   $('remoteBox').hidden = !r.url;
-  // With the short link set up, share gl.cold.fyi/watch (same every night); otherwise the raw tunnel link.
+  // With the short link set up, share gl.cold.fyi/<unit>/watch (#111: this unit's, same every night); otherwise the raw tunnel link.
   const share = r.url ? (r.shortLink ? 'https://' + r.shortLink : r.url) : null;
   if (share && $('remoteUrl').dataset.v !== share) {
     $('remoteUrl').dataset.v = share;
@@ -1690,7 +1690,7 @@ async function loadRemote() {
   $('watchToken').placeholder = r.shortLink ? 'short link set up · paste a new token to replace' : 'GitHub token for gl.cold.fyi/watch';
   if (r.error) note('remoteNote', r.error, true);
   else if (r.on && !r.url) note('remoteNote', 'Opening the link... a few seconds.');
-  else if (r.url) note('remoteNote', r.shortLink ? 'On. Send gl.cold.fyi/watch - same link every night. ' + (r.shortResult || '')
+  else if (r.url) note('remoteNote', r.shortLink ? 'On. Send ' + r.shortLink + ' - same link every night. ' + (r.shortResult || '')
     : 'On. Send this link to whoever should watch. TURN OFF ends it; a new link is made each time.');
   else if (!r.available) note('remoteNote', "The tunnel tool isn't installed on this box yet.", true);
   if (r.on && !r.url && !r.error) setTimeout(loadRemote, 2000);
@@ -1709,7 +1709,7 @@ $('watchTokenForm').addEventListener('submit', async e => {
   const r = await post('/api/remote/token', { token: $('watchToken').value });
   $('watchToken').value = '';
   const j = await r.json().catch(() => ({}));
-  note('remoteNote', r.ok ? (j.shortLink ? 'Saved. From now on, share gl.cold.fyi/watch.' : 'Token removed.') : (j.error || 'Not saved.'), !r.ok);
+  note('remoteNote', r.ok ? (j.shortLink ? 'Saved. From now on, share ' + j.shortLink + '.' : 'Token removed.') : (j.error || 'Not saved.'), !r.ok);
   if (r.ok) loadRemote();
 });
 (async () => {
@@ -1734,7 +1734,7 @@ async function loadTracklistShare() {
 $('shareTl').addEventListener('click', async () => {
   if (!unlocked) { pending = null; return needUnlock(); }
   const next = !tlShared;
-  if (next && !confirm("Share tonight's tracklist on WATCH FROM HOME? Only if the DJ says yes. It goes back to crew only tomorrow.")) return;
+  if (next && !confirm("Share tonight's tracklist on WATCH FROM HOME and the night's link? Only if the DJ says yes. Tomorrow starts crew only again.")) return;
   const r = await post('/api/tracklist', { shared: next });
   if (r.ok) loadTracklistShare();
 });
@@ -1799,8 +1799,12 @@ $('shareBtn').addEventListener('click', () => {
 // The short link: gl.cold.fyi/<unit name>, plus /photo, /vj ... for a role. The name is changed here (locked).
 let unitName = '', unitNo = 1;
 async function loadUnit() {
-  try { const u = await (await fetch('/api/unit')).json(); unitName = u.name || ''; unitNo = u.number || 1; $('unitLabel').textContent = 'THIS BOX: GHOST LINK ' + (u.label || ''); } catch (e) {}
-  $('shareShort').textContent = unitName ? 'gl.cold.fyi/' + unitName : '';
+  let label = '';
+  try { const u = await (await fetch('/api/unit')).json(); unitName = u.name || ''; unitNo = u.number || 1; label = u.label || ''; } catch (e) {}
+  // #111: THIS BOX: GHOST LINK UNIT 01 · gl.cold.fyi/ghostlink, then the unit's links (each names this unit only).
+  const g = unitName ? 'gl.cold.fyi/' + unitName : '';
+  $('unitLabel').textContent = 'THIS BOX: GHOST LINK ' + label + (g ? ' · ' + g : '');
+  $('shareUnitLinks').textContent = g ? [g + ' · DASHBOARD', g + '/watch · WATCH FROM HOME', g + '/night · END OF NIGHT'].join('\n') : '';
   $('shareRoles').textContent = unitName ? ['photo', 'vj', 'lights', 'manager'].map(r => '/' + r).join('  ') : '';
 }
 $('unitEdit').addEventListener('click', () => {
