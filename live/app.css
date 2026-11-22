@@ -902,3 +902,7 @@ body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(3)) > :first-child 
 .home-night .tag { border: 1px solid var(--fg); padding: 0 .4em; letter-spacing: .1em; }
 .home-night.quiet { text-align: right; }
 .home-night.quiet .mini { color: var(--grey); }
+
+/* UNIT 01 (Nov 22): the unit number beside the short name */
+.unit-no { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.unit-no input { width: 4.5em; }

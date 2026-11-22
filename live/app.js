@@ -1797,21 +1797,23 @@ $('shareBtn').addEventListener('click', () => {
   loadUnit();
 });
 // The short link: gl.cold.fyi/<unit name>, plus /photo, /vj ... for a role. The name is changed here (locked).
-let unitName = '';
+let unitName = '', unitNo = 1;
 async function loadUnit() {
-  try { unitName = (await (await fetch('/api/unit')).json()).name || ''; } catch (e) {}
+  try { const u = await (await fetch('/api/unit')).json(); unitName = u.name || ''; unitNo = u.number || 1; $('unitLabel').textContent = 'THIS BOX: GHOST LINK ' + (u.label || ''); } catch (e) {}
   $('shareShort').textContent = unitName ? 'gl.cold.fyi/' + unitName : '';
   $('shareRoles').textContent = unitName ? ['photo', 'vj', 'lights', 'manager'].map(r => '/' + r).join('  ') : '';
 }
 $('unitEdit').addEventListener('click', () => {
   if (!unlocked) { $('share').hidden = true; return needUnlock(); }
-  $('unitName').value = unitName; $('unitForm').hidden = false; $('unitName').focus();
+  $('unitName').value = unitName; $('unitNo').value = unitNo; $('unitForm').hidden = false; $('unitName').focus();
 });
 $('unitForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const r = await post('/api/unit', { name: $('unitName').value });
+  const body = { name: $('unitName').value }, no = parseInt($('unitNo').value, 10);
+  if (no && no !== unitNo) body.number = no;
+  const r = await post('/api/unit', body);
   const j = await r.json().catch(() => ({}));
-  if (r.ok) { $('unitForm').hidden = true; note('unitNote', 'Saved. gl.cold.fyi/' + j.name + ' works within a minute.'); loadUnit(); }
+  if (r.ok) { $('unitForm').hidden = true; note('unitNote', 'Saved: ' + (j.label || '') + '. gl.cold.fyi/' + j.name + ' works within a minute.'); loadUnit(); }
   else if (r.status !== 401) note('unitNote', j.error || "Didn't save.", true);
 });
 $('shareCopy').addEventListener('click', async () => {
