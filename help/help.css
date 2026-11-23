@@ -16,6 +16,8 @@
 .doc a { text-underline-offset: 3px; }
 .doc .small { font-size: 14px; color: var(--grey); }
 .doc code { font: inherit; border-bottom: 1px dotted var(--grey); }
+.doc pre { margin: 12px 0; padding: 12px 14px; border: 1px solid var(--grey); white-space: pre-wrap; overflow-wrap: anywhere; } /* #128 a command to copy */
+.doc pre code { border-bottom: 0; }
 
 /* On-screen words: looks like the dashboard's own buttons, so you know what to look for. */
 b.ui { font-weight: 600; letter-spacing: .06em; border: 1px solid var(--dim); padding: 0 5px; font-size: .92em;

@@ -44,7 +44,8 @@ const EndNight = (() => {
     if (c.home) t.append(el('div', 'line', 'A practice night: kept, never counted as a show or a record.'));
     head.append(t);
     const nums = el('div', 'nums');
-    [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG BPM', c.avgBpm == null ? '--' : c.avgBpm]].forEach(([k, v]) => {
+    [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG BPM', c.avgBpm == null ? '--' : c.avgBpm]]
+      .concat(c.doorPeak ? [['DOOR PEAK', c.doorPeak]] : []).forEach(([k, v]) => { // #127 DOOR COUNT: only when someone counted
       const d = el('div'); d.append(el('small', null, k), el('b', null, String(v))); nums.append(d);
     });
     box.replaceChildren(head, nums);

@@ -16,7 +16,8 @@ const Sound = (() => {
   function levels(d) {
     last = d;
     pill.hidden = !d.rec;
-    if (d.rec) pill.textContent = '● REC ' + hms(d.recFor);
+    if (d.rec) pill.textContent = '● REC ' + hms(d.recFor) + (d.warn === 'hot' ? ' · TOO HOT' : d.warn === 'quiet' ? ' · TOO QUIET' : ''); // #113
+    pill.classList.toggle('warn', !!(d.rec && d.warn));
     if ($('network').hidden) return;
     [['L', d.rl, d.pl], ['R', d.rr, d.pr]].forEach(([s, rms, peak]) => {
       const b = $('m' + s);
@@ -66,12 +67,13 @@ const Sound = (() => {
       $('sndList').innerHTML = files.map(f => {
         const mins = f.endAt && f.startAt ? Math.round((f.endAt - f.startAt) / 60000) : null;
         const n = encodeURIComponent(f.name);
-        return `<li><span class="what">${esc(f.dj || 'Set')} <span>${esc(f.venue || '')}</span>` +
+        return `<li data-name="${esc(f.name)}"><span class="what">${esc(f.dj || 'Set')} <span>${esc(f.venue || '')}</span>` +
           `<small>${esc(nightLabel(f.night || ''))} · ${clock(f.startAt)}${mins != null ? ' · ' + mins + ' min' : ''} · ${mb(f.bytes || 0)}${f.live ? ' · RECORDING' : ''}</small></span>` +
           `<span class="acts"><a class="btn mini" href="/api/audio/tracklist?name=${n}" target="_blank" rel="noopener">TRACKLIST</a>` +
           (f.live ? '' : `<a class="btn mini" href="/api/audio/file?name=${n}" download>FLAC</a><button type="button" class="mini local-only" data-del="${esc(f.name)}">DELETE</button>`) +
           `</span></li>`;
       }).join('');
+      if (typeof Recordings !== 'undefined') try { Recordings.decorate(files, j); } catch (e) { console.warn('recordings', e); } // #113
     } catch (e) {}
   }
 

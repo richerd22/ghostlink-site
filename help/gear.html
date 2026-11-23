@@ -49,6 +49,7 @@
 <li><a href="#sound-card">SOUND CARD</a></li>
 <li><a href="#cables-for-the-sound-card">CABLES FOR THE SOUND CARD</a></li>
 <li><a href="#midi-interface">MIDI INTERFACE</a></li>
+<li><a href="#lights">LIGHTS</a></li>
 <li><a href="#mixer-usb-cable">MIXER USB CABLE</a></li>
 <li><a href="#clock-battery">CLOCK BATTERY</a></li>
 </ul>
@@ -64,6 +65,7 @@
 <dt>RCA CABLE</dt><dd>Mixer REC OUT to the sound card.</dd>
 <dt>RCA Y-SPLITTER</dt><dd>When the venue's recorder already uses REC OUT.</dd>
 <dt>USB MIDI INTERFACE</dt><dd>MIDI CLOCK to a lighting desk or drum machine. Roland UM-ONE mk2.</dd>
+<dt>LED STRIP WITH WLED</dt><dd>LIGHTS: a strip that flashes and changes colour with the music. <a href="how-to/lights.html">Lights</a>.</dd>
 <dt>USB-A TO USB-B CABLE</dt><dd>The mixer's knobs and faders over USB (FX LEFT ON, GEAR CARE).</dd>
 <dt>CLOCK BATTERY</dt><dd>The right time from the first second, with no internet.</dd>
 </dl>
@@ -105,6 +107,10 @@
 </ul>
 <p>A desk with its own USB port usually can't plug into the box directly: use the desk's 5-pin MIDI IN. GHOST LINK never sends clock to a Pioneer DJ or AlphaTheta mixer or deck.</p>
 <p>Set up: <a href="how-to/lights-and-visuals.html">hook up lights and visuals</a>.</p>
+
+<h2 id="lights">LIGHTS</h2>
+<p>The easiest way in: an RGB LED strip on a small WLED controller (an ESP32 board running the free WLED software). Many come ready-flashed with WLED; any strip WLED supports will do. Put it on the same Wi-Fi as the box, then <a href="how-to/lights.html">set up LIGHTS</a>.</p>
+<p>Already have DMX lights? A plain RGB fixture on an Art-Net or sACN node works too. No Philips Hue yet.</p>
 
 <h2 id="mixer-usb-cable">MIXER USB CABLE</h2>
 <p>Many DJ mixers have a square USB-B port on the back. A USB-A to USB-B cable from the box lets GHOST LINK read the mixer's knobs and faders: <b class="ui">FX LEFT ON</b> and the trim and EQ notes in <b class="ui">GEAR CARE</b>. It only reads; nothing is sent to the mixer. Some newer mixers use USB-C: check the back panel.</p>

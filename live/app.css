@@ -198,6 +198,9 @@ body[data-error]::after { content: attr(data-error); position: fixed; left: 0; r
 .crew-call.soon, .crew-call.soon .when { color: var(--warn); border-color: var(--warn); }
 .crew-call.go { background: var(--fg); color: var(--bg); }
 .crew-call.go .who { color: inherit; }
+/* #124 WRAP-UP CALLS on the dashboard: bigger, amber until GO, red at GO */
+.crew-call.wrap { font-size: 1.35em; font-weight: 600; border: 2px solid var(--warn); color: var(--warn); }
+.crew-call.wrap.go { background: var(--air, #ff2a2a); border-color: var(--air, #ff2a2a); color: #fff; }
 .show-alerts { margin: 12px 16px 0; display: grid; gap: 8px; }
 .show-alerts div { padding: 10px 12px; border: 1px solid var(--warn); color: var(--warn); }
 .show-alerts div.dead-air { background: var(--warn); color: #000; font-weight: 600; animation: blink 1s steps(2) infinite; }
@@ -906,3 +909,77 @@ body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(3)) > :first-child 
 /* UNIT 01 (Nov 22): the unit number beside the short name */
 .unit-no { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .unit-no input { width: 4.5em; }
+/* #116: NETWORK at ~300 px scrolled sideways by 22 px: the DEVICES table (an address like 169.254.20.101 and
+   "ghostlink" would not shrink). Narrow screens: a size smaller, and the address may break between its digits. */
+@media (max-width: 380px) {
+  .devices { font-size: 13px; }
+  .devices th, .devices td { padding-right: 6px; }
+  .devices td:last-child { overflow-wrap: anywhere; }
+}
+
+/* VISUALS LINK (#123, visuals.js): rule and cue rows under SHOW CONTROL */
+.vl-sub { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); letter-spacing: .1em; font-size: 13px; }
+.vl-sub small { color: var(--grey); letter-spacing: .04em; }
+.vl-split { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.vl-label { margin-top: 10px; color: var(--grey); font-size: 11px; letter-spacing: .08em; }
+.vl-layers { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; margin-top: 4px; }
+.vl-layers label, .vl-item label { display: grid; gap: 3px; color: var(--grey); font-size: 11px; letter-spacing: .08em; min-width: 0; }
+.vl-layers input, .vl-item input, .vl-item select { width: 100%; min-width: 0; }
+.vl-item { display: grid; grid-template-columns: 170px minmax(140px, 1fr) 72px 72px auto auto; gap: 6px; align-items: end; margin-top: 6px; max-width: 860px; }
+.vl-item input[type=text] { max-width: none; }
+.vl-item.vl-cue { grid-template-columns: 170px 72px 130px minmax(180px, 1fr) auto auto; }
+.vl-item select { width: 100%; }
+.vl-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin-top: 8px; }
+.vl-row label { display: grid; gap: 3px; flex: 0 1 280px; min-width: 0; color: var(--grey); font-size: 11px; letter-spacing: .08em; }
+.vl-row input { width: 100%; min-width: 0; }
+@media (max-width: 700px) {
+  .vl-item, .vl-item.vl-cue { grid-template-columns: 1fr 1fr; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .vl-item [data-k="text"], .vl-item [data-k="address"] { grid-column: 1 / -1; }
+}
+/* #128 VISUALS LINK extras: AGAIN per rule, CLEAR A DECK'S LAYER WHEN IT GOES OFF AIR */
+.vl-item:not(.vl-cue) { grid-template-columns: 170px minmax(140px, 1fr) 72px 72px auto auto auto; }
+.vl-item label.vl-again { display: flex; align-items: center; justify-content: flex-start; gap: 6px; min-height: 36px; color: var(--fg); }
+.vl-item label.vl-again input, .vl-check input { width: 20px; height: 20px; flex: 0 0 auto; margin: 0; max-width: none; }
+.vl-check { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; font-size: 12px; letter-spacing: .06em; }
+.vl-check small { flex-basis: 100%; color: var(--grey); letter-spacing: .02em; }
+@media (max-width: 700px) { .vl-item:not(.vl-cue) { grid-template-columns: 1fr 1fr; } }
+/* #128 HIDE NEXT on NOW (onstream.js): only while HIDE IDS is on */
+.hide-next { display: grid; gap: 6px; margin: 10px 0 0; }
+.hide-next[hidden] { display: none; }
+.hide-next .hn-row { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 12px; letter-spacing: .06em; color: var(--grey); }
+.hide-next .hn-row span { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hide-next .hn-row.on span { color: var(--fg); }
+.hide-next .hn-row .mini { margin: 0; flex: 0 0 auto; }
+/* #125 AFTER THE NIGHT: NO ANALYSIS tag on a deck (thin.js) + NOW's + NOTE (nightnote.js) */
+.tag.thin { border: 1px solid var(--grey); color: var(--grey); font-weight: 400; }
+.night-note { margin-top: 10px; }
+.night-note > summary { cursor: pointer; list-style: none; display: inline-block; border: 1px solid var(--fg); padding: 6px 10px; font-size: 13px; letter-spacing: .08em; }
+.night-note > summary::-webkit-details-marker { display: none; }
+.night-note[open] > summary { border-color: var(--grey); color: var(--grey); }
+.nn-body { display: grid; gap: 8px; margin-top: 8px; }
+.nn-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.nn-picks .mini.on { background: var(--fg); color: var(--bg); }
+.nn-row { display: flex; gap: 6px; }
+.nn-txt { flex: 1; min-width: 0; font: inherit; font-size: 14px; background: var(--bg); color: var(--fg); border: 1px solid var(--dim); padding: 6px 8px; }
+.nn-note { font-size: 12px; color: var(--grey); overflow-wrap: anywhere; }
+.nn-note.warn { color: var(--warn); }
+.nn-last { font-size: 12px; color: var(--grey); display: grid; gap: 2px; }
+.nn-last span { overflow-wrap: anywhere; }
+.nn-picks .mini { margin-left: 0; }
+.nn-go { font: inherit; padding: 6px 14px; background: var(--fg); color: var(--bg); border: 0; cursor: pointer; }
+.nn-go:disabled { opacity: .5; }
+
+/* #132: NOW's small cells (REMAINING / BPM / KEY...) size their big digits to the cell, so they never run into the
+   next one at any width (1280x800 overlapped). 26cqi = 6 mono characters (0.6em each) across the cell. */
+.now .grid > .cell:not(.wide) { container-type: inline-size; }
+.now .grid > .cell:not(.wide) .v { font-size: min(clamp(28px, 9vw, 64px), 26cqi); white-space: nowrap; overflow: hidden; }
+@media (min-width: 1000px) { .now .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+@media (max-height: 560px) and (min-width: 420px) {
+  .now .grid > .cell:not(.wide) .v { font-size: min(clamp(22px, 6vh, 40px), 26cqi); }
+}
+.nights .n .slots { overflow-wrap: anywhere; } /* #132: set notes in the list never push the page sideways */
+.more-box { max-width: calc(100vw - 16px); } /* #132: settime.js keeps it on screen (it hung off the left at 480 px) */
+.more-box select { max-width: 100%; min-width: 0; }
+.help .facts dd a { color: var(--fg); } /* #132: HELP's page links in the product's colours, not the browser's blue */
+.wx-card .wx-venue { border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.wx-card .wx-venue span { flex: 1 1 14em; min-width: 0; overflow-wrap: anywhere; font-size: 14px; font-weight: 400; letter-spacing: .06em; }

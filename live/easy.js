@@ -98,8 +98,23 @@ const Easy = (() => {
     add('SOUND IN', a.card ? 'ok' : 'none', a.card ? (a.recordOn ? 'RECORDING' : 'CARD IN') : 'No sound card (only needed to record sets).');
     if (n && !(S.devices || []).some(d => d.kind === 'MIXER')) add('MIXER', 'look', "Fine to play. For ON AIR, cable the mixer's LINK port to the same switch.");
     for (const re of [/^Storage almost full/, /^The box is hot/, /^Power dipped/, /^Player updates are thin/]) { const q = prob(re); if (q) add(q.title.toUpperCase(), 'look', q.fix); }
-    if (!s.blackbox) add('BLACK BOX', 'look', 'Not writing. RESTART the box after the night if it stays like this.');
+    // #115 SELF-CHECK: the card and memory lines (storage, heat and clock have their own lines above).
+    // #116: a card that won't save while music is on air is a calm LOOK, not FIX FIRST: nothing is lost yet, and the
+    // fix (a restart, a new card) must wait for the end of the set. Pulling the power is the one thing that loses it.
+    const live = liveNow(s);
+    for (const i of ((s.selfCheck && s.selfCheck.items) || [])) if ((i.k === 'CARD' || i.k === 'MEMORY') && i.st !== 'ok') {
+      if (i.k === 'CARD' && i.st === 'fix' && live) add('CARD', 'look', "CARD WON'T SAVE · nothing lost yet · deal with it after this set, don't pull the power");
+      else add(i.k, i.st, i.say);
+    }
+    if (s.blackboxGap) add('BLACK BOX', 'look', "Can't write to the card right now: it keeps the last lines in memory and catches up by itself.");
+    else if (!s.blackbox) add('BLACK BOX', 'look', 'Not writing. RESTART the box after the night if it stays like this.');
     return out;
+  }
+
+  /** #116: music on air right now: a deck on air and playing, or a set being recorded (a laptop DJ on the sound card). */
+  function liveNow(s) {
+    const decks = (typeof S !== 'undefined' && S.decks) ? Object.values(S.decks) : [];
+    return decks.some(d => d && d.onAir && d.playing) || !!(s && s.audio && s.audio.recording);
   }
 
   const box = $('ready') || el('div', 'ready'); // index.html: top of STATUS, before GO TO
@@ -261,5 +276,5 @@ const Easy = (() => {
   addEventListener('hashchange', () => { if (curView() === 'status') { readySig = ''; loadPlan(true).then(tick); } });
   setInterval(tick, 1000);
   setTimeout(() => { loadPlan(true).then(tick); }, 300);
-  return { checks, planTonight };
+  return { checks, planTonight, liveNow };
 })();

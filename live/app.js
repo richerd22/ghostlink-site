@@ -338,6 +338,7 @@ function renderDeck(p) {
   t.q('.demo').hidden = !d.demo;
   t.q('.air').hidden = !d.onAir;
   t.q('.master').hidden = !d.master;
+  if (typeof Thin !== 'undefined') Thin.tag(t, d); // #125 THIN TRACK NOTE: NO ANALYSIS (thin.js)
   setText(t.q('.title'), d.title || '');
   setText(t.q('.artist'), d.artist || '');
   const art = d.hasArtwork ? `/api/art/${p}?k=${encodeURIComponent(d.trackKey)}` : null;
@@ -845,7 +846,7 @@ function frameNight(q, set, setH) {
     const snd = !a || !a.card ? 'NO CARD' : lv ? (Math.max(lv.rl, lv.rr) <= -119 ? '--' : Math.max(lv.rl, lv.rr).toFixed(0) + ' dB') : 'ON';
     const st = [['TEMP', s.cpuTempC == null ? '--' : s.cpuTempC.toFixed(0) + '°C', s.cpuTempC >= 75],
       ['WI-FI', sig, w.state === 'hotspot' || !!quiet], ['PLAYERS', String(s.players || 0), !s.players],
-      ['SOUND IN', snd, false], ['REC', a && a.recording ? '● ON' : 'OFF', false],
+      ['SOUND IN', snd, false], ['REC', a && a.recording ? (a.recording.level === 'hot' ? '● TOO HOT' : a.recording.level === 'quiet' ? '● TOO QUIET' : '● ON') : 'OFF', !!(a && a.recording && a.recording.level)], // #113
       ['UP', Math.floor(s.uptimeSeconds / 3600) + 'h ' + Math.floor(s.uptimeSeconds % 3600 / 60) + 'm', false]];
     setH('.n-box', st.map(([k, v, warn]) => `<span${warn ? ' class="look"' : ''}><small>${k}</small><b${k === 'REC' && v !== 'OFF' ? ' class="rec"' : ''}>${esc(v)}</b></span>`).join(''));
   }
@@ -980,8 +981,14 @@ function renderPlayed() {
   // Newest first, with a heading wherever the DJ changes (only once a lineup is in use).
   const lineup = list.some(t => t.dj);
   let lastDj;
-  $('playedList').innerHTML = list.slice().reverse().map(t => {
-    const head = lineup && t.dj !== lastDj ? `<li class="dj-sep">${esc(t.dj || 'NO DJ SET')}</li>` : '';
+  // #121 SET CHANGEOVER: a set's heading says who it follows ("TICK → LIL TICK"); data-mark = its first track (settime.js)
+  // #129: one set rule everywhere (core/NightTracks): "LIL TICK" and "lil tick " are the same set, no mark between
+  const djKey = d => (d || '').trim().toLowerCase();
+  const firstOf = k => { let j = list.length - 1 - k; while (j > 0 && djKey(list[j - 1].dj) === djKey(list[j].dj)) j--; return j; };
+  $('playedList').innerHTML = list.slice().reverse().map((t, k) => {
+    const j = lineup && (lastDj === undefined || djKey(t.dj) !== djKey(lastDj)) ? firstOf(k) : -1;
+    const head = j < 0 ? '' : j > 0 ? `<li class="dj-sep" data-mark="${list[j].at}">${esc((list[j - 1].dj || 'NO DJ SET') + ' → ' + (t.dj || 'NO DJ SET'))}</li>`
+      : `<li class="dj-sep">${esc(t.dj || 'NO DJ SET')}</li>`;
     lastDj = t.dj;
     return head + `<li><time>${clock(t.at)}</time><span class="deckno">${t.player}</span>` +
       `<span class="what">${esc(t.title)} <span>${esc(t.artist)}</span></span><span class="bpm">${t.bpm.toFixed(1)}</span></li>`;
@@ -993,6 +1000,7 @@ function renderPlayed() {
   ].map(([k, v]) => `<div><small>${k}</small><b>${esc(String(v))}</b></div>`).join('') : '';
   drawBpmChart($('bpmChart'), list);
   drawSetLine($('setLine'), list);
+  if (typeof SetTimeUI !== 'undefined') SetTimeUI.played(list); // #121: NOT A NEW SET, downloads per DJ
 }
 
 /** The night as a strip: one block per track (until the next one went on air), DJs as labelled bands on top. */
@@ -1197,7 +1205,8 @@ function renderStatus() {
   setHTML($('gearList'), gc.map(p => `<li><b>${esc(p.title)}</b> ${esc(p.fix || p.detail || '')}</li>`).join(''));
   const up = s.uptimeSeconds;
   const facts = [
-    ['LINK', { LINKED: 'joined as device ' + s.deviceNumber, LISTENING: 'listening', BACKED_OFF: 'backed off', LISTEN_ONLY: 'listen only', OFFLINE: 'not joined' }[s.link]],
+    ...(s.selfCheck ? [['SELF-CHECK', s.selfCheck.say]] : []), // #115: card, free space, temperature, memory, clock
+    ['LINK',{ LINKED: 'joined as device ' + s.deviceNumber, LISTENING: 'listening', BACKED_OFF: 'backed off', LISTEN_ONLY: 'listen only', OFFLINE: 'not joined' }[s.link]],
     ['DJ CABLE', s.cable == null ? 'unknown' : s.cable ? 'connected' + (s.djAddress ? ' · ' + s.djAddress : ' · no address') : 'unplugged'],
     ['DJ LINK DATA', s.djLinkTraffic.arriving ? 'arriving' : 'none'],
     ['PLAYERS', s.players],
@@ -1216,6 +1225,7 @@ function renderStatus() {
 let nights = [];
 async function loadNightsPlan() {
   try { nights = await (await fetch('/api/schedule')).json(); } catch (e) {}
+  if (typeof SetNotesUi !== 'undefined' && SetNotesUi.load) await SetNotesUi.load(); // #132: notes in the list
   renderNightsPlan();
 }
 const venueName = id => ((venues.venues || []).find(v => v.id === id) || {}).name || '';
@@ -1224,12 +1234,14 @@ function renderNightsPlan() {
   const upcoming = nights.filter(n => !tonight || n.date >= tonight);
   $('nightsList').innerHTML = upcoming.map(n => `<div class="n"><b>${esc(nightLabel(n.date))}${n.date === tonight ? ' · TONIGHT' : ''}</b>` +
     `<div>${esc(venueName(n.venue) || 'no venue')}</div>` +
-    `<div class="slots">${n.doors ? esc(n.doors) + '  STARTS\n' : ''}${n.lineup.map(s => esc((untimed(s) ? 'ALL NIGHT  ' : s.start + '  ') + s.dj)).join('\n')}${n.musicOff ? '\n' + esc(n.musicOff) + '  MUSIC OFF' : ''}${n.notes ? '\n' + esc(n.notes) : ''}</div>` +
+    `<div class="slots">${n.doors ? esc(n.doors) + '  STARTS\n' : ''}${n.lineup.map(s => esc((untimed(s) ? 'ALL NIGHT  ' : s.start + '  ') + s.dj + (typeof SetNotesUi !== 'undefined' && SetNotesUi.suffix ? SetNotesUi.suffix(n.date, s.dj) : ''))).join('\n')}${n.musicOff ? '\n' + esc(n.musicOff) + '  MUSIC OFF' : ''}${n.notes ? '\n' + esc(n.notes) : ''}${n.preset ? '\nPRESET  ' + esc(nightPresetName(n.preset)) : ''}</div>` +
     `<div class="row"><button type="button" data-night="${esc(n.date)}">EDIT</button></div></div>`).join('') ||
     '<div class="note">Nothing planned. Plan a night to have the venue and lineup switch by themselves.</div>';
   $('nightsList').querySelectorAll('[data-night]').forEach(b => b.onclick = () => openNightForm(nights.find(n => n.date === b.dataset.night)));
   renderPlanNow();
 }
+/** #116: a planned night's preset by name (settings.js knows the presets; locked phones just see PRESET). */
+function nightPresetName(id) { try { const n = NightSettings.presetName(id); return n === undefined ? 'ONE IS SET' : n || 'A DELETED PRESET'; } catch (e) { return 'ONE IS SET'; } }
 /** PLAYED: tonight's lineup with whoever is on the decks in bold (cheap; runs on every status). */
 function renderPlanNow() {
   const tonight = (S.status && S.status.night) || '';
@@ -1278,10 +1290,12 @@ function openNightForm(n) {
   $('nDate').disabled = !!n;
   $('nVenue').value = n ? n.venue || '' : venues.current || '';
   $('nLineup').value = n ? n.lineup.map(s => (untimed(s) ? '' : s.start + ' ') + s.dj).join('\n') : '';
+  try { SetNotesUi.fill(n); } catch (e) {} // #131 SET NOTES: "// NEEDS TT + MIC" back after each name (setnotes.js)
   note('nightNote', '');
   $('nNotes').value = n ? n.notes || '' : '';
   $('nOff').value = n ? n.musicOff || '' : '';
   $('nDoors').value = n ? n.doors || '' : '';
+  try { NightSettings.setNightPick(n ? n.preset : ''); } catch (e) {} // #116 the night's preset (settings.js)
   $('nightDelBtn').hidden = !n;
   $('nightForm').hidden = false;
 }
@@ -1289,7 +1303,8 @@ $('nightNewBtn').addEventListener('click', () => openNightForm(null));
 $('nightCancel').addEventListener('click', () => { $('nightForm').hidden = true; });
 $('nightForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const r = await post('/api/schedule', { date: $('nDate').value, venue: $('nVenue').value, lineup: $('nLineup').value, notes: $('nNotes').value, musicOff: $('nOff').value, doors: $('nDoors').value });
+  const r = await post('/api/schedule', { date: $('nDate').value, venue: $('nVenue').value, lineup: $('nLineup').value, notes: $('nNotes').value, musicOff: $('nOff').value, doors: $('nDoors').value,
+    preset: $('nPreset') ? $('nPreset').value : undefined }); // #116 (settings.js adds the PRESET pick)
   if (r.ok) { nights = await r.json(); $('nightForm').hidden = true; renderNightsPlan(); }
   else if (r.status === 400) note('nightNote', (await r.json()).error, true);
   else if (r.status !== 401) note('nightNote', "Didn't save (" + r.status + '). Try again.', true);
@@ -2424,7 +2439,7 @@ function stackCanvas(p, pos) {
   const fl = deckFlags(d);
   row.classList.toggle('loop', fl.some(f => f.startsWith('LOOP')));
   const title = loaded ? Views.title(row._stt, d) : ''; // artist + title, shortened to fit, remix name kept (#90)
-  const flags = fl.join(' · ');
+  const flags = (loaded && typeof Thin !== 'undefined' && Thin.of(d) ? fl.concat('NO ANALYSIS') : fl).join(' · '); // #125
   if (row._sf.textContent !== flags) row._sf.textContent = flags;
   if (row._stt.textContent !== title) row._stt.textContent = title;
   if (FIT.on) {
@@ -2659,6 +2674,9 @@ const GOTO = [
   ['HALL OF FAME · cleanest blends, wild rides', 'played/insights', 'hall of fame transitions blends clean flam gallop wild rides horses chop tv trainwreck'],
   ['BOX RECORDS + HALL OF FAME: ON / OFF (owner)', 'played/insights', 'owner switch records hall of fame off on hide'],
   ['WILD RIDES: SHOW NAMES (owner)', 'played/insights', 'wild rides names show hide privacy owner dj'],
+  ['NIGHT PRESETS · club, laptop, home practice, pre-doors', 'status/presets', 'preset presets night club laptop home practice pre doors soundcheck undo save current'],
+  ['ALL SETTINGS · every setting in one list', 'status/presets', 'settings all settings list default changed back to default search'],
+  ['MOVE SETTINGS TO ANOTHER UNIT · settings file', 'status/presets', 'move settings export import file another unit second box copy'],
   ['NIGHTS · plan a night, lineup', 'status/nights', 'lineup set times schedule plan music off dj'],
   ['DECK CONTROLS · stop all, play, load', 'status/deck-controls', 'stop play load sync master ghost deck'],
   ['AUTO-STOP AT MUSIC OFF', 'status/deck-controls', 'curfew music off stop autostop'],
@@ -2679,7 +2697,7 @@ const GOTO = [
   ['CONTROLS · rejoin, listen only, restart', 'status/controls', 'rejoin listen only restart shut down shutdown power reading'],
   ['BACKUP · restore, black box, logs', 'status/backup', 'backup restore black box blackbox logs'],
   ['GET READY TO SELL · hand the box on', 'status/sell', 'sell selling sold reset factory wipe erase new owner give away hand on'],
-  ['BOX DETAILS · uptime, temperature', 'status/box', 'uptime temp temperature cpu source facts'],
+  ['BOX DETAILS · self-check, uptime, temperature', 'status/box', 'uptime temp temperature cpu source facts self-check selfcheck health card memory disk space'],
   ['TOOLS · demo, tour, arcade, test run', 'status/tools', 'demo tour arcade games boo test run'],
   ['PASSWORD · lock, crew code', 'status/lock', 'password lock unlock crew code'],
   ['SOUND IN · record a set', 'network/sound', 'record recording sound card audio meter uca202 flac silence'],
@@ -2858,7 +2876,7 @@ function renderBoothCheck(s) {
     ['TRACKS', stuck ? ['look', 'A DECK IS NOT READING'] : titled ? ['ok', 'TITLES ARRIVING'] : ['none', 'LOAD ONE TO CHECK']],
     ...(s.deckSetup && players ? [['DECK SETUP', s.deckSetup.length ? ['look', s.deckSetup.map(i => 'DECK ' + i.deck + ' ' + i.what + ' ' + i.now + ' (HOUSE ' + i.house + ')').join(' · ')] : ['ok', 'MATCHES HOUSE (JOG, FIRMWARE)']]] : []),
     ['POWER', power ? ['look', power.title.toUpperCase()] : ['ok', 'OK']],
-    ['BLACK BOX', s.blackbox ? ['ok', 'WRITING'] : ['look', 'NOT WRITING']],
+    ['BLACK BOX', s.blackbox ? ['ok', 'WRITING'] : s.blackboxGap ? ['look', 'CARD WON\'T TAKE IT · ' + s.blackboxGap.held + ' LINES WAITING IN MEMORY'] : ['look', 'NOT WRITING']], // #115
   ];
   const html = '<h2>BOOTH CHECK</h2><dl>' + rows.map(([k, [st, t]]) => `<dt>${k}</dt><dd class="bc-${st}">${esc(t)}</dd>`).join('') + '</dl>';
   if (box.innerHTML !== html) box.innerHTML = html;

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>USING GHOST LINK WITH OBS - GHOST LINK HELP</title>
-<meta name="description" content="GHOST LINK help: a see-through now-playing card and who's-on text for an OBS stream.">
+<meta name="description" content="GHOST LINK help: now playing on a stream: a lower third, ticker or big card for OBS, IDs hidden, a setlist with times.">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://ghostlink.cold.fyi/help/how-to/with-obs.html">
 <link rel="icon" href="../../icon-32.png" sizes="32x32">
@@ -42,23 +42,42 @@
     <article class="doc">
 <h1>USING GHOST LINK WITH OBS</h1>
 
-<p class="lead">For a stream: a see-through now-playing card and a who's-on line, as OBS Browser Sources.</p>
-<h2 id="what">WHAT IT GIVES OBS</h2>
-<ul>
-  <li><b class="ui">STREAM OVERLAY</b>: art, title, artist and BPM of what the room hears, in a corner. Fades on a new track.</li>
-  <li><b class="ui">WHAT'S ON</b>: see-through text with who's on and who's next (the track only while <b class="ui">SONG ID</b> is on).</li>
-  <li>GHOST LINK sends nothing to OBS itself: OBS just shows the page.</li>
-</ul>
+<p class="lead">Now playing on your stream: a lower third, a corner ticker or a big card, as an OBS Browser source. Pick the look on the box, copy the link, paste it.</p>
 <h2 id="steps">SET IT UP</h2>
 <ol class="how">
-  <li><p>The OBS computer on the same Wi-Fi as the box.</p></li>
-  <li><p>The address is the box's address plus <code>/overlay.html</code> (or <code>/whatson.html</code>), for example <code>http://ghostlink.local/overlay.html</code>. Tap <b class="ui">GHOST LINK</b> at the top of the dashboard for the box's address on this Wi-Fi.</p></li>
-  <li><p>In OBS: <b>Sources</b> &rarr; <b>+</b> &rarr; <b>Browser</b>, paste the address, width 1920, height 1080.</p></li>
-  <li><p>Options go on the end of the address: <code>?pos=br</code> (corner: bl, br, tl, tr), <code>?scale=1.5</code>, <code>?bpm=0</code> (no BPM), <code>?bg=green</code> (green screen).</p></li>
+  <li><p>The streaming computer on the same Wi-Fi as the box.</p></li>
+  <li><p>On the dashboard: <b class="ui">STATUS</b> &rarr; <b class="ui">SCREENS</b> &rarr; <b class="ui">STREAM OVERLAY</b>. It opens the overlay's page.</p></li>
+  <li><p>Pick the look. The preview shows it live, or with made-up tracks when nothing is playing.</p></li>
+  <li><p>Tap <b class="ui">COPY LINK</b>.</p></li>
+  <li><p>In OBS: <b>Sources</b> &rarr; <b>+</b> &rarr; <b>Browser</b>. Paste the link into URL. Width 1920, height 1080 (or 1280 and 720).</p></li>
 </ol>
+<h2 id="looks">THE LOOKS</h2>
+<ul>
+  <li><b class="ui">LOWER THIRD</b>: cover, title, artist and the DJ's name in a corner. Slides in on a new track; stays up, or fades after 10, 20 or 30 seconds.</li>
+  <li><b class="ui">CORNER TICKER</b>: one small line. <b class="ui">BIG CARD</b>: the middle of the screen.</li>
+  <li>Add a <b class="ui">BPM + KEY</b> chip, the tracks <b class="ui">PLAYED BEFORE</b>, and a <b class="ui">TIME BAR</b> (a line or the track's waveform).</li>
+  <li><b class="ui">KEY AS</b>: the key the way rekordbox shows it, as a musical key (Am) or as Camelot (8A).</li>
+  <li>Laptop DJ, no decks on the network: the chip shows the BPM the box hears from the sound card, marked <b class="ui">BY EAR</b>.</li>
+  <li>See-through by default; <b class="ui">GREEN SCREEN</b> or <b class="ui">BLACK</b> for apps that need one.</li>
+  <li>Nothing playing: nothing on screen.</li>
+</ul>
+<h2 id="titles">TITLES AND IDS</h2>
+<ul>
+  <li>Titles show only while <b class="ui">SONG ID</b> is on. Off, the overlay shows the DJ's name and the BPM. The tracklist is the DJ's: turn it on only when the DJ says yes.</li>
+  <li><b class="ui">HIDE IDS</b>: tap <b class="ui">HIDE</b> next to a track (on the overlay's page, or in <b class="ui">PLAYED</b>) and it shows as ID - ID. While it's on, <b class="ui">NOW</b> also offers <b class="ui">HIDE NEXT</b> for the track loaded on the other deck, before it ever shows. Tracks with "unreleased" in the title, artist or comment are hidden by themselves. The box remembers them for every night.</li>
+</ul>
+<h2 id="setlist">THE SETLIST FOR YOUR VIDEO</h2>
+<p>Tap <b class="ui">START STREAM CLOCK</b> when the stream goes live. <b class="ui">COPY SETLIST</b> then gives "00:00 Artist - Title" lines that match the video, ready for a description. Without it, the times count from the recording or the first track.</p>
+<p>Stream running a few seconds behind (an OBS delay, the platform's lag)? <b class="ui">+5 S</b> moves every chapter 5 seconds later; <b class="ui">&minus;5 S</b> earlier.</p>
+<h2 id="other">FOR OTHER TOOLS</h2>
+<p>Plain feeds on the box: <code>/api/nowplaying.txt</code> (one line), <code>/api/nowplaying.json</code> and <code>/api/setlist.txt</code>. Same rules as the overlay. <b class="ui">WHAT'S ON</b> (<code>/whatson.html</code>) still gives who's on and who's next.</p>
+<h3 id="text-file">OBS TEXT SOURCE (READ FROM FILE)</h3>
+<p>OBS's Text source reads a file on the computer, not a link. The Browser source above is the easy way. If you want a Text source anyway, keep a file up to date on the Mac: open Terminal and leave this running (Ctrl-C stops it).</p>
+<pre><code>while true; do curl -sf -m 2 http://ghostlink.local/api/nowplaying.txt -o ~/nowplaying.tmp &amp;&amp; mv ~/nowplaying.tmp ~/nowplaying.txt; sleep 2; done</code></pre>
+<p>Then in OBS: <b>Text</b> &rarr; <b>Read from file</b> &rarr; pick <code>nowplaying.txt</code> in your home folder. If the box can't be reached, the file keeps its last line. A box with another name: use that name or its address.</p>
 <h2 id="off">TURN IT OFF</h2>
-<p>Hide the source in OBS (the eye), or delete it. GHOST LINK never changes OBS's settings or scenes.</p>
-<p class="small">Made for an OBS Browser Source; not tried in OBS by us yet. The tracklist is the DJ's: show titles on a stream only when the DJ says yes.</p>
+<p>Hide the source in OBS (the eye), or delete it. GHOST LINK sends nothing to OBS and never changes its settings or scenes.</p>
+<p class="small">Made for an OBS Browser source; not tried in OBS by us yet.</p>
 
 <div class="pager"><a class="btn" href="index.html#apps">ALL APPS</a> <a class="btn" href="lights-and-visuals.html">LIGHTS AND VISUALS</a></div>
 

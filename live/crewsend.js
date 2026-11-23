@@ -62,7 +62,10 @@ const CrewSend = (() => {
   }
   mark();
 
-  wrap.append(sum, as, picks, txt, times, ci, send, note, offer, liveH, live, auto);
+  // #127 URGENT: red and bigger on every screen and HARD STOP's panels (off again after each send, like HARD STOP's)
+  const urg = el('label', 'cs-check cs-urgent'); const urgBox = el('input'); urgBox.type = 'checkbox';
+  urg.append(urgBox, document.createTextNode(' URGENT (red, bigger, first on every screen)'));
+  wrap.append(sum, as, picks, txt, times, ci, urg, send, note, offer, liveH, live, auto);
   box.append(wrap);
 
   function say(t, warn) { note.textContent = t; note.classList.toggle('warn', !!warn); }
@@ -72,8 +75,8 @@ const CrewSend = (() => {
     if (!(s >= 0 && s <= 3600)) { say('Seconds to GO: 0 to 3600.', true); return; }
     if (!unlocked) { pending = send; return needUnlock(); }
     if (atDrop) return sendAtDrop(t, '');
-    const r = await post('/api/crew/call', { txt: t, in: s, mo: ciBox.checked, from: who() });
-    if (r.ok) { say('Sent: ' + t + (s ? ' in ' + s + ' s' : ' NOW') + '.'); txt.value = ''; }
+    const r = await post('/api/crew/call', { txt: t, in: s, mo: ciBox.checked, from: who(), urgent: urgBox.checked });
+    if (r.ok) { say('Sent' + (urgBox.checked ? ' URGENT' : '') + ': ' + t + (s ? ' in ' + s + ' s' : ' NOW') + '.'); txt.value = ''; urgBox.checked = false; }
     else if (r.status !== 401) { let e = 'Not sent.'; try { e = (await r.json()).error || e; } catch (x) {} say(e, true); }
   });
 
@@ -108,13 +111,15 @@ const CrewSend = (() => {
     as.textContent = 'AS ' + who() + ' · change it with the role buttons above';
     const calls = (S.crew || (S.status && S.status.crew) || []).filter(c => !c.go)
       .concat(((S.status && S.status.dropCalls) || []).filter(h => h.state === 'WAITING'));
-    const k = calls.map(c => c.id + (c.state || '')).join('|') + unlocked;
+    const k = calls.map(c => c.id + (c.state || '') + (Crew.marks ? Crew.marks(c) : '')).join('|') + unlocked;
     liveH.hidden = !calls.length;
     if (k === liveKey) return;
     liveKey = k;
     live.replaceChildren(...calls.map(c => {
       const row = el('div', 'cs-row');
       row.append(el('span', 'who', c.from || 'CREW'), el('b', null, Crew.label ? Crew.label(c) + (c.state === 'WAITING' ? ' · WAITING' : '') : c.txt));
+      const m = Crew.marks ? Crew.marks(c) : ''; // #127: SEEN 23:41 (BOOTH) back to whoever sent it
+      if (m) row.append(el('small', 'cs-marks', m));
       const x = el('button', 'mini', 'CANCEL'); x.type = 'button';
       x.addEventListener('click', async () => {
         if (!unlocked) { pending = x; return needUnlock(); }

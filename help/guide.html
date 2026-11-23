@@ -154,7 +154,10 @@
   <dt>COPY SETLIST</dt><dd>The list as plain text.</dd>
   <dt>COPY TRACKLIST</dt><dd>Times from the start of each set, for Mixcloud or 1001Tracklists.</dd>
   <dt>PLAYLIST</dt><dd>A playlist file (.m3u8) for rekordbox or Serato.</dd>
+  <dt>TEXT</dt><dd>A file: times and Artist - Title, a block for each set.</dd>
+  <dt>MIXCLOUD / 1001</dt><dd>A file: 00:00 Artist - Title, one line per track, for Mixcloud, 1001Tracklists or a mix's description.</dd>
 </dl>
+<p>More than one DJ tonight: pick <b class="ui">WHOLE NIGHT</b> or one DJ at the top of <b class="ui">COPY · SAVE</b> first, and the files are just that.</p>
 
 <p><b class="ui">RECAP IMAGE</b> is next to the night menu; the rest are under <b class="ui">COPY · SAVE</b>. Step by step: <a href="how-to/get-the-tracklist.html">get the tracklist or playlist</a>.</p>
 
@@ -166,7 +169,10 @@
 <li><b>With a planned night:</b> it switches by itself. The next DJ takes over when their first track goes on air from a new USB, or 15 minutes after their start time if no new USB shows (same USB, B2B, laptop).</li>
 <li><b>With no plan:</b> when a USB that hasn't been on air tonight goes on air, a new set starts: <b class="ui">SET 2</b>, <b class="ui">SET 3</b>... Say whose it is with <b class="ui">SET</b>. If the USB's own name looks like a person's name, a one-tap suggestion shows next to <b class="ui">SET</b>.</li>
 <li><b>Backup stick or B2B:</b> if the previous DJ's USB comes back within 2 tracks, the split is undone by itself.</li>
+<li><b>Wrong split:</b> each new set in PLAYED reads like <i>TICK &rarr; LIL TICK</i>. Tap <b class="ui">NOT A NEW SET</b> and those tracks join the set before. <b class="ui">PUT THE MARK BACK</b> undoes it. A recording's MP3 has the same marks.</li>
 </ul>
+<p id="set-time"><b>WILL IT FIT?</b> In the last 10 minutes before MUSIC OFF (or the end of the set), <b class="ui">NOW</b> and the corner window show one quiet line: <i>This track ends 1:20 after MUSIC OFF</i>, and for the next deck <i>DECK 2 FITS</i> or <i>DECK 2 RUNS 1:20 OVER</i>. It counts the deck's pitch. Tap it to hide it for that track. No sound. After MUSIC OFF with music still playing: <i>+0:42 PAST MUSIC OFF</i>.</p>
+<p><b>RUNNING LATE?</b> Under the lineup in PLAYED: <b class="ui">+5 MIN</b>, <b class="ui">+10 MIN</b>, or type the minutes and <b class="ui">MOVE</b>. Every set that hasn't started moves later; MUSIC OFF stays. <b class="ui">UNDO</b> puts it back. When HARD STOP runs the night's times, move them there: GHOST LINK shows <i>RUNNING 10 MIN LATE</i> by itself.</p>
 <p><b>STARTS:</b> the time a night begins. Music on air before it is <b class="ui">SOUNDCHECK</b>, kept in its own block in PLAYED and in COPY TRACKLIST. Set it when you plan a night. With no time set, the night starts at 9 PM (or 20 minutes before the first set, if that's earlier).</p>
 
 <h2 id="usbs-tonight">USBS TONIGHT</h2>
@@ -211,7 +217,7 @@
   <dt>SCREENS</dt><dd><b class="ui">TV MODE</b>, <b class="ui">STREAM OVERLAY</b>, <b class="ui">CREW SCREEN</b>, <b class="ui">WHAT'S ON</b>, <b class="ui">SONG PAGE</b>, <b class="ui">PRINT STICKER</b>, <b class="ui">VISUALIZER</b>, <b class="ui">NOW PLAYING</b>.</dd>
   <dt>BACKUP</dt><dd><b class="ui">BACKUP</b> keeps venues, nights, played lists and the password in one file. <b class="ui">RESTORE</b> puts it back. <b class="ui">BLACK BOX</b> and <b class="ui">LOGS</b> are here too.</dd>
   <dt>UPDATES</dt><dd>Owner only. <b class="ui">CHECK</b> looks online, then <b class="ui">INSTALL</b> (hold) or <b class="ui">WHEN THE MUSIC STOPS</b>. No internet: get the update file from GHOST LINK support onto your phone, then <b class="ui">INSTALL FROM FILE</b>. <b class="ui">GO BACK TO PREVIOUS</b> puts the last version back. Never installs during music; a new version that doesn't start properly is undone by itself.</dd>
-  <dt>BOX DETAILS</dt><dd>Link, cable, players, Wi-Fi, uptime, temperature.</dd>
+  <dt>BOX DETAILS</dt><dd>SELF-CHECK first: one line on the box itself (saving to its card, free space, temperature, memory, clock). Then link, cable, players, Wi-Fi, uptime, temperature.</dd>
   <dt>WATCH FROM HOME</dt><dd>A view-only link that works from anywhere.</dd>
   <dt>TOOLS</dt><dd><b class="ui">DEMO</b>, <b class="ui">SHOW THE TOUR</b>, <b class="ui">BOO'S ARCADE</b>, <b class="ui">TEST RUN</b>. The ghost switches are in <b class="ui">HELP</b> &rarr; <b class="ui">DISPLAY</b>.</dd>
   <dt>BOO'S ARCADE</dt><dd>Under TOOLS: short games for anyone in the room. On the decks: <b class="ui">RIDE THE WAVE</b> (the ghost surfs the playing track: hold to rise, let go to fall, stay on the dotted line; the first ride is a short lesson), <b class="ui">CALL THE DROP</b> (tap on the 1 when the track changes; the drop scores double), <b class="ui">ON THE ONE</b> (tap along to the room's beat), <b class="ui">EQ KILL</b> (kill the bass, bring it back on the drop) and <b class="ui">BEATMATCH</b> (line up two beat grids). Quick ones: <b class="ui">CATCH THE DROP</b>, <b class="ui">TAP THE TEMPO</b> (keep the beat going in the dark), <b class="ui">CAMELOT</b> (which key mixes in?) <b class="ui">DAILY RIDE</b> (one course a day, the same for everyone) and <b class="ui">ON GO</b> (tap on GO; a live crew call counts double). With tonight's tracks: <b class="ui">HIGHER OR LOWER</b> (faster or slower?) and <b class="ui">SET LIST</b> (in the order they played). <b class="ui">CALIBRATE</b> once per phone so the timing games allow for its delay. High scores stay on the box for every phone: all time, tonight and at this venue. <b class="ui">TONIGHT ON A SCREEN</b> shows the night's best with a code to scan, for a TV by the bar.</dd>
@@ -280,7 +286,7 @@
   <dt>TV MODE</dt><dd><b class="ui">STATUS</b> &rarr; <b class="ui">SCREENS</b> &rarr; <b class="ui">TV MODE</b>: a big-screen view for a booth TV, projector or tablet, with the playing track's waveform across the bottom. Tap for full screen.</dd>
   <dt>VISUALIZER</dt><dd><b class="ui">STATUS</b> &rarr; <b class="ui">SCREENS</b> &rarr; <b class="ui">VISUALIZER</b>: TV MODE as a full-screen picture of the music for a spare screen. The playing track's waveform as a wall of characters, moving with the beat, and the ghost dancing on top. Crew calls still show. Nothing flashes.</dd>
   <dt>NOW PLAYING</dt><dd><b class="ui">STATUS</b> &rarr; <b class="ui">SCREENS</b> &rarr; <b class="ui">NOW PLAYING</b>: a card for a phone, like a lock screen: the art, the title, time left with a bar, BPM, key and the beat. <b class="ui">KEEP AWAKE</b> stops the phone sleeping while it's open.</dd>
-  <dt>STREAM OVERLAY</dt><dd>A see-through now-playing card for OBS (Browser Source).</dd>
+  <dt>STREAM OVERLAY</dt><dd>Now playing for OBS: a lower third, corner ticker or big card; pick the look and COPY LINK. HIDE IDS shows unreleased tracks as ID - ID; START STREAM CLOCK gives a setlist with times for the video. <a href="how-to/with-obs.html">How</a>.</dd>
   <dt>CREW SCREEN</dt><dd><b class="ui">STATUS</b> &rarr; <b class="ui">SCREENS</b> &rarr; <b class="ui">CREW SCREEN</b>: a screen to leave on for the crew. A big countdown to music off, who's on, who's next, the next drop in bars, and crew calls. No track titles.</dd>
   <dt>WHAT'S ON</dt><dd>See-through text for a stream: who's on and who's next. The track shows only while <b class="ui">SONG ID</b> is on.</dd>
   <dt>SONG ID</dt><dd><b class="ui">SONG ID FOR THE CROWD</b>: a "what's playing" page and QR for the room. Off unless the DJ is OK with IDs going out.</dd>

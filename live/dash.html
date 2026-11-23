@@ -18,6 +18,10 @@
 <link rel="stylesheet" href="announce.css">
 <link rel="stylesheet" href="soundboard.css">
 <link rel="stylesheet" href="sell.css"><!-- #112 GET READY TO SELL -->
+<link rel="stylesheet" href="settime.css"><!-- #121 SET TIME -->
+<link rel="stylesheet" href="settings.css"><!-- #114 SETTINGS · NIGHT PRESETS -->
+<link rel="stylesheet" href="lights.css"><!-- #119 LIGHTS -->
+<link rel="stylesheet" href="requests.css"><!-- #122 ASK THE DJ -->
 </head>
 <body>
 <header>
@@ -57,9 +61,14 @@
       <button data-edit class="edit">EDIT</button>
     </div>
     <div id="nowEdit" class="now-edit" hidden></div>
+    <div class="settime-line" id="setTimeNow" hidden aria-live="polite" title="Tap to hide for this track"></div><!-- #121 SET TIME -->
+    <div class="settime-nowlate local-only" id="lateNow" hidden></div><div class="mixcloud-now" id="mixcloudNow" hidden></div><!-- #129 RUNNING LATE shortcut + MIXCLOUD CHECK (settime.js) -->
     <div id="nowBody"></div>
     <div class="here-bar" id="nowHere"><button type="button" class="want-btn" id="wantNow" hidden title="Save this track to your WANTLIST (on this phone)">+ WANT</button><a class="btn arcade-door" id="arcadeDoor" href="arcade.html" hidden>BOO'S ARCADE</a></div>
     <div id="crewSend"></div>
+    <div id="setNoteNow" class="local-only setnote-now" hidden aria-live="polite"></div><!-- #131 the next act's SET NOTE (setnotes.js) -->
+    <div id="safetyNow" class="local-only"></div><!-- #127 SHOW STOP + HOLD (safetyctl.js); #131 WEATHER's HOLD? goes just above it (weather.js) -->
+    <div id="nnBox"></div><!-- #125 + NOTE for the NIGHT LOG (nightnote.js) -->
   </section>
 
   <section id="decks" class="view">
@@ -106,6 +115,7 @@
       <div class="note" id="layoutLinkNote"></div>
       <div class="note">Saved on this phone only. Tap a waveform to zoom. A link can pick a view: ?view=side&amp;zoom=8</div>
     </div>
+    <div class="settime-line" id="setTimeDecks" hidden title="Tap to hide for this track"></div><!-- #121 SET TIME -->
     <div class="stack" id="stack" hidden></div>
     <div class="decks" id="deckgrid"></div>
   </section>
@@ -141,11 +151,15 @@
       <select id="nightPick" aria-label="Which night"></select>
       <span class="actions">
         <button id="eonBtn" title="One card for the night: tracks, hours, DJs, highlights, HARD STOP kept or not">END OF NIGHT</button>
+        <a class="btn local-only" id="reportLink" href="night.html" title="Planned vs actual, the NIGHT LOG, royalty setlists (crew code or owner)">NIGHT REPORT</a><!-- #125 -->
         <button id="recapBtn">RECAP IMAGE</button>
         <details class="more-menu" id="playedMore"><summary>COPY · SAVE</summary><div class="more-box">
+          <select id="tlDj" aria-label="Downloads for" hidden></select><!-- #121: the whole night or one DJ -->
           <button id="setlistBtn">COPY SETLIST</button>
           <button id="tracklistBtn" title="Times from the start of each set, for Mixcloud / 1001Tracklists">COPY TRACKLIST</button>
           <a class="btn" id="m3uLink" href="/api/history?format=m3u8" download title="Playlist for rekordbox / Serato">PLAYLIST</a>
+          <a class="btn" id="txtLink" href="/api/history?format=txt" download title="Times and Artist - Title, a block per set">TEXT</a>
+          <a class="btn" id="mixLink" href="/api/history?format=mixcloud" download title="00:00 Artist - Title, one line per track">MIXCLOUD / 1001</a>
           <a class="btn" id="csvLink" href="/api/history?format=csv" download>CSV</a>
           <a class="btn" id="jsonLink" href="/api/history" download="played.json">JSON</a>
           <button id="shareTl" class="local-only" title="The DJ decides: WATCH FROM HOME shows PLAYED only when shared, tonight only">TRACKLIST: CREW ONLY</button>
@@ -181,6 +195,7 @@
     <details class="sticks" id="sticksBox" hidden><summary>USBS TONIGHT</summary><div id="sticksList"></div>
       <div class="note">Each USB that went on air tonight. Say whose it is once: next time it plays, GHOST LINK names the set by itself.</div></details>
     <div class="plan-now note" id="planNow"></div>
+    <div class="settime-late local-only" id="lateBox" hidden></div><!-- #121 RUNNING LATE (GHOST LINK's own plan) -->
     <div class="recap" id="recap"></div>
     <canvas class="bpmchart" id="bpmChart"></canvas>
     <canvas class="setline" id="setLine" aria-label="Timeline of the night"></canvas>
@@ -221,6 +236,9 @@
       <div class="note" id="lockNote"></div>
     </div>
 
+    <h2 class="local-only" data-k="presets">SETTINGS · NIGHT PRESETS</h2><!-- #114, settings.js -->
+    <div class="local-only" id="presetsBox"></div>
+
     <h3 class="group" id="g-tonight">TONIGHT</h3>
     <h2 data-k="nights">NIGHTS</h2>
     <div class="nights" id="nightsList"></div>
@@ -228,13 +246,14 @@
     <form id="nightForm" class="night-form" hidden>
       <div class="row"><input id="nDate" type="date" aria-label="Night of"><select id="nVenue" aria-label="Venue"></select></div>
       <div class="row"><span class="lbl">STARTS</span><input id="nDoors" placeholder="22:00 (before = soundcheck)" aria-label="Night starts" maxlength="8"><span class="lbl">MUSIC OFF</span><input id="nOff" placeholder="2:00 (optional)" aria-label="Music off time" maxlength="8"></div>
-      <textarea id="nLineup" rows="5" placeholder="Lineup, one per line:&#10;22:00 OPENER&#10;23:30 RICHERD&#10;01:00 CLOSER&#10;Or no time: a night's name or one artist all night" aria-label="Lineup"></textarea>
+      <textarea id="nLineup" rows="5" placeholder="Lineup, one per line:&#10;22:00 OPENER&#10;23:30 RICHERD // NEEDS TT + MIC&#10;01:00 CLOSER&#10;Or no time: a night's name or one artist all night&#10;// after a name: a note for the crew (40 letters)" aria-label="Lineup"></textarea>
       <textarea id="nNotes" rows="2" placeholder="Notes: doors, load-in, contacts for the night" aria-label="Night notes"></textarea>
       <div class="note">Switches ON THE DECKS at each time. <button type="button" class="q" data-tip aria-label="More">?</button></div>
       <div class="note tip" hidden>On the night, GHOST LINK picks this venue and switches ON THE DECKS at each time. SET in PLAYED still overrides until the next slot.</div>
       <div class="row"><button type="submit">SAVE</button><button type="button" id="nightDelBtn">DELETE</button><button type="button" id="nightCancel">CANCEL</button></div>
       <div class="note" id="nightNote"></div>
     </form>
+    <div class="local-only" id="sheetTimes"></div><!-- #126 SET TIMES FROM A SHEET, sheettimes.js -->
     <h2 class="local-only" data-k="deck-controls">DECK CONTROLS</h2>
     <div class="local-only ghostdeck" id="ghostDeck">
       <div class="buttons"><button type="button" id="gdToggle">TURN ON</button></div>
@@ -318,6 +337,13 @@
       <div class="note" id="songIdNote">A "what's playing" page and QR for the room. Only if the DJ is OK with IDs going out.</div>
       <img class="share-qr" id="songIdQr" alt="" hidden>
     </div>
+    <h2 class="local-only" data-k="night-safety">NIGHT SAFETY</h2><!-- #127, safetyctl.js: CURFEW LADDER, HEARING CARD, SHOW STOP's PA line, DOOR COUNT -->
+    <div class="local-only" id="safetyCard"></div>
+    <div class="local-only" id="weatherCard"></div><!-- #131 WEATHER (weather.js) -->
+    <h2 class="local-only" data-k="ask-dj">ASK THE DJ</h2><!-- #122, requests.js -->
+    <div class="local-only" id="rqSettings"></div>
+    <h2 class="local-only" data-k="hardstop-hub" id="hsHubHead">HARD STOP HUB</h2><!-- #130, hub.js: only once HARD STOP has been seen -->
+    <div class="local-only" id="hsHub" hidden></div>
     <h2 class="local-only" data-k="wantlist">WANTLIST</h2>
     <div class="local-only" id="wantSwitchBox">
       <div class="buttons"><button type="button" id="wantSwitch">WANTLIST BUTTONS: OFF</button></div>
@@ -391,6 +417,7 @@
       <div class="note">The DJ's tempo and bar, to the room's lights and visuals. All off until you turn it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
       <div class="note tip" hidden>GHOST LINK never sends anything to the decks or the mixer. ABLETON LINK and MIDI CLOCK follow the master deck's beat; the OSC presets send ready-made messages to Resolume, grandMA3 or QLab.</div>
       <div id="scRows"></div>
+      <div id="vlRows"></div>
       <div class="note" id="scNote"></div>
     </div>
     <h2 class="local-only" data-k="osc">OSC OUT (LIGHTS / VISUALS)</h2>
@@ -401,11 +428,16 @@
       <div class="note tip" hidden>/ghostlink/beat (i beat, f bpm, i deck), /ghostlink/downbeat, /ghostlink/bpm, /ghostlink/phrase (s section), /ghostlink/onair (s title, s artist), /ghostlink/deck/N/beat, /ghostlink/next, /ghostlink/drop, and DECK CONTROLS presses as /ghostlink/control (s stopall/stop/play/load, i deck). For Resolume, TouchDesigner, MadMapper, QLC+, lighting desks.</div>
       <div class="note" id="oscNote"></div>
     </form>
+    <h2 class="local-only" data-k="lights">LIGHTS</h2><!-- #119, lights.js -->
+    <div class="local-only showctl lights" id="lights"></div>
     <h2 data-k="screens">SCREENS</h2>
     <div class="buttons">
       <a class="btn" href="tv.html" target="_blank">TV MODE</a>
-      <a class="btn" href="overlay.html" target="_blank">STREAM OVERLAY</a>
+      <a class="btn" href="stream.html" target="_blank">STREAM OVERLAY</a>
       <a class="btn" href="crewtv.html" target="_blank">CREW SCREEN</a>
+      <a class="btn" href="stage.html" target="_blank">STAGE CLOCK</a>
+      <a class="btn" href="stage.html?rotate=90" target="_blank" title="The stage clock for a screen mounted on its side (R on its keyboard turns it again)">STAGE CLOCK SIDEWAYS</a><!-- #132 -->
+      <a class="btn" href="crowd.html" target="_blank">NEXT UP</a><!-- #131 the crowd's view of the stage clock -->
       <a class="btn" href="whatson.html" target="_blank">WHAT'S ON</a>
       <a class="btn local-only" href="song.html" target="_blank">SONG PAGE</a>
       <a class="btn" href="sticker.html" target="_blank">PRINT STICKER</a>
@@ -413,7 +445,7 @@
       <a class="btn" href="pocket.html" target="_blank">NOW PLAYING</a>
     </div>
     <div class="note">A booth TV, a stream, the crowd, the box's sticker. <button type="button" class="q" data-tip aria-label="More">?</button></div>
-    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: a see-through now-playing card for OBS (Browser Source; ?pos=br, ?bg=green, ?scale=1.5). CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown, who's on, who's next, the next drop, crew calls; no track titles. WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR. VISUALIZER: TV MODE as a full-screen picture of the music for a spare screen (tv.html?vis=1). NOW PLAYING: a lock-screen style card for a phone (art, title, time left; KEEP AWAKE).</div>
+    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: now playing for OBS or any browser source (lower third, corner ticker, big card, BPM + key, played before); pick the look and COPY LINK, plus HIDE IDS and START STREAM CLOCK for the setlist. CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown (the HOLD while one is up), who's on with the weather line, who's next with their set note, the next drop, the DOOR COUNT, crew calls; no track titles. STAGE CLOCK: for an LED wall or a monitor the DJ can see: time left in the set (amber at 10 min, red at 5, over in red), when it ends, who's on and next, the changeover, the time, WRAP-UP CALLS (also tv.html?clock=1); tap it for HOLD (crew code). STAGE CLOCK SIDEWAYS: the same for a screen mounted on its side (?rotate=90; R on its keyboard turns it again). NEXT UP: the stage clock for the crowd: who's on, who's next and when, the changeover countdown; no crew lines (add ?weather=1 for the wind line). WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR. VISUALIZER: TV MODE as a full-screen picture of the music for a spare screen (tv.html?vis=1). NOW PLAYING: a lock-screen style card for a phone (art, title, time left; KEEP AWAKE).</div><!-- #132: one tip (two had piled up) -->
     <h2 class="local-only" data-k="watch">WATCH FROM HOME</h2>
     <div class="local-only">
       <div class="buttons"><button type="button" id="remoteBtn">TURN ON</button></div>
@@ -430,6 +462,8 @@
     </div>
     <h2 class="local-only" data-k="share">SHARE</h2>
     <div class="local-only" id="shareLinks"></div>
+    <h2 class="local-only" data-k="api-keys">API KEYS</h2><!-- #126, apikeys.js -->
+    <div class="local-only" id="apiKeys"></div>
 
     <h3 class="group" id="g-box">THE BOX</h3>
     <h2 data-k="controls">CONTROLS</h2>
@@ -488,9 +522,9 @@
     <h2>WHERE THINGS ARE</h2>
     <dl class="facts">
       <dt>STATUS, top</dt><dd>READY FOR TONIGHT (the one thing to fix first, then anything worth a look), GO TO (type wifi, record, venue... and it opens there), BOOTH CHECK, warnings, the lock.</dd>
-      <dt>STATUS &rarr; TONIGHT</dt><dd>NIGHTS (plan a lineup), DECK CONTROLS (stop all, AUTO-STOP at music off), SONG ID FOR THE CROWD.</dd>
+      <dt>STATUS &rarr; TONIGHT</dt><dd>NIGHTS (plan a lineup, set notes after a name, SET TIMES FROM A SHEET), DECK CONTROLS (stop all, AUTO-STOP at music off), ANNOUNCEMENTS, SONG ID FOR THE CROWD, NIGHT SAFETY (SHOW STOP, HOLD, CURFEW LADDER, DOOR COUNT, WEATHER), ASK THE DJ, WANTLIST.</dd>
       <dt>STATUS &rarr; THIS VENUE</dt><dd>VENUE (+ MUSIC AT THIS VENUE), WI-FI, ROOMS.</dd>
-      <dt>STATUS &rarr; SCREENS &amp; OUTPUTS</dt><dd>SHOW CONTROL (Link, MIDI clock, Resolume, grandMA3, QLab), OSC OUT, SCREENS (TV mode, stream overlay, song page, sticker), WATCH FROM HOME.</dd>
+      <dt>STATUS &rarr; SCREENS &amp; OUTPUTS</dt><dd>SHOW CONTROL (Link, MIDI clock, Resolume, grandMA3, QLab, VISUALS LINK), OSC OUT, LIGHTS, SCREENS (TV mode, stream overlay, crew screen, stage clock, next up, song page, sticker), WATCH FROM HOME, SHARE, API KEYS.</dd>
       <dt>STATUS &rarr; THE BOX</dt><dd>CONTROLS (rejoin, listen only, restart, shut down), BACKUP (+ black box, logs), UPDATES (check, install, from a file, go back), BOX DETAILS, TOOLS (demo, tour, arcade, test run).</dd>
       <dt>NETWORK</dt><dd>Devices, MIXER (USB MIDI), SOUND IN + SET RECORDINGS, EVENTS.</dd>
       <dt>Keys (laptop)</dt><dd>1-6 or &larr; &rarr; switch tabs (on a phone: swipe the page sideways), / opens GO TO, Esc closes it, R = READY FOR TONIGHT, P = plan tonight. The page opens on the tab you used last.</dd>
@@ -520,7 +554,17 @@
       <dt>Rooms</dt><dd>More than one box? STATUS &rarr; ROOMS: name this room, list the others (e.g. 51 = ghostlink-51.local). NOW shows them all.</dd>
       <dt>Mixer FX</dt><dd>USB cable from the DJM's USB port to the box (venue's OK first). NETWORK &rarr; MIXER: touch a control, NAME it, WATCH it for FX LEFT ON warnings. Listen only.</dd>
       <dt>PLAYED / MIX tags</dt><dd>On a deck: PLAYED 23:14 means it was on air earlier tonight; LAST PLAYED is a past night. MIX 8A→9A ✓ +2.1% on a cued deck: the key fits what's on air and the tempo change needed.</dd>
-      <dt>TV mode / stream</dt><dd>STATUS &rarr; SCREENS &rarr; TV MODE for a booth screen or projector (tap for full screen). STREAM OVERLAY is a see-through now-playing card for OBS (Browser Source; ?pos=br, ?bg=green, ?scale=1.5).</dd>
+      <dt>TV mode / stream</dt><dd>STATUS &rarr; SCREENS &rarr; TV MODE for a booth screen or projector (tap for full screen). STREAM OVERLAY: pick the look, COPY LINK, paste it into an OBS Browser source.</dd>
+      <!-- #132: one line for each Nov 22-23 card, each with its help page (online) -->
+      <dt>Lights</dt><dd>STATUS &rarr; SCREENS &amp; OUTPUTS &rarr; LIGHTS (owner): a WLED strip or Art-Net / sACN lights follow the beat, with crew calls, the drop and silence on top. Off until you turn it on; BLACKOUT is one tap. <a href="https://ghostlink.cold.fyi/help/how-to/lights.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Visuals link</dt><dd>STATUS &rarr; SHOW CONTROL &rarr; VISUALS LINK: a Resolume clip per track and cues on the song sections. Off until you turn it on. <a href="https://ghostlink.cold.fyi/help/how-to/with-resolume.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>On stream</dt><dd>STATUS &rarr; SCREENS &rarr; STREAM OVERLAY: pick the look, COPY LINK for OBS, HIDE IDS, START STREAM CLOCK for the setlist. <a href="https://ghostlink.cold.fyi/help/how-to/with-obs.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Ask the DJ</dt><dd>STATUS &rarr; TONIGHT &rarr; ASK THE DJ: song requests and votes from the crowd's phones. No money, no sign-up. Off until you turn it on. <a href="https://ghostlink.cold.fyi/help/how-to/ask-the-dj.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Stage clock</dt><dd>STATUS &rarr; SCREENS &rarr; STAGE CLOCK (or STAGE CLOCK SIDEWAYS): the set's time left for the DJ, wrap-up calls from NOW. Tap it for HOLD (crew code). NEXT UP is the crowd's version. <a href="https://ghostlink.cold.fyi/help/how-to/stage-clock.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Night safety</dt><dd>NOW: SHOW STOP and HOLD (crew code). STATUS &rarr; TONIGHT &rarr; NIGHT SAFETY: the CURFEW LADDER, the HEARING card, the DOOR COUNT. <a href="https://ghostlink.cold.fyi/help/how-to/night-safety.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Weather</dt><dd>STATUS &rarr; NIGHT SAFETY &rarr; WEATHER (owner): wind, gusts and thunder for outdoor nights; it asks HOLD?, never holds by itself. Each venue remembers its gust number. <a href="https://ghostlink.cold.fyi/help/how-to/weather.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>API keys</dt><dd>STATUS &rarr; SCREENS &amp; OUTPUTS &rarr; API KEYS (owner): a key for a Stream Deck, Companion or a script, with only the powers you tick. REVOKE ends it. <a href="https://ghostlink.cold.fyi/help/how-to/buttons-and-tools.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Set times from a sheet</dt><dd>STATUS &rarr; NIGHTS: paste the cells or a published Google Sheet link, PREVIEW, USE THESE TIMES. <a href="https://ghostlink.cold.fyi/help/how-to/plan-a-night.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Lights & visuals (OSC)</dt><dd>STATUS &rarr; OSC OUT: add the lighting/visuals computer as host:port. It gets every beat, downbeat, BPM, section and the on-air track.</dd>
       <dt>Song ID</dt><dd>STATUS &rarr; SONG ID FOR THE CROWD: a "what's playing" page and QR for the room. Off unless the DJ says yes.</dd>
       <dt>Layout</dt><dd>DECKS &rarr; LAYOUT: tiles or stacked waveforms, decks across, waveform height, zoom and colour (full, blue, white), text size, what shows, remaining or elapsed time, dim decks not on air, which decks. COPY LINK TO THIS LAYOUT sends it to another phone or screen. Tap a waveform to zoom. Saved per phone. Bookmark ?layout=stack (or big, waves, compact) for a booth screen. STACKED in a small window: every deck fits, the one out loud is biggest, mixing and NEXT decks grow, empty ones are a thin line.</dd>
@@ -565,14 +609,19 @@
 </div>
 <script src="waves.js"></script>
 <script src="views.js"></script>
+<script src="thin.js"></script><!-- #125 THIN TRACK NOTE -->
 <script src="shim.js"></script>
 <script src="app.js"></script>
 <script src="showctl.js"></script>
+<script src="visuals.js"></script>
+<script src="lights.js"></script><!-- #119 LIGHTS, own file -->
 <script src="demo.js"></script>
 <script src="tour.js"></script>
 <script src="insights.js"></script>
 <script src="archive.js"></script>
 <script src="sound.js"></script>
+<script src="levelstrip.js"></script>
+<script src="recordings.js"></script>
 <script src="gear.js"></script>
 <script src="gearpick.js"></script>
 <script src="soundsetup.js"></script>
@@ -583,8 +632,11 @@
 <script src="fun.js"></script>
 <script src="updates.js"></script>
 <script src="crew.js"></script>
-<script>Crew.start(document.getElementById('crewCalls'), () => S.crew || (S.status && S.status.crew), () => S.skew, { max: 3, goKeep: 8000, held: () => S.status && S.status.dropCalls });</script>
+<script>Crew.start(document.getElementById('crewCalls'), () => S.crew || (S.status && S.status.crew), () => S.skew, { max: 3, goKeep: 8000, held: () => S.status && S.status.dropCalls,
+  marks: true, mark: (c, done) => post('/api/crew/seen', { id: c.id, done, from: role === 'dj' ? 'BOOTH' : ((ROLES[role] && ROLES[role].label) || 'CREW') }) }); // #127 SEEN / DONE</script>
 <script src="crewsend.js"></script>
+<script src="wrapcalls.js"></script><!-- #124 WRAP-UP CALLS: 5 MIN / 1 MIN / WRAP IT, own file -->
+<script src="nightnote.js"></script>
 <script src="asks.js"></script>
 <script src="endnight.js"></script>
 <script>EndNight.dashboard();</script>
@@ -593,10 +645,18 @@
 <script src="nightshape.js"></script><script>NightShape.dashboard();</script><!-- #107 THE NIGHT'S SHAPE + GOODNIGHT -->
 <script src="wantlist.js"></script>
 <script src="here.js"></script>
+<script src="requests.js"></script><!-- #122 ASK THE DJ: the badge, REQUESTS, STATUS -> ASK THE DJ -->
 <script src="why.js"></script>
 <script src="sharelinks.js"></script>
 <script src="ear.js"></script><!-- THE EAR (#108): BPM by ear for laptop DJs, own file -->
 <script src="sell.js"></script><!-- GET READY TO SELL (#112), own file -->
+<script src="settings.js"></script><!-- SETTINGS · NIGHT PRESETS (#114), own file -->
+<script src="onstream.js"></script><!-- ON STREAM (#120): HIDE in PLAYED while HIDE IDS is on, own file -->
+<script src="settime.js"></script><!-- SET TIME (#121), own file -->
+<script src="apikeys.js"></script><script src="sheettimes.js"></script><!-- #126 API KEYS + SET TIMES FROM A SHEET, own files -->
+<script src="hub.js"></script><!-- HARD STOP HUB (#130), own file -->
+<script src="safety.js"></script><script>Safety.start('dash');</script><script src="safetyctl.js"></script><!-- NIGHT SAFETY (#127), own files -->
+<script src="stageclock.js"></script><script src="setnotes.js"></script><script src="weather.js"></script><script>WeatherView.start('dash');</script><!-- #131 SET NOTES + WEATHER, own files -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \
 |      |

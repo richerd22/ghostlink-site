@@ -49,13 +49,27 @@
   <li><p>Pick the date and the venue.</p></li>
   <li><p><b class="ui">STARTS</b>: when the night begins, like <code>22:00</code>. Music before that is <b class="ui">SOUNDCHECK</b>.</p></li>
   <li><p><b class="ui">MUSIC OFF</b>: optional, like <code>2:00</code>.</p></li>
-  <li><p>Lineup, one act per line, time first: <code>22:00 OPENER</code>, <code>23:30 HEADLINER</code>, <code>01:00 CLOSER</code>. No times? One line with the night's name or the one artist playing all night. Pasting from a flyer works too: <code>10pm OPENER</code>, <code>10-11pm OPENER</code>, <code>OPENER 22:00</code>. The <b class="ui">READS AS</b> line under the box shows how each line will be saved. Same lineup as last time at this venue? Tap <b class="ui">SAME LINEUP AS</b>.</p></li>
+  <li><p>Lineup, one act per line, time first: <code>22:00 OPENER</code>, <code>23:30 HEADLINER</code>, <code>01:00 CLOSER</code>. No times? One line with the night's name or the one artist playing all night. Pasting from a flyer works too: <code>10pm OPENER</code>, <code>10-11pm OPENER</code>, <code>OPENER 22:00</code>. The <b class="ui">READS AS</b> line under the box shows how each line will be saved. A note for the crew goes after the name with two slashes: <code>23:30 LIL TICK // NEEDS TT + MIC</code> (40 letters; it shows in the NIGHTS list, on the crew screen and on the <a href="stage-clock.html">stage clock</a> near the changeover). Same lineup as last time at this venue? Tap <b class="ui">SAME LINEUP AS</b>.</p></li>
   <li><p>Tap <b class="ui">SAVE</b>.</p></li>
 </ol>
 
 <p>On the night, each DJ takes over when their first track goes on air from a new USB, or 15 minutes after their time if no new USB shows. A <b class="ui">SET</b> by hand in <b class="ui">PLAYED</b> wins until the next slot.</p>
 <p class="small">Planning a date that already has a plan asks before replacing it; to change a night, use <b class="ui">EDIT</b> on it.</p>
 <p class="small">Times before noon count as the same night: <code>01:00</code> is after midnight.</p>
+<p>Running late? <b class="ui">RUNNING LATE?</b> on <b class="ui">NOW</b> moves every set that hasn't started by 5 or 10 minutes (<b class="ui">UNDO</b> puts it back; any other number is in <b class="ui">PLAYED</b>). MUSIC OFF stays. If the HARD STOP app sent tonight's lineup, it moves the times there instead and the button isn't shown.</p>
+<p>Near the end of a set, the deck you've loaded says <b class="ui">FITS</b> or <b class="ui">RUNS 1:20 OVER</b> on its own tile. In <b class="ui">PLAYED</b>, <b class="ui">NOT A NEW SET</b> fixes a wrong changeover on any night, not just tonight.</p>
+
+<h2 id="from-a-sheet">SET TIMES FROM A SHEET</h2>
+<p>Set times already in a spreadsheet? Bring them in instead of typing.</p>
+<ol class="how">
+  <li><p><b class="ui">STATUS</b> &rarr; <b class="ui">NIGHTS</b> &rarr; <b class="ui">SET TIMES FROM A SHEET</b>. Pick the night.</p></li>
+  <li><p><b class="ui">PASTE</b>: copy the cells straight out of the sheet (or a CSV) and paste them. Or <b class="ui">SHEET LINK</b>: in Google Sheets, <i>File &rarr; Share &rarr; Publish to web</i>, pick the tab and <i>CSV</i>, and paste that link.</p></li>
+  <li><p>Tap <b class="ui">PREVIEW</b>. Check the times: rows it couldn't read are listed with why.</p></li>
+  <li><p>Tap <b class="ui">USE THESE TIMES</b>. The lineup shows in <b class="ui">NIGHTS</b> like one you typed. <b class="ui">UNDO</b> puts back what was there.</p></li>
+</ol>
+<p>Columns: a start time, an end time (optional) and the DJ. The headings can be called almost anything (<i>Set time</i>, <i>Artist</i>, <i>Until</i>), and a date column keeps only that night's rows. <code>22:00</code>, <code>10pm</code>, <code>10:30 PM</code> and <code>22:00-23:30</code> all work; <code>1:00</code> after <code>23:00</code> is after midnight.</p>
+<p>With a link, the box reads the sheet again every 5 minutes that night, so a change made in the sheet shows up by itself. <b class="ui">STOP FOLLOWING</b> keeps the times and stops reading. Typing over the lineup by hand also stops it.</p>
+<p class="small">If HARD STOP sends tonight's lineup, HARD STOP's wins, and this part just says <i>Set times come from HARD STOP tonight.</i></p>
 
 <div class="pager"><a class="btn" href="index.html">ALL HOW TO</a></div>
 
