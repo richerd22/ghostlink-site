@@ -1,0 +1,35 @@
+/* FIRST RUN (#136), own file. The sheet reuses the address sheet's .share / .share-box. */
+.firstrun { align-items: start; overflow-y: auto; z-index: 45; }
+.fr-box { width: min(480px, 100%); margin: auto 0; gap: 10px; }
+.fr-step { letter-spacing: .12em; }
+.fr-h { color: var(--fg); margin: 0; font-size: 18px; letter-spacing: .08em; line-height: 1.25; }
+.fr-lead, .fr-line, .fr-foot, .fr-ok, .fr-msg, .fr-quiet { margin: 0; line-height: 1.4; }
+.fr-lead { font-size: 15px; }
+.fr-line { font-size: 14px; font-weight: 600; }
+.fr-foot, .fr-quiet { color: var(--grey); font-size: 13px; }
+.fr-ok { font-size: 14px; }
+.fr-msg { color: var(--warn); font-size: 14px; }
+.fr-list { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; font-size: 15px; }
+.fr-sum { list-style: none; padding: 0; gap: 8px; font-size: 14px; }
+.fr-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin-top: 4px; }
+.fr-row button { flex: 1 1 auto; min-height: 44px; }
+.fr-main { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.fr-field { display: grid; gap: 4px; }
+.fr-field input { width: 100%; max-width: none; font: inherit; font-size: 16px; background: var(--bg); color: var(--fg); border: 1px solid var(--grey); padding: 11px 10px; }
+.fr-check { font-size: 13px; color: var(--grey); display: flex; align-items: center; gap: 8px; justify-self: start; }
+.fr-check input { width: 18px; height: 18px; margin: 0; flex: none; accent-color: var(--fg); }
+.fr-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.fr-chips .mini { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-height: 36px; }
+.fr-chips .mini.on { background: var(--fg); color: var(--bg); }
+.fr-kinds { display: grid; gap: 6px; }
+.fr-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.fr-kind { display: flex; align-items: flex-start; gap: 10px; border: 1px solid var(--line); padding: 9px 10px; cursor: pointer; }
+.fr-kind input { margin: 3px 0 0; width: 18px; height: 18px; flex: none; accent-color: var(--fg); }
+.fr-kind span { display: grid; gap: 2px; min-width: 0; }
+.fr-kind b { font-size: 14px; letter-spacing: .06em; }
+.fr-kind small { color: var(--grey); font-size: 12px; line-height: 1.3; }
+.fr-live { display: grid; gap: 6px; }
+.fr-fact { display: flex; justify-content: space-between; gap: 10px; border: 1px solid var(--line); padding: 8px 10px; }
+.fr-fact b { color: var(--warn); }
+.fr-fact.ok b { color: var(--fg); }
+.fr-links { margin: 4px 0 10px; }

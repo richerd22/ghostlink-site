@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+<title>GHOST LINK NIGHT REPORT</title>
+<meta name="robots" content="noindex">
+<style>
+/* AFTER THE NIGHT (#125): the NIGHT REPORT, the NIGHT LOG and the ROYALTY SETLIST. Prints on white (no PDF needed). */
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
+:root { --bg: #000; --fg: #fff; --grey: #9a9a9a; --dim: #555; --line: #222; --air: #ff2a2a; --warn: #ffb000; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 400 15px/1.4 "JetBrains Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 14px 16px 40px; }
+.bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bar .grow { flex: 1; }
+a.btn, button, select, input { font: inherit; font-size: 13px; color: var(--fg); background: var(--bg); border: 1px solid var(--fg); padding: 6px 10px; text-decoration: none; cursor: pointer; border-radius: 0; }
+input { cursor: text; }
+.card { margin-top: 14px; border: 1px solid var(--line); padding: 18px 16px; }
+h1 { margin: 0; font-size: 20px; letter-spacing: .14em; font-weight: 600; }
+.sub { color: var(--grey); font-size: 12px; letter-spacing: .08em; margin-top: 4px; overflow-wrap: anywhere; }
+h2 { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; font-weight: 400; margin: 20px 0 8px; padding-top: 12px; border-top: 1px solid var(--line); }
+.nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px 16px; }
+.nums small { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; }
+.nums b { font-size: 22px; font-weight: 600; overflow-wrap: anywhere; }
+.nums b.long { font-size: 14px; }
+.nums .warn b { color: var(--warn); }
+ul { list-style: none; margin: 0; padding: 0; }
+li { padding: 7px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+li:first-child { border-top: 0; }
+.set b { font-weight: 600; font-size: 16px; }
+.set .t { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--grey); font-size: 13px; margin-top: 2px; }
+.set .t span b { font-size: 13px; color: var(--fg); }
+.late { color: var(--warn); }
+.over { color: var(--air); }
+.line { color: var(--grey); font-size: 13px; margin-top: 6px; }
+.line.warn { color: var(--warn); }
+.cut { font-size: 16px; font-weight: 600; margin-top: 4px; }
+.cut.over { color: var(--air); }
+.log li { display: grid; grid-template-columns: 6ch 12ch 1fr; gap: 8px; font-size: 13px; padding: 5px 0; }
+.log li .k { color: var(--grey); letter-spacing: .06em; font-size: 11px; padding-top: 2px; }
+.log li.warn .k { color: var(--warn); }
+.log li.note .k { color: var(--fg); }
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.soc { padding: 10px 0; border-top: 1px solid var(--line); }
+.soc:first-of-type { border-top: 0; }
+.soc b { font-weight: 600; }
+.soc details { margin-top: 6px; color: var(--grey); font-size: 13px; }
+.soc summary { cursor: pointer; color: var(--fg); font-size: 12px; letter-spacing: .08em; }
+.soc .cols { color: var(--dim); font-size: 11px; margin-top: 4px; }
+.addr { margin-top: 10px; }
+.addr label { display: block; color: var(--grey); font-size: 12px; letter-spacing: .06em; overflow-wrap: anywhere; }
+.addr .buttons { margin-top: 6px; flex-wrap: nowrap; }
+.addr input { flex: 1; min-width: 0; }
+.msg { color: var(--grey); margin-top: 18px; }
+.unlock[hidden], [hidden] { display: none !important; }
+.unlock { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.foot { color: var(--dim); font-size: 11px; margin-top: 18px; }
+@media (max-width: 480px) {
+  .wrap { padding: 12px 12px 32px; }
+  .card { padding: 14px 12px; }
+  .log li { grid-template-columns: 6ch 1fr; }
+  .log li .x { grid-column: 1 / -1; }
+}
+@media print {
+  :root { --bg: #fff; --fg: #000; --grey: #444; --dim: #666; --line: #bbb; --air: #b00000; --warn: #8a5a00; color-scheme: light; }
+  body { font-size: 11pt; }
+  .bar, .buttons, .unlock, .noprint, select, button { display: none !important; }
+  .card { border: 0; padding: 0; margin: 0; }
+  .wrap { max-width: none; padding: 0; }
+  h2 { break-after: avoid; }
+  li { break-inside: avoid; }
+  .soc details > *:not(summary) { display: block; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a class="btn" href="/#played">BACK</a>
+    <select id="pick" aria-label="Night"></select>
+    <span class="grow"></span>
+    <button type="button" id="print">PRINT</button>
+  </div>
+  <form class="unlock" id="unlock" hidden>
+    <input type="password" id="pw" placeholder="Password or tonight's crew code" autocomplete="current-password" aria-label="Password">
+    <button type="submit">UNLOCK</button>
+  </form>
+  <div class="msg" id="msg">Loading the night...</div>
+  <div class="card" id="card" hidden></div>
+</div>
+<script src="shim.js"></script>
+<script src="night.js"></script>
+<script>NightPage.page();</script>
+</body>
+</html>

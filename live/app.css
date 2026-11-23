@@ -203,7 +203,7 @@ body[data-error]::after { content: attr(data-error); position: fixed; left: 0; r
 .crew-call.wrap.go { background: var(--air, #ff2a2a); border-color: var(--air, #ff2a2a); color: #fff; }
 .show-alerts { margin: 12px 16px 0; display: grid; gap: 8px; }
 .show-alerts div { padding: 10px 12px; border: 1px solid var(--warn); color: var(--warn); }
-.show-alerts div.dead-air { background: var(--warn); color: #000; font-weight: 600; animation: blink 1s steps(2) infinite; }
+.show-alerts div.dead-air { background: var(--warn); color: #000; font-weight: 600; animation: blink 1s steps(2) 30; } /* #135: 30 s, then steady (nothing pulses forever) */
 .show-alerts div.media { background: var(--warn); color: #000; font-weight: 600; }
 .show-alerts b { display: block; letter-spacing: .06em; }
 @keyframes blink { 50% { opacity: .55; } }
@@ -983,3 +983,13 @@ body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(3)) > :first-child 
 .help .facts dd a { color: var(--fg); } /* #132: HELP's page links in the product's colours, not the browser's blue */
 .wx-card .wx-venue { border-bottom: 1px solid var(--line); padding-bottom: 8px; }
 .wx-card .wx-venue span { flex: 1 1 14em; min-width: 0; overflow-wrap: anywhere; font-size: 14px; font-weight: 400; letter-spacing: .06em; }
+
+/* #134 the end of STAND BY: the plain line, and the calm screen when this phone loses the box (wifiquiet.js) */
+.wq .wq-where.after { border-left: 2px solid #3ddc84; padding-left: 8px; }
+.sb-lost { position: fixed; inset: 0; z-index: 9000; background: var(--bg); color: var(--fg); display: flex; align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+.sb-lost[hidden] { display: none; }
+.sb-lost .sb-card { max-width: 30em; width: 100%; }
+.sb-lost .sb-ghost { font-size: 12px; letter-spacing: .12em; color: var(--grey); margin-bottom: 10px; }
+.sb-lost h2 { font-size: 22px; line-height: 1.2; margin: 0 0 14px; overflow-wrap: anywhere; }
+.sb-lost p { font-size: 16px; line-height: 1.4; margin: 0 0 10px; overflow-wrap: anywhere; }
+.sb-lost .sb-small { font-size: 13px; color: var(--grey); margin-top: 16px; }

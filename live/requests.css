@@ -1,0 +1,47 @@
+/* #122 ASK THE DJ: the DJ's side (requests.js). One badge, a list that opens only when tapped. */
+.rq-badge { font-size: 11px; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--line); color: var(--grey); background: transparent; white-space: nowrap; flex: none; font-variant-numeric: tabular-nums; }
+.rq-badge.some { border-color: var(--fg); color: var(--fg); }
+.rq-badge.on { background: var(--fg); color: var(--bg); }
+.rq-badge[hidden] { display: none; }
+nav .rq-badge { margin-left: auto; align-self: center; }
+.deckbar button.rq-badge { padding: 3px 8px; font-size: 11px; color: var(--grey); border-color: var(--line); }
+.deckbar button.rq-badge.some { color: var(--fg); border-color: var(--fg); }
+.deckbar button.rq-badge.on { background: var(--fg); color: var(--bg); }
+.rq-row .acts .mini.on, .rq-top .mini.on { background: var(--fg); color: var(--bg); }
+.rq-panel { position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(560px, 100vw); background: var(--bg); border-left: 1px solid var(--line); display: grid; grid-template-rows: auto auto minmax(0, 1fr); }
+.rq-panel[hidden] { display: none; }
+.rq-top { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.rq-top b { letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.rq-top .sp { flex: 1; }
+.rq-top .mini { margin-left: 0; }
+.rq-say:empty { display: none; }
+.rq-say { padding: 8px 12px; color: var(--grey); font-size: 13px; }
+.rq-list { overflow-y: auto; overscroll-behavior: contain; }
+.rq-empty { padding: 16px 12px; color: var(--grey); font-size: 13px; }
+.rq-row { display: grid; grid-template-columns: 3ch minmax(0, 1fr); grid-template-areas: "v t" "v a"; column-gap: 10px; row-gap: 4px; padding: 8px 12px; border-bottom: 1px solid var(--line); align-items: start; }
+.rq-row .v { grid-area: v; font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; line-height: 1.2; }
+.rq-row .tx { grid-area: t; display: grid; gap: 1px; min-width: 0; }
+.rq-row .tx b { overflow-wrap: anywhere; }
+.rq-row .ar { color: var(--grey); font-size: 13px; overflow-wrap: anywhere; }
+.rq-row .who { color: var(--grey); font-size: 12px; overflow-wrap: anywhere; font-style: italic; }
+.rq-row .acts { grid-area: a; display: flex; gap: 6px; flex-wrap: wrap; }
+.rq-row .acts .mini { margin-left: 0; }
+.rq-row .done { color: var(--grey); font-size: 11px; letter-spacing: .1em; }
+.rq-row.st-played, .rq-row.st-nope { opacity: .55; }
+.rq-row.st-playing .v { color: var(--fg); }
+.rq-opt { display: grid; gap: 4px; margin: 10px 0; }
+.rq-opt button { justify-self: start; }
+#rqSettings .share-qr { margin-top: 10px; }
+/* The corner window beside the lighting desk: wide rows, the buttons on the title's line when there's room. */
+@media (min-width: 640px) {
+  .rq-row { grid-template-columns: 3ch minmax(0, 1fr) auto; grid-template-areas: "v t a"; align-items: center; }
+}
+@media (max-height: 340px) {
+  .rq-top { padding: 4px 8px; }
+  .rq-row { padding: 4px 8px; }
+  .rq-row .v { font-size: 16px; }
+}
+/* #129 BLOCKED WORDS (STATUS -> ASK THE DJ, owner only) */
+.rq-blocked { margin: 8px 0 12px; }
+.rq-blocked summary { cursor: pointer; letter-spacing: .08em; font-size: 12px; }
+.rq-blocked textarea { width: 100%; margin-top: 6px; font: inherit; font-size: 13px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); padding: 6px 8px; box-sizing: border-box; }

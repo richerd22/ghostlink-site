@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GHOST LINK NEXT UP</title>
+<meta name="robots" content="noindex">
+<script src="shim.js"></script>
+<script>/* #128 ?rotate=90|180|270, as the stage clock */
+var StageRotate = (location.search.match(/[?&]rotate=(90|180|270)\b/) || [0, '0'])[1];
+document.documentElement.className = 'rot-' + StageRotate;</script>
+<style>
+/* NEXT UP (#131): the stage clock for the crowd, on an LED wall or a screen by the bar. Who's on now, who's next and
+   when, the changeover's countdown. No crew lines, no overtime, no crew calls, no notes: the box doesn't even send
+   them to this page (/api/stageclock?view=crowd). SHOW STOP shows as its plain message (safety.js 'crowd').
+   ?weather=1 adds WEATHER's small line; ?rotate= as the stage clock. */
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
+:root { --bg: #000; --fg: #fff; --grey: #9a9a9a; --line: #2a2a2a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); overflow: hidden; cursor: none; }
+body { font-family: "JetBrains Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+.stage { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; container: stage / size; }
+html.rot-90 .stage, html.rot-270 .stage { width: 100vh; height: 100vw; transform-origin: 0 0; }
+html.rot-90 .stage { transform: translateX(100vw) rotate(90deg); }
+html.rot-270 .stage { transform: translateY(100vh) rotate(270deg); }
+html.rot-180 .stage { transform: rotate(180deg); }
+.wrap { height: 100cqh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: 4cqh 5cqw; gap: 2cqh; }
+.top { display: flex; align-items: flex-start; gap: 2cqw; color: var(--grey); font-size: 2.6cqh; letter-spacing: .14em; }
+.top pre { margin: 0; font-size: 1.3cqh; line-height: 1.3cqh; color: var(--fg); }
+.top .sp { flex: 1; }
+.top .wx { color: var(--fg); font-size: 3cqh; letter-spacing: .06em; align-self: center; }
+.top .tod { color: var(--fg); font-size: 6cqh; font-weight: 600; letter-spacing: 0; }
+.mid { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 0; gap: 2cqh; }
+.mid small { color: var(--grey); font-size: 5cqh; letter-spacing: .3em; padding-left: .3em; }
+.name { display: block; font-weight: 600; line-height: 1; white-space: nowrap; max-width: 100%; }
+.sub { font-size: 7cqh; font-weight: 600; letter-spacing: .04em; }
+.pause { font-size: 5cqh; letter-spacing: .1em; border-top: 2px solid var(--fg); border-bottom: 2px solid var(--fg); padding: 1.2cqh 3cqw; }
+.foot { display: flex; justify-content: center; align-items: baseline; gap: 3cqw; border-top: 2px solid var(--line); padding-top: 3cqh; flex-wrap: wrap; text-align: center; }
+.foot small { color: var(--grey); font-size: 4cqh; letter-spacing: .3em; }
+.foot b { font-size: 8cqh; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.foot span { font-size: 6cqh; color: var(--fg); }
+@container stage (orientation: portrait) {
+  .wrap { padding: 4cqh 6cqw; }
+  .top .tod { font-size: 4cqh; }
+  .top .wx { font-size: min(1.7cqh, 3cqw); white-space: nowrap; }
+  .mid small { font-size: 3cqh; }
+  .sub { font-size: 4.4cqh; }
+  .pause { font-size: 3cqh; }
+  .foot { flex-direction: column; align-items: center; gap: 1.2cqh; }
+  .foot small { font-size: 2.6cqh; }
+  .foot b { font-size: 6cqh; white-space: normal; }
+  .foot span { font-size: 4cqh; }
+}
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+<div class="wrap">
+  <div class="top"><pre aria-hidden="true">  .--.
+ / oo \
+|      |
+|      |
+ \/\/\/</pre><span class="sp"></span><span class="wx" id="wx" hidden></span><b class="tod" id="tod"></b></div>
+  <div class="mid">
+    <small id="label"></small>
+    <b class="name" id="name"></b>
+    <span class="sub" id="sub" hidden></span>
+    <span class="pause" id="pause" hidden></span>
+  </div>
+  <div class="foot" id="foot" hidden><small id="nextLabel"></small><b id="next"></b><span id="nextAt"></span></div>
+</div>
+</div>
+<script src="stageclock.js"></script>
+<script>
+'use strict';
+// Text nodes only: DJ names come from the network.
+const $ = id => document.getElementById(id);
+const set = (id, v) => { const e = $(id); if (e.textContent !== v) e.textContent = v; };
+const withWeather = /[?&]weather=1\b/.test(location.search);
+document.addEventListener('click', () => {
+  document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {});
+  navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {});
+});
+let feed = null, skew = 0;
+async function load() {
+  const t0 = Date.now();
+  try {
+    const r = await fetch('/api/stageclock?view=crowd', { cache: 'no-store' });
+    if (!r.ok) return;
+    const f = await r.json(), t1 = Date.now();
+    skew = (t0 + t1) / 2 - f.at;
+    feed = f;
+  } catch (e) { /* keep the last reading */ }
+}
+load(); setInterval(load, 2000);
+let sizeKey = '';
+function draw() {
+  const now = Date.now() - skew, v = StageClockView.crowd(feed, now);
+  set('tod', StageClockView.clock(now));
+  set('label', v.label); $('label').hidden = !v.label;
+  set('name', v.name);
+  set('sub', v.sub); $('sub').hidden = !v.sub;
+  set('pause', v.pause); $('pause').hidden = !v.pause;
+  set('nextLabel', v.nextLabel); set('next', v.next); set('nextAt', v.nextAt ? 'AT ' + v.nextAt : '');
+  $('foot').hidden = !v.next;
+  const wx = withWeather ? StageClockView.weatherLine(feed) : '';
+  set('wx', wx); $('wx').hidden = !wx;
+  const st = $('stage'), W = st.clientWidth, H = st.clientHeight;
+  const k = v.name + 'x' + W + 'x' + H + (v.next ? 'n' : '') + (v.sub ? 's' : '') + (v.pause ? 'p' : '');
+  if (k !== sizeKey) { // the name as big as fits: up to 22 % of the height, never wider than the screen
+    sizeKey = k;
+    const n = $('name');
+    let px = Math.floor(Math.min(H * (v.next ? 0.2 : 0.24), (W * 0.9) / (Math.max(4, v.name.length) * 0.61)));
+    n.style.fontSize = px + 'px';
+    while (px > 12 && n.scrollWidth > W * 0.9) { px = Math.floor(px * 0.92); n.style.fontSize = px + 'px'; }
+  }
+}
+draw(); setInterval(draw, 250);
+addEventListener('resize', () => { sizeKey = ''; draw(); });
+</script>
+<script src="safety.js"></script><script>Safety.start('crowd');</script><!-- NIGHT SAFETY (127): SHOW STOP as the plain message -->
+<script src="moments.js"></script><script>Moments.start('crowd');</script><!-- #135 MOMENTS with ?moments=1: the name only -->
+</body>
+</html>

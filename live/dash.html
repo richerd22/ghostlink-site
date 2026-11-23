@@ -9,6 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="GHOST LINK">
 <title>GHOST LINK · DEMO</title>
 <meta name="robots" content="noindex">
+<script src="shim.js"></script>
+<script src="appmode.js"></script><!-- #133 ?app=hardstop: inside the HARD STOP app (own file) -->
 <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
 <link rel="apple-touch-icon" href="../icon-180.png">
 <link rel="stylesheet" href="app.css">
@@ -18,6 +20,8 @@
 <link rel="stylesheet" href="announce.css">
 <link rel="stylesheet" href="soundboard.css">
 <link rel="stylesheet" href="sell.css"><!-- #112 GET READY TO SELL -->
+<link rel="stylesheet" href="firstrun.css"><!-- #136 FIRST RUN -->
+<link rel="stylesheet" href="updates.css"><!-- #138 UPDATES card -->
 <link rel="stylesheet" href="settime.css"><!-- #121 SET TIME -->
 <link rel="stylesheet" href="settings.css"><!-- #114 SETTINGS · NIGHT PRESETS -->
 <link rel="stylesheet" href="lights.css"><!-- #119 LIGHTS -->
@@ -489,6 +493,8 @@
     <div class="note" id="backupNote">Venues, nights, played lists and the password in one file. Keep one on your phone.</div>
     <div class="note">BLACK BOX and LOGS: what the box saw, for after a night. <button type="button" class="q" data-tip aria-label="More">?</button></div>
     <div class="note tip" hidden>BACKUP + RECORDINGS adds the set recordings (big). RESTORE puts a backup back and restarts GHOST LINK. BLACK BOX is the night's record of everything that happened; LOGS are the program's own notes.</div>
+    <h2 class="local-only" data-k="setup">SET UP THIS BOX</h2><!-- #136, firstrun.js -->
+    <div class="local-only" id="setupBox"></div>
     <h2 class="local-only" data-k="sell">GET READY TO SELL</h2><!-- #112, sell.js -->
     <div class="local-only" id="sellBox"></div>
     <h2 data-k="updates">UPDATES</h2>
@@ -510,7 +516,7 @@
 
 <section id="help" class="view help" hidden>
     <h2 id="go-display">DISPLAY (THIS PHONE)</h2>
-    <div class="buttons"><button type="button" data-tour>SHOW THE TOUR</button><button type="button" data-fun>GHOST MOODS: ON</button><button type="button" data-roam>GHOST: GOES TO THE DECKS</button><button type="button" data-gsize>GHOST SIZE: M</button><button type="button" data-rips>GHOST SMELLS RIPS: OFF</button></div>
+    <div class="buttons"><button type="button" data-tour>SHOW THE TOUR</button><button type="button" data-whatcan>WHAT CAN IT DO?</button><button type="button" data-fun>GHOST MOODS: ON</button><button type="button" data-roam>GHOST: GOES TO THE DECKS</button><button type="button" data-gsize>GHOST SIZE: M</button><button type="button" data-rips>GHOST SMELLS RIPS: OFF</button></div>
     <div class="buttons" id="themeBtns">
       <button data-theme-set="night">NIGHT</button><button data-theme-set="dim">DIM BOOTH</button><button data-theme-set="day">DAYLIGHT</button>
     </div>
@@ -610,7 +616,6 @@
 <script src="waves.js"></script>
 <script src="views.js"></script>
 <script src="thin.js"></script><!-- #125 THIN TRACK NOTE -->
-<script src="shim.js"></script>
 <script src="app.js"></script>
 <script src="showctl.js"></script>
 <script src="visuals.js"></script>
@@ -640,6 +645,7 @@
 <script src="asks.js"></script>
 <script src="endnight.js"></script>
 <script>EndNight.dashboard();</script>
+<script src="standbyend.js"></script><!-- #134 the end of STAND BY, said plainly -->
 <script src="wifiquiet.js"></script>
 <script src="easy.js"></script>
 <script src="nightshape.js"></script><script>NightShape.dashboard();</script><!-- #107 THE NIGHT'S SHAPE + GOODNIGHT -->
@@ -650,6 +656,7 @@
 <script src="sharelinks.js"></script>
 <script src="ear.js"></script><!-- THE EAR (#108): BPM by ear for laptop DJs, own file -->
 <script src="sell.js"></script><!-- GET READY TO SELL (#112), own file -->
+<script src="firstrun.js"></script><!-- FIRST RUN (#136), own file -->
 <script src="settings.js"></script><!-- SETTINGS · NIGHT PRESETS (#114), own file -->
 <script src="onstream.js"></script><!-- ON STREAM (#120): HIDE in PLAYED while HIDE IDS is on, own file -->
 <script src="settime.js"></script><!-- SET TIME (#121), own file -->
@@ -657,6 +664,7 @@
 <script src="hub.js"></script><!-- HARD STOP HUB (#130), own file -->
 <script src="safety.js"></script><script>Safety.start('dash');</script><script src="safetyctl.js"></script><!-- NIGHT SAFETY (#127), own files -->
 <script src="stageclock.js"></script><script src="setnotes.js"></script><script src="weather.js"></script><script>WeatherView.start('dash');</script><!-- #131 SET NOTES + WEATHER, own files -->
+<script src="moments.js"></script><script>Moments.start('dash');</script><script src="whatcan.js"></script><script src="hsonly.js"></script><script src="lines.js"></script><!-- #135 MOMENTS + THE LINE RULE (at most 2 lines in the corner window), own files -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \
 |      |

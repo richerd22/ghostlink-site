@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>GHOST LINK END OF NIGHT</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
+:root { --bg: #000; --fg: #fff; --grey: #9a9a9a; --dim: #555; --line: #222; --air: #ff2a2a; --warn: #ffb000; --ok: #fff; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 400 15px/1.35 "JetBrains Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 14px 16px 40px; }
+.bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bar a, .bar button, .bar select { font: inherit; font-size: 13px; color: var(--fg); background: var(--bg); border: 1px solid var(--fg); padding: 6px 10px; text-decoration: none; cursor: pointer; }
+.bar .grow { flex: 1; }
+.card { margin-top: 14px; border: 1px solid var(--line); padding: 18px 16px; }
+.head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+pre.boo { margin: 0; font-size: 10px; line-height: 10px; }
+h1 { margin: 0; font-size: 20px; letter-spacing: .14em; font-weight: 600; }
+.sub { color: var(--grey); font-size: 12px; letter-spacing: .08em; margin-top: 4px; overflow-wrap: anywhere; }
+.nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px 16px; margin: 18px 0 4px; }
+.nums small, h2 { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; font-weight: 400; margin: 0; }
+.nums b { font-size: 26px; font-weight: 600; overflow-wrap: anywhere; }
+h2 { margin: 18px 0 6px; padding-top: 12px; border-top: 1px solid var(--line); }
+.djs { font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
+.cut { font-size: 18px; font-weight: 600; }
+.cut.kept { color: var(--fg); }
+.cut.over { color: var(--air); }
+.cut.wait { color: var(--warn); }
+.line { color: var(--grey); font-size: 13px; margin-top: 3px; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+li { padding: 5px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+li:first-child { border-top: 0; }
+li b { font-weight: 600; }
+li span { color: var(--grey); }
+.tl li { display: grid; grid-template-columns: 6ch 1fr; gap: 8px; font-size: 13px; }
+.tl li.dj { display: block; color: var(--grey); letter-spacing: .1em; font-size: 11px; padding-top: 10px; }
+.private { color: var(--grey); font-size: 13px; }
+.foot { color: var(--dim); font-size: 11px; margin-top: 18px; }
+.msg { color: var(--grey); margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a href="/#played">BACK</a>
+    <a href="setdna.html" id="dna">SET DNA</a>
+    <a href="night.html" id="report">NIGHT REPORT</a><!-- #125 -->
+    <span class="grow"></span>
+    <button type="button" id="save">SAVE IMAGE</button>
+    <button type="button" id="share" hidden>SHARE</button>
+    <button type="button" id="nightLink" hidden>SHARE THIS NIGHT</button>
+    <button type="button" id="nightPrivate" hidden>MAKE CREW ONLY</button>
+  </div>
+  <div class="line" id="nightNote" hidden></div>
+  <div class="msg" id="msg">Loading the night...</div>
+  <div class="card" id="card" hidden></div>
+</div>
+<script src="shim.js"></script>
+<script src="endnight.js"></script>
+<script>EndNight.page();</script>
+<script>document.getElementById('report').href = 'night.html' + location.search; // #125 NIGHT REPORT: same night</script>
+<script>document.getElementById('dna').href = 'setdna.html' + location.search; // SET DNA (#102): same night</script>
+</body>
+</html>

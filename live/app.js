@@ -88,7 +88,7 @@ function handle({ type, data }) {
       break;
     case 'crew': S.crew = data; break;
     case 'bye': if (typeof Why !== 'undefined') Why.bye(); break; // #93: the box is restarting on purpose
-    case 'status': S.crew = data.crew; setStatus(data); renderStatus(); renderHeader(); renderNetwork(); renderAlerts(); renderDecks(); $('djNow').textContent = data.dj || 'not set'; renderPlanNow(); renderSongId(); renderGhostDeck(); break;
+    case 'status': if (data.safety && typeof Safety !== 'undefined' && Safety.push) Safety.push(data.safety); /* #137 */ S.crew = data.crew; setStatus(data); renderStatus(); renderHeader(); renderNetwork(); renderAlerts(); renderDecks(); $('djNow').textContent = data.dj || 'not set'; renderPlanNow(); renderSongId(); renderGhostDeck(); break;
     case 'devices': S.devices = data; renderNetwork(); renderDecks(); renderVenue(); break;
     case 'deck': setDeck(data); renderDeck(data.player); renderGhostDeck(); break;
     case 'waveform': setWave(data.player, data.waveform); break;
@@ -1933,9 +1933,14 @@ $('lockBtn').addEventListener('click', async () => { await post('/api/lock'); se
 $('pwChangeBtn').addEventListener('click', () => { $('pwForm').hidden = !$('pwForm').hidden; });
 $('pwForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const r = await post('/api/password', { current: $('pwCur').value, next: $('pwNew').value });
+  const nextPw = $('pwNew').value;
+  const r = await post('/api/password', { current: $('pwCur').value, next: nextPw });
   $('pwCur').value = $('pwNew').value = '';
-  if (r.ok) { setUnlocked(false); note('lockNote', 'Password changed. Every phone needs the new one now.'); }
+  if (r.ok) { // #136: this phone signs straight back in with the new one (it used to be locked out at once)
+    const u = await post('/api/unlock', { password: nextPw });
+    setUnlocked(u.ok); refreshAuth();
+    note('lockNote', u.ok ? 'Password changed. This phone stays unlocked; every other phone needs the new one.' : 'Password changed. Every phone needs the new one now.');
+  }
   else note('lockNote', 'Not changed: current password wrong, or new one under 8 characters.', true);
 });
 document.querySelectorAll('a[href="/api/logs"], a[href="/api/blackbox.zip"], #backupBtn, #backupRecBtn').forEach(a =>
@@ -2696,6 +2701,7 @@ const GOTO = [
   ['WATCH FROM HOME', 'status/watch', 'remote watch home link share'],
   ['CONTROLS · rejoin, listen only, restart', 'status/controls', 'rejoin listen only restart shut down shutdown power reading'],
   ['BACKUP · restore, black box, logs', 'status/backup', 'backup restore black box blackbox logs'],
+  ['SET UP THIS BOX · first run, what kind of nights', 'status/setup', 'setup set up first run new box welcome start kinds nights what kind wizard'], // #136
   ['GET READY TO SELL · hand the box on', 'status/sell', 'sell selling sold reset factory wipe erase new owner give away hand on'],
   ['BOX DETAILS · self-check, uptime, temperature', 'status/box', 'uptime temp temperature cpu source facts self-check selfcheck health card memory disk space'],
   ['TOOLS · demo, tour, arcade, test run', 'status/tools', 'demo tour arcade games boo test run'],
@@ -2868,6 +2874,7 @@ function renderBoothCheck(s) {
     ...(s.clockBattery ? [['CLOCK BATTERY', clockBattery(s.clockBattery)]] : []),
     ['VENUE', !v.name ? ['none', 'NONE SET'] : s.venueOk ? ['ok', v.name.toUpperCase()] : ['look', v.name.toUpperCase() + '? · not checked tonight · change it under VENUE if wrong']],
     ['WI-FI', s.wifiQuiet ? ['look', s.wifiQuiet.words + (s.wifiQuiet.until ? ' UNTIL ' + clock(s.wifiQuiet.until) : ' UNTIL YOU END IT')] // #104
+      : typeof WifiQuiet !== 'undefined' && WifiQuiet.afterLine && WifiQuiet.afterLine(s) && w.state !== 'client' ? ['look', 'STAND BY JUST ENDED · BACK TO NORMAL WI-FI'] // #134
       : w.state === 'hotspot' ? ['look', 'ON ITS OWN HOTSPOT · venue Wi-Fi saved?'] : w.ssid ? ['ok', w.ssid] : ['none', 'NONE']],
     ['DJ CABLE', s.cable === false ? ['look', 'UNPLUGGED'] : s.cable && s.djAddress ? ['ok', 'IN'] : s.cable ? ['look', 'IN, NO ADDRESS YET'] : ['none', '--']],
     ['JOINED', s.link === 'LINKED' ? ['ok', 'AS DEVICE ' + s.deviceNumber] : s.link === 'LISTENING' ? ['look', 'LISTENING'] : ['look', s.link || '--']],

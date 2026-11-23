@@ -1,0 +1,24 @@
+/* ANNOUNCEMENTS (#96): STATUS -> TONIGHT, and the STOP bar on every view while the box plays one. */
+.announce .buttons { margin-bottom: 8px; }
+.announce input#annName { font: inherit; font-size: 14px; background: var(--bg); color: var(--fg); border: 1px solid var(--dim); border-radius: 0; padding: 9px 8px; width: 100%; max-width: 360px; text-transform: uppercase; }
+.announce audio { display: block; width: 100%; max-width: 360px; margin: 8px 0; }
+.ann-list { list-style: none; margin: 0 0 10px; padding: 0; }
+.ann-list li { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--dim); }
+.ann-list li.empty, .ann-list li.room { color: var(--grey); font-size: 12px; letter-spacing: .06em; border-bottom: 0; }
+.ann-list .what { flex: 1 1 160px; min-width: 0; overflow-wrap: anywhere; }
+.ann-list .what small { display: block; color: var(--grey); font-size: 12px; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.ann-list .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+.ann-list button { padding: 8px 10px; font-size: 13px; }
+.ann-now { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 8px 0; padding: 8px 10px; border: 1px solid var(--warn); color: var(--warn); font-weight: 700; font-variant-numeric: tabular-nums; }
+.ann-now button.stop { border-width: 2px; font-weight: 700; }
+.announce label.btn { cursor: pointer; }
+#annRec.rec-on { border-color: var(--air, #c22); color: var(--air, #c22); }
+.alert.ann-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; border-color: var(--warn); color: var(--warn); font-weight: 700; font-variant-numeric: tabular-nums; }
+.alert.ann-bar span { min-width: 0; overflow-wrap: anywhere; }
+
+/* #101 THE PA for HARD STOP (hardstoppa.js): two switches, the app's side, a card per stage */
+.hs-pa .hs-sw { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; margin: 10px 0 2px; }
+.hs-pa .hs-sw b { letter-spacing: .06em; min-width: 0; overflow-wrap: anywhere; }
+.hs-pa .hs-stages { display: grid; gap: 6px; margin: 4px 0 8px; }
+.hs-pa .hs-stage { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; align-items: center; }
+.hs-pa .hs-stage select { min-width: 0; width: 100%; }

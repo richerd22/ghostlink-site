@@ -82,10 +82,15 @@ const Easy = (() => {
     else if (!s.venueOk) add('VENUE', 'look', 'Still ' + v.name + '? Change it under VENUE if not.', 'venue', 'VENUE');
     else add('VENUE', 'ok', v.name);
     if (s.wifiQuiet && typeof WifiQuiet !== 'undefined') add('WI-FI', 'look', WifiQuiet.say(s), 'quietend', s.wifiQuiet.kind === 'off' ? 'WI-FI BACK ON' : 'BACK ON THEIR WI-FI'); // #104
+    else if (typeof WifiQuiet !== 'undefined' && WifiQuiet.afterLine && WifiQuiet.afterLine(s)) add('WI-FI', 'look', WifiQuiet.afterLine(s)); // #134: just ended, no JOIN NOW
     else if (w.state === 'hotspot' || w.state === 'none') {
       const a = wifiAdvice(s);
+      // #134: JOIN VENUE WI-FI NOW only when it would really do something: on its hotspot, a saved venue Wi-Fi, not in
+      // the minute after STAND BY ended. Off Wi-Fi ('none') the box is already retrying every 15 s by itself.
+      const join = a.join && (typeof WifiQuiet === 'undefined' || !WifiQuiet.canJoin || WifiQuiet.canJoin(s));
       if (Date.now() - wifiAsked < 60000) add('WI-FI', 'look', 'Looking for the venue Wi-Fi now (up to a minute). If it joins, this phone loses the GHOST LINK hotspot: join the venue Wi-Fi and open gl.cold.fyi.');
-      else add('WI-FI', 'look', (w.state === 'none' ? 'Not on Wi-Fi yet. ' : 'On its own hotspot. ') + a.say, a.join ? 'joinwifi' : 'venue', a.join ? 'JOIN VENUE WI-FI NOW' : 'VENUE WI-FI');
+      else if (w.state === 'none') add('WI-FI', 'look', 'Not on Wi-Fi yet: looking for saved Wi-Fi by itself every 15 s. ' + (a.join ? '' : a.say), a.join ? null : 'venue', a.join ? null : 'VENUE WI-FI');
+      else add('WI-FI', 'look', 'On its own hotspot. ' + (join || !a.join ? a.say : 'Saved venue Wi-Fi has no password: VENUE -> EDIT, type it, SAVE (the box tries it at once).'), join ? 'joinwifi' : 'venue', join ? 'JOIN VENUE WI-FI NOW' : 'VENUE WI-FI');
     }
     else if (w.ssid) add('WI-FI', 'ok', w.ssid);
     const lineup = plan && plan.lineup && plan.lineup.length;
@@ -276,5 +281,5 @@ const Easy = (() => {
   addEventListener('hashchange', () => { if (curView() === 'status') { readySig = ''; loadPlan(true).then(tick); } });
   setInterval(tick, 1000);
   setTimeout(() => { loadPlan(true).then(tick); }, 300);
-  return { checks, planTonight, liveNow };
+  return { checks, planTonight, liveNow, renderReady };
 })();

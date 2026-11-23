@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+<title>STREAM OVERLAY · GHOST LINK</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="app.css">
+<style>
+/* ON STREAM (#120): pick the overlay's look, see it live, copy the link for OBS. Plus HIDE IDS, the stream clock and
+   the plain outputs for other tools. Nothing here reads HARD STOP. */
+.st { max-width: 1240px; margin: 0 auto; padding: 14px 16px 40px; box-sizing: border-box; }
+.st-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.st-head .mark { font-weight: 700; letter-spacing: .08em; }
+.st-head h1 { margin: 0; font-size: 16px; letter-spacing: .12em; font-weight: 600; }
+.st-head a { margin-left: auto; color: var(--grey); font-size: 13px; }
+.st-cols { display: grid; gap: 18px; }
+@media (min-width: 900px) { .st-cols { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; } .st-left { position: sticky; top: 12px; } }
+.st h2 { font-size: 13px; letter-spacing: .14em; color: var(--grey); font-weight: 600; margin: 18px 0 8px; }
+.st h2:first-child { margin-top: 0; }
+.st .box { border: 1px solid var(--line); padding: 12px; display: grid; gap: 10px; }
+.pv { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--dim);
+  background-color: #3a3a3a; background-image: linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%),
+  linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%); background-size: 24px 24px; background-position: 0 0, 12px 12px; }
+.pv iframe { color-scheme: light; position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; background: transparent; }
+.st-row { display: grid; gap: 6px; }
+.st-row > span { font-size: 12px; letter-spacing: .12em; color: var(--grey); }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font-size: 13px; padding: 8px 10px; }
+.st-link { display: flex; gap: 8px; }
+.st-link input { flex: 1; width: 100%; min-width: 0; font-size: 13px; padding: 10px; }
+.st-link button { flex: none; }
+.big { font-weight: 700; }
+.tracks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 360px; overflow: auto; }
+.tracks li { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--line); padding: 4px 0 6px; }
+.tracks li .w { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.tracks li .w small { color: var(--grey); margin-left: 6px; }
+.tracks li .tag { font-size: 11px; color: var(--warn); letter-spacing: .08em; flex: none; }
+.tracks li button { font-size: 12px; padding: 6px 10px; flex: none; }
+.tracks .sep { color: var(--grey); font-size: 12px; letter-spacing: .12em; border: 0; padding-top: 8px; }
+pre.out { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 13px; margin: 0; max-height: 220px; overflow: auto;
+  border: 1px solid var(--line); padding: 8px; font-variant-numeric: tabular-nums; }
+.ok { color: var(--fg); } .off { color: var(--warn); }
+ol.how { margin: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; color: var(--grey); }
+ol.how b { color: var(--fg); font-weight: 600; }
+</style>
+</head>
+<body>
+<main class="st">
+  <div class="st-head"><span class="mark">GHOST LINK</span><h1>STREAM OVERLAY</h1><a href="/#status">DASHBOARD</a></div>
+  <div class="st-cols">
+    <div class="st-left">
+      <div class="pv" id="pv"><iframe id="pvFrame" title="Preview of the overlay" width="1920" height="1080"></iframe></div>
+      <div class="seg" id="pvMode" style="margin-top:8px"></div>
+      <h2>THE LINK</h2>
+      <div class="box">
+        <div class="st-link"><input id="link" readonly aria-label="The overlay's link"><button type="button" id="copy" class="big">COPY LINK</button></div>
+        <ol class="how">
+          <li>In OBS: <b>+</b> under Sources, <b>Browser</b>.</li>
+          <li>Paste the link into <b>URL</b>. Width <b id="howW">1920</b>, height <b id="howH">1080</b>.</li>
+          <li>The computer needs to be on the same Wi-Fi as the box.</li>
+        </ol>
+      </div>
+      <h2>TITLES</h2>
+      <div class="box">
+        <div id="titles" class="note"></div>
+        <div class="buttons"><button type="button" id="songId"></button></div>
+      </div>
+    </div>
+    <div class="st-right">
+      <h2>LOOK</h2>
+      <div class="box">
+        <div class="st-row"><span>STYLE</span><div class="seg" id="style"></div></div>
+        <div class="st-row" id="posRow"><span>CORNER</span><div class="seg" id="pos"></div></div>
+        <div class="st-row" id="holdRow"><span>STAYS UP</span><div class="seg" id="hold"></div></div>
+        <div class="st-row"><span>BPM + KEY</span><div class="seg" id="chip"></div></div>
+        <div class="st-row"><span>KEY AS</span><div class="seg" id="keyAs"></div></div><!-- #128 -->
+        <div class="st-row"><span>PLAYED BEFORE</span><div class="seg" id="prev"></div></div>
+        <div class="st-row" id="barRow"><span>TIME BAR</span><div class="seg" id="bar"></div></div>
+        <div class="st-row"><span>SIZE</span><div class="seg" id="scale"></div></div>
+        <div class="st-row"><span>SHOW</span><div class="seg" id="show"></div></div>
+        <div class="st-row"><span>BACKGROUND</span><div class="seg" id="bg"></div></div>
+        <div class="st-row"><span>PREVIEW SIZE</span><div class="seg" id="size"></div></div>
+      </div>
+      <h2>HIDE IDS</h2>
+      <div class="box">
+        <div class="buttons"><button type="button" id="hideIds"></button></div>
+        <div class="note" id="hideNote"></div>
+        <ul class="tracks" id="tracks"></ul>
+      </div>
+      <h2>STREAM CLOCK</h2>
+      <div class="box">
+        <div class="note" id="clockNote"></div>
+        <div class="buttons"><button type="button" id="clockStart" class="big">START STREAM CLOCK</button><button type="button" id="clockClear">CLEAR</button></div>
+        <div class="buttons st-nudge"><button type="button" id="nudgeLess" title="Every chapter 5 s earlier">−5 S</button><button type="button" id="nudgeMore" title="Every chapter 5 s later (the stream is delayed)">+5 S</button><span class="note" id="nudgeNote"></span></div><!-- #128 -->
+      </div>
+      <h2>FOR OTHER TOOLS</h2>
+      <div class="box">
+        <div class="note">Plain feeds for chat bots, text sources and visuals software. Same rules as the overlay. OBS's Text source reads a file, not a link: the help (USING GHOST LINK WITH OBS) has a one-line way to keep a file up to date on the Mac.</div><!-- #128 -->
+        <div class="buttons"><a class="btn" href="/api/nowplaying.txt" target="_blank">NOW PLAYING (TEXT)</a><a class="btn" href="/api/nowplaying.json" target="_blank">NOW PLAYING (JSON)</a></div>
+        <div class="st-row"><span>SETLIST SO FAR</span><pre class="out" id="setlist"></pre></div>
+        <div class="buttons"><button type="button" id="copySet">COPY SETLIST</button><a class="btn" href="/api/setlist.txt" target="_blank">SETLIST (TEXT)</a></div>
+      </div>
+      <div class="note" id="msg" role="status"></div>
+    </div>
+  </div>
+</main>
+<script src="shim.js"></script>
+<script src="overlay.js"></script>
+<script src="stream.js"></script>
+</body>
+</html>

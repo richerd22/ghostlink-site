@@ -1,0 +1,30 @@
+/* LIGHTS (#119): STATUS -> SCREENS & OUTPUTS. Reuses SHOW CONTROL's .sc-* rows; only what's new is here. */
+.lights .lt-swatch { display: inline-block; width: 10px; height: 10px; margin: 0 0 0 8px; border: 1px solid var(--dim); vertical-align: 0; }
+.lights .lt-sub { margin: 14px 0 6px; color: var(--grey); font-size: 12px; letter-spacing: .1em; }
+.lights .lt-safety { margin-top: 8px; }
+.lights .lt-black { border-color: var(--air); color: var(--air); min-width: 9em; letter-spacing: .1em; }
+.lights .lt-black.on { background: var(--air); color: var(--bg); }
+.lights .lt-modes button { flex: 1 1 auto; }
+.lights .lt-bright { display: grid; gap: 4px; margin-top: 10px; color: var(--grey); font-size: 12px; letter-spacing: .08em; }
+.lights .lt-bright input { width: 100%; max-width: 420px; padding: 0; border: 0; accent-color: var(--fg); }
+.lights .lt-events { display: grid; gap: 6px; }
+.lights .lt-ev { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; }
+.lights .lt-ev[hidden] { display: none; }
+.lights .lt-ev input { width: 22px; height: 22px; margin: 0; accent-color: var(--fg); }
+.lights .lt-ev span { letter-spacing: .06em; }
+.lights .lt-ev small { grid-column: 2; color: var(--grey); font-size: 12px; }
+.lights .lt-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
+.lights .lt-row select { flex: 0 0 auto; }
+.lights .lt-row [data-host] { flex: 1 1 150px; min-width: 0; max-width: none; }
+.lights .lt-row [data-uni] { flex: 0 0 6.5em; min-width: 0; }
+.lights .lt-row [hidden] { display: none; }
+.lights .lt-row .mini { margin-left: 0; }
+.lights .sc-fields label[hidden] { display: none; }
+/* #128 LIGHTS extras: RGBW / +1 UNIVERSE per light, the venue's look from last time, the phrase line */
+.lights .lt-two { display: flex; align-items: center; gap: 4px; font-size: 12px; letter-spacing: .06em; white-space: nowrap; }
+.lights .lt-phrase { margin-top: 6px; }
+.lights .lt-two input { width: 20px; height: 20px; margin: 0; accent-color: var(--fg); }
+.lights .lt-offer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 8px; padding: 8px 0; border-bottom: 1px solid var(--line); letter-spacing: .06em; }
+.lights .lt-offer[hidden] { display: none; }
+.lights .lt-offer span { flex: 1 1 14em; min-width: 0; overflow-wrap: anywhere; }
+.lights .lt-offer button { margin: 0; }

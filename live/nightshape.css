@@ -1,0 +1,42 @@
+/* THE NIGHT'S SHAPE + GOODNIGHT (#107): the block at the top of NOW, the AT THE DROP button, the TV card. Own file. */
+.night-shape { border: 1px solid var(--line); padding: 8px 12px; margin: 0 0 12px; }
+.night-shape .ns-head { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.night-shape .ns-head b { letter-spacing: .12em; }
+.night-shape .ns-head span { color: var(--grey); font-size: .85em; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.night-shape .ns-line { margin-top: 6px; font-size: .85em; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.night-shape .ns-line span { color: var(--grey); }
+.night-shape .ns-line .warn, .night-shape .ns-cue.warn { color: var(--warn); }
+.night-shape .ns-line .btn { font-size: .85em; padding: .25em .6em; }
+.night-shape .ns-line .mini { margin-left: 0; }
+.night-shape .ns-cue { margin-top: 6px; font-weight: 600; letter-spacing: .06em; }
+.night-shape.ns-last-15 { border-color: var(--warn); }
+.night-shape.ns-last-15 .ns-head b { color: var(--warn); }
+/* the END OF NIGHT card inside NOW (endnight.js markup), kept small and scrollable */
+.ns-card { margin-top: 8px; max-height: 60vh; overflow: auto; font-size: 13px; }
+.ns-card .head { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+.ns-card pre.boo { margin: 0; font-size: 8px; line-height: 8px; }
+.ns-card h1 { margin: 0; font-size: 15px; letter-spacing: .14em; }
+.ns-card .sub, .ns-card .line, .ns-card .private, .ns-card .foot { color: var(--grey); font-size: 11px; }
+.ns-card .nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px 12px; margin: 10px 0 2px; }
+.ns-card .nums small, .ns-card h2 { display: block; color: var(--grey); font-size: 10px; letter-spacing: .12em; font-weight: 400; margin: 0; }
+.ns-card .nums b { font-size: 20px; }
+.ns-card h2 { margin: 10px 0 4px; padding-top: 8px; border-top: 1px solid var(--line); }
+.ns-card .cut { font-weight: 600; }
+.ns-card .cut.over { color: var(--air, #ff2a2a); }
+.ns-card .cut.wait { color: var(--warn); }
+.ns-card ul, .ns-card ol { list-style: none; margin: 0; padding: 0; }
+.ns-card li { padding: 3px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.ns-card li span { color: var(--grey); }
+.ns-card .tl li { display: grid; grid-template-columns: 6ch 1fr; gap: 6px; }
+.ns-card .tl li.dj { display: block; color: var(--grey); font-size: 10px; letter-spacing: .1em; }
+.crew-send .cs-times .cs-drop.on { background: var(--fg); color: var(--bg); }
+.crew-send .cs-offer { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.crew-send .cs-offer .mini { margin-left: 0; }
+.crew-send .cs-secs:disabled { opacity: .4; }
+.ns-goodnight .cs-go { margin-right: 8px; }
+/* small windows (the corner window beside the lighting desk): one line, no card */
+@media (max-height: 460px) {
+  .night-shape { padding: 4px 8px; margin-bottom: 6px; }
+  .night-shape .ns-line, .night-shape .ns-cue { margin-top: 2px; }
+  .ns-card { max-height: 40vh; }
+}

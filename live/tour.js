@@ -34,6 +34,6 @@ const Tour = (() => {
   let seen = true;
   try { seen = localStorage.getItem('toured') === '1'; } catch (e) { /* no storage: don't nag */ }
   const viewOnly = document.body.classList.contains('remote') || location.hostname.endsWith('trycloudflare.com');
-  if (!seen && !viewOnly && !q.has('notour') && !q.has('embed') && !q.has('role') && !q.has('layout') && !location.hash) setTimeout(start, 600);
+  if (!seen && !viewOnly && !q.has('notour') && !q.has('embed') && !q.has('role') && !q.has('layout') && !location.hash) setTimeout(() => { if (!document.body.classList.contains('firstrun-on')) start(); }, 600); // #136: never over FIRST RUN
   return { start };
 })();

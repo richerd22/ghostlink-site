@@ -7,6 +7,8 @@
  *  - The address sheet (tap GHOST LINK at the top): the same line and a WI-FI QUIET button.
  *  - WifiQuiet.say(s) for READY FOR TONIGHT, WifiQuiet.short(s) for NOW's box strip.
  * The box writes <data>/wifi-quiet; the Wi-Fi watcher obeys it (deploy/wifi-watch.sh).
+ * #134: right after an end, one plain line says where the box goes (standbyend.js), JOIN VENUE WI-FI NOW waits a
+ * minute, and a page that loses the box then shows a calm THE BOX IS JOINING screen instead of an error.
  */
 const WifiQuiet = (() => {
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -26,6 +28,14 @@ const WifiQuiet = (() => {
   };
   const LENGTHS = [['30m', '30 MIN'], ['1h', '1 HOUR'], ['tonight', 'TONIGHT'], ['forever', 'UNTIL I SAY']];
   let pick = null, busy = false, err = '';
+  // #134: what this page's own END tap got back (the box may be gone a second later), and the last STAND BY it saw.
+  let mine = null, via = null, lastQuiet = null;
+  const SE = typeof StandbyEnd !== 'undefined' ? StandbyEnd : null;
+  const boxNow = () => Date.now() - ((S && S.skew) || 0);
+  const lastEnd = s => SE ? SE.back(s || S.status || {}, mine, boxNow()) : null;
+  const who = s => SE ? SE.viewer(s, location.hostname, via) : null;
+  /** The one plain line right after an end, or null. */
+  const afterLine = s => { const b = !s.wifiQuiet && lastEnd(s); return b ? SE.line(s, b, who(s), boxNow()) : null; };
 
   const fmtLeft = s => s == null ? '' : s < 90 ? 'under 2 min' : s < 3600 ? Math.round(s / 60) + ' min' : Math.floor(s / 3600) + ' h ' + Math.round(s % 3600 / 60) + ' min';
   const untilText = q => q.until ? 'until ' + clock(q.until) + ' (' + fmtLeft(q.secondsLeft) + ' left)' : 'until you end it';
@@ -40,6 +50,8 @@ const WifiQuiet = (() => {
   /** Where the box shows up right now, and what other people see. */
   function where(s) {
     const w = s.wifi || {}, q0 = s.wifiQuiet;
+    const after = afterLine(s); // #134: just ended: where the box is going, not the hotspot it's leaving
+    if (after) return after;
     // Not taken by the watcher yet (an old one): say what's really happening, not what was asked.
     if (q0 && q0.applied === false) return 'Asked for ' + q0.words + ', not taken yet. ' + where(Object.assign({}, s, { wifiQuiet: null }));
     const q = q0;
@@ -80,25 +92,36 @@ const WifiQuiet = (() => {
   async function end() {
     if (!unlocked) return needUnlock();
     busy = true; err = ''; render();
+    const q = (S.status || {}).wifiQuiet || {};
     try {
       const r = await post('/api/wifi/quiet/end', {});
+      const j = r.ok ? await r.json().catch(() => ({})) : {};
+      if (r.ok) { // #134: keep what the box said: this phone may lose it in a few seconds
+        via = j.via || null;
+        mine = j.back || { at: boxNow(), kind: q.kind, to: q.backTo || null, look: q.backLook || 'unknown', saved: [] };
+        if (S.status) S.status.wifiBack = mine;
+      }
       if (r.ok && S.status) S.status.wifiQuiet = null;
       else if (r.status !== 401) err = 'Didn\'t take (' + r.status + ').';
     } catch (e) { err = 'The box didn\'t answer.'; }
     busy = false; render();
+    if (typeof Easy !== 'undefined' && Easy.renderReady) Easy.renderReady(); // READY: the line, no JOIN NOW
   }
 
   const box = $('wifiQuiet');
   let sig = '';
   function render() {
-    if (!box) return;
     const s = S.status || {}, q = s.wifiQuiet;
+    if (q) lastQuiet = q; else if (lastQuiet && !lastQuiet.until) lastQuiet = null;
+    hideLost(); // a status came in: the page has the box again
+    if (!box) return;
     const now = JSON.stringify([where(s), q && q.kind, q && q.applied, pick, busy, err, unlocked]);
     if (now === sig) return;
     sig = now;
     box.textContent = '';
     box.append(el('h3', 'wq-h', 'STAND BY · WI-FI QUIET')); // STAND BY = HARD STOP's word for it too
-    const line = el('div', 'wq-where' + (q ? ' on' : ''), where(s));
+    const after = !q && afterLine(s);
+    const line = el('div', 'wq-where' + (q ? ' on' : after ? ' after' : ''), where(s));
     box.append(line);
     if (q && q.applied === false) box.append(el('div', 'note warn', 'Not taken yet: the box\'s Wi-Fi watcher needs the Nov 22 update. Until then, unplugging the power is the only way off.'));
     if (q) {
@@ -155,5 +178,32 @@ const WifiQuiet = (() => {
   const top = $('shareBtn');
   if (top) top.addEventListener('click', () => { shareLine.textContent = where(S.status || {}); });
 
-  return { render, where, say, short, end };
+  // ---- #134: the calm screen when this page loses the box right after an end ----
+  let lostBox = null;
+  function hideLost() { if (lostBox) lostBox.hidden = true; }
+  /** For Why.lostAlert: the calm alert (and the screen) while lost after an end, else null. */
+  function lostAlert() {
+    if (!SE) return null;
+    const v = who(S.status || {});
+    if (v === 'cable' || v === 'here') return null; // this one never loses the box over Wi-Fi
+    const t = SE.lost(lastEnd(S.status || {}), lastQuiet, boxNow());
+    if (!t) return null;
+    if (!lostBox) {
+      lostBox = el('div', 'sb-lost');
+      lostBox.setAttribute('role', 'status');
+      document.body.append(lostBox);
+    }
+    lostBox.textContent = '';
+    const card = el('div', 'sb-card');
+    card.append(el('div', 'sb-ghost', 'GHOST LINK'), el('h2', null, t.title));
+    for (const l of t.lines) card.append(el('p', null, l));
+    card.append(el('p', 'sb-small', 'This page reconnects by itself when it can reach the box again.'));
+    lostBox.append(card);
+    lostBox.hidden = false;
+    return { title: t.title, fix: t.lines[1] || t.lines[0], sticky: true };
+  }
+  /** For READY FOR TONIGHT (easy.js): the last end and whether JOIN VENUE WI-FI NOW would really do something. */
+  const canJoin = s => SE ? SE.canJoin(s, boxNow(), lastEnd(s)) : true;
+
+  return { render, where, say, short, end, lostAlert, afterLine, canJoin, lastEnd };
 })();

@@ -138,6 +138,10 @@ const Why = (() => {
   /** The alert while this page has lost the box: what kind of lost, how long, and that it's retrying. */
   function lostAlert() {
     if (!lostAt) { lostAt = Date.now(); setTimeout(check, 300); }
+    if (typeof WifiQuiet !== 'undefined' && WifiQuiet.lostAlert && navigator.onLine) { // #134: just after STAND BY ended
+      const sb = WifiQuiet.lostAlert();
+      if (sb) return sb;
+    }
     const since = ' Lost ' + ago(Date.now() - lostAt) + ' ago; retrying every few seconds.';
     if (!navigator.onLine || probe === 'offline')
       return { title: "This phone is offline", fix: "Its Wi-Fi is off or dropped. Turn Wi-Fi on and join the box's network again." + since, sticky: true };

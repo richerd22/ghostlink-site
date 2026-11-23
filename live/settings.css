@@ -1,0 +1,51 @@
+/* SETTINGS · NIGHT PRESETS + ALL SETTINGS (#114, settings.js). Own file so app.css merges stay clean.
+   Sheets reuse the address sheet's .share / .share-box (like GET READY TO SELL). */
+.st-h { display: block; color: var(--grey); letter-spacing: .08em; margin: 10px 0 4px; }
+.st-presets button.st-same { border-style: dashed; }
+.st-undo, .st-offer { border: 1px solid var(--fg); padding: 8px 12px; margin: 6px 0; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.st-offer { display: grid; gap: 6px; border-color: var(--warn); }
+.st-offer-host:empty { display: none; }
+.st-offer-host .st-offer { margin: 8px 0; }
+.st-sheet { align-items: start; overflow-y: auto; }
+.st-box { width: min(560px, 100%); margin: auto 0; gap: 10px; }
+.st-box.st-all { width: min(680px, 100%); }
+.st-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.st-head .mini { font-size: 18px; padding: 0 10px; }
+.st-lines { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: 14px; line-height: 1.35; }
+.st-lines b { font-weight: 600; }
+.st-blocked { color: var(--grey); }
+.st-why { color: var(--grey); font-size: 12px; }
+.st-care { display: inline-block; margin-left: .6em; padding: 0 5px; border: 1px solid var(--warn); color: var(--warn); font-size: 11px; letter-spacing: .05em; }
+.st-skip summary { color: var(--grey); font-size: 13px; cursor: pointer; }
+/* #116 YOUR PRESETS (RENAME / DELETE) and the NIGHTS form's PRESET */
+.st-yours { margin: 6px 0; }
+.st-yours summary { color: var(--grey); font-size: 13px; cursor: pointer; letter-spacing: .05em; }
+.st-own { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 6px 0; border-top: 1px solid var(--line); }
+.st-own b { font-size: 14px; overflow-wrap: anywhere; }
+.st-own .buttons { margin: 0; }
+.st-own form input { font: inherit; min-width: 0; flex: 1 1 10em; }
+.st-nightpick select { max-width: 100%; min-width: 0; }
+.st-q { width: 100%; max-width: none; box-sizing: border-box; font: inherit; background: var(--bg); color: var(--fg); border: 1px solid var(--grey); padding: 8px 10px; }
+.st-list { display: grid; gap: 0; }
+.st-g { margin: 12px 0 2px; color: var(--grey); font-size: 12px; letter-spacing: .1em; font-weight: 400; }
+.st-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 8px 0; border-top: 1px solid var(--line); align-items: start; }
+.st-name { grid-column: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; }
+.st-name b { font-size: 14px; letter-spacing: .03em; }
+.st-dot { color: var(--warn); font-size: 11px; }
+.st-what { grid-column: 1; color: var(--grey); font-size: 12px; line-height: 1.3; }
+.st-ctl { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; align-items: center; max-width: 52vw; }
+.st-ctl .mini { margin-left: 0; }
+.st-ctl select, .st-ctl input, .st-ctl textarea { font: inherit; font-size: 13px; background: var(--bg); color: var(--fg); border: 1px solid var(--grey); padding: 4px 6px; max-width: 100%; }
+.st-ctl textarea { width: 14em; }
+.st-row .st-left { grid-column: 1; }
+.st-val { font-size: 13px; text-align: right; overflow-wrap: anywhere; }
+@media (max-width: 520px), (max-height: 340px) {
+  .st-row { grid-template-columns: 1fr; }
+  .st-ctl { grid-column: 1; grid-row: auto; justify-content: flex-start; max-width: none; }
+  .st-box { padding: 12px; }
+}
+@media (max-height: 460px) {
+  .st-sheet { padding: 6px; }
+  .st-box { gap: 6px; padding: 10px 12px; }
+  .st-row { padding: 5px 0; }
+}

@@ -1,0 +1,10 @@
+/* GET READY TO SELL (#112), own file. The sheet reuses the address sheet's .share / .share-box. */
+.sell { align-items: start; overflow-y: auto; }
+.sell-box { width: min(520px, 100%); max-height: none; margin: auto 0; }
+.sell-h { margin: 0; font-size: 18px; letter-spacing: .08em; }
+.sell-list { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.sell-list li { line-height: 1.35; font-size: 14px; }
+.sell-box input { width: 100%; max-width: none; font: inherit; background: var(--bg); color: var(--fg); border: 1px solid var(--grey); padding: 10px; }
+.sell-go { position: relative; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sell-go::before { content: ''; position: absolute; inset: 0; background: var(--warn); opacity: .3; transform: scaleX(0); transform-origin: left; }
+.sell-go.holding::before { transform: scaleX(1); transition: transform 3s linear; }

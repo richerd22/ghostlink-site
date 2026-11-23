@@ -1,0 +1,14 @@
+/* UPDATES card (#66, #138), own file. One plain card: UP TO DATE, or NEW: ... with the two choices. */
+.upd-card { border: 1px solid var(--line); padding: 14px 14px 6px; margin: 6px 0 20px; }
+.upd-card.new { border-color: var(--fg); }
+.upd-head { font-size: 20px; font-weight: 600; letter-spacing: .04em; line-height: 1.2; overflow-wrap: anywhere; }
+.upd-card .buttons { margin-top: 10px; }
+.upd-more { margin-top: 8px; }
+.upd-more > summary { cursor: pointer; color: var(--grey); letter-spacing: .08em; font-size: 13px; padding: 8px 0; }
+.upd-log { display: grid; gap: 10px; margin: 6px 0 12px; }
+.upd-log b { letter-spacing: .06em; font-weight: 600; }
+.upd-log ul { margin: 4px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.upd-log li { line-height: 1.35; }
+.upd-auto { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0; }
+.upd-auto small { color: var(--grey); letter-spacing: .08em; margin-right: 4px; }
+.upd-card > .buttons:not(:has(> :not([hidden]))) { display: none; }
