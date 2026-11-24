@@ -9,6 +9,10 @@
 //   (NEXT UP, the stage clock), SPEECHES in 24 min (MOMENTS), MUSIC OFF in 100 min (the curfew ladder is off),
 //   LIGHTS on PULSE, ASK THE DJ open with 3 asks, WEATHER on and calm, a WRAP IT UP crew call for the changeover
 //   (so the corner window has more lines than fit: THE LINE RULE folds the rest into +N MORE).
+// CALM (?calm=1, #143: what live/ opens with, "SEE IT AS"): the same night, quieter. Two decks, no crew call on the
+//   dashboard (the stage clock keeps its WRAP IT UP: that's what it's for), no SPEECHES, no WEATHER, ASK THE DJ off, no
+//   RUNNING LATE buttons, and the dashboard's own tab row, role buttons, deck toolbar and DEMO tags step aside (live/
+//   has the switcher and says DEMO). SHOW EVERYTHING in live/ opens the dashboard without it: all of the above.
 (function () {
   'use strict';
   var MIN = 60000;
@@ -20,6 +24,15 @@
   function hm(ms) { var d = new Date(ms); return two(d.getHours()) + ':' + two(d.getMinutes()); }
   var page = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '');
   var HOSTED = ["crowd.html", "dash.html", "endnight.html", "night.html", "overlay.html", "stage.html", "stream.html"]; // filled in by bin/livedemo.py from its PAGES: the box pages this demo has
+  var CALM = /[?&]calm=1\b/.test(location.search);
+  if (CALM) {
+    document.documentElement.setAttribute('data-gl-calm', '');
+    var calmCss = document.createElement('style');
+    calmCss.textContent = '[data-gl-calm] header nav,[data-gl-calm] #roles,[data-gl-calm] #nowEdit,[data-gl-calm] #demoBar,'
+      + '[data-gl-calm] .tag.demo,[data-gl-calm] #decks .deckbar,[data-gl-calm] #layoutPanel,[data-gl-calm] #lateNow,[data-gl-calm] #setTimeNow,[data-gl-calm] #nowHere,'
+      + '[data-gl-calm] #crewSend,[data-gl-calm] #safetyNow,[data-gl-calm] #nnBox,[data-gl-calm] #rqBadge{display:none!important}';
+    (document.head || document.documentElement).appendChild(calmCss);
+  }
 
   // ---------- tonight ----------
   var LINEUP = [{ dj: 'TICK', at: ago(95) }, { dj: 'LIL TICK', at: ago(50) }, { dj: 'TICK JR', at: t0 + 9 * MIN, note: 'BRINGS OWN MIXER, NEEDS 2 XLR' }];
@@ -32,7 +45,7 @@
   // The SET TIME check (core/SetTime on the box): in the last 10 minutes of a set, does the cued track fit?
   // Read from the decks demo.js is playing in this page (S is app.js's state).
   function setTime(now) {
-    var out = { check: null, pastOff: null, late: null, lateButton: true, lateUndo: false };
+    var out = { check: null, pastOff: null, late: null, lateButton: !CALM, lateUndo: false };
     var nx = nextUp(now), end = nx ? nx.at : OFF;
     if (end - now > 10 * MIN || end <= now || typeof S === 'undefined' || !S.decks) return out;
     var ds = Object.keys(S.decks).map(function (k) { return S.decks[k]; }).filter(function (d) { return d && d.load === 'LOADED'; });
@@ -57,11 +70,11 @@
     return {
       time: now, unit: { name: 'GHOST LINK', number: 1, label: 'UNIT 01' }, source: 'demo', link: 'LINKED', ghost: 'linked', deviceNumber: 15,
       cable: null, djAddress: null, hardstopAt: null, set: { suggest: '', deck: 0, stick: '', guess: false }, wifi: {}, wifiNearby: [],
-      wifiQuiet: null, standby: null, wifiSince: null, wifiBack: null, players: 4,
+      wifiQuiet: null, standby: null, wifiSince: null, wifiBack: null, players: CALM ? 2 : 4,
       djLinkTraffic: { arriving: true, lastPacketAt: now, ports: { 50000: { perSecond: 3.4, total: 900 }, 50001: { perSecond: 2.2, total: 600 }, 50002: { perSecond: 11, total: 4000 } } },
       uptimeSeconds: Math.round((now - t0) / 1000) + 5400, startedAt: new Date(ago(100)).toISOString(), cpuTempC: 48,
-      problems: [], gearCare: [], room: null, alerts: [], crew: crew(now), asks: [], dropCalls: [],
-      requests: { on: true, paused: false, open: ASKS.length, total: ASKS.length, changed: t0, library: false, clean: false, tv: true, tvLine: false },
+      problems: [], gearCare: [], room: null, alerts: [], crew: CALM && page === 'dash' ? [] : crew(now), asks: [], dropCalls: [],
+      requests: { on: !CALM, paused: false, open: ASKS.length, total: ASKS.length, changed: t0, library: false, clean: false, tv: true, tvLine: false },
       home: false, phase: 'NIGHT', phaseEnds: OFF, musicOffAt: OFF, goodnight: null, goodnightHardStop: false,
       lights: { on: true, mode: 'pulse' }, eon: null, autoDrop: false, wantlist: false, venue: VENUE, night: today,
       venueMusic: { doors: null, musicOff: hm(OFF), bpmLow: 0, bpmHigh: 0, repeatDays: 30, noPlay: [], notes: '' },
@@ -86,6 +99,7 @@
   function dev(n, name, kind, ip) { return { number: n, name: name, kind: kind, address: '169.254.20.' + ip, mac: null, firstSeen: ago(100), lastSeen: Date.now() }; }
   var devices = [dev(1, 'CDJ-3000', 'PLAYER', 101), dev(2, 'CDJ-3000', 'PLAYER', 102), dev(3, 'CDJ-3000', 'PLAYER', 103), dev(4, 'CDJ-3000', 'PLAYER', 104),
     dev(15, 'GHOST LINK', 'GHOSTLINK', 20), dev(33, 'DJM-V10', 'MIXER', 133)];
+  if (CALM) devices = devices.filter(function (d) { return d.kind !== 'PLAYER' || d.number <= 2; });
   function played(min, p, title, artist, bpm, dj) { return { at: ago(min), player: p, title: title, artist: artist, bpm: bpm, trackKey: 'demo-' + min, venue: null, dj: dj }; }
   // TICK's set, then the changeover mark: PLAYED reads "TICK → LIL TICK" there.
   var PLAYED = [
@@ -100,7 +114,7 @@
   var EVENTS = [
     ev(100, 'start', 'GHOST LINK started. This is the demo: made-up decks, nothing real connected.'),
     ev(99, 'join', 'Joined as device 15. Nobody else was using it.'),
-    ev(99, 'devices', 'Found 4 CDJ-3000 players and a DJM-V10 mixer.'),
+    ev(99, 'devices', CALM ? 'Found 2 CDJ-3000 players and a DJM-V10 mixer.' : 'Found 4 CDJ-3000 players and a DJM-V10 mixer.'),
     ev(95, 'dj', 'TICK is on the decks.'),
     ev(50, 'dj', 'LIL TICK is on the decks.'),
   ];
@@ -117,12 +131,12 @@
     if (crowd) return { state: 'SET', dj: on.dj, next: next, startsAt: null, hold: null, frozenAt: null, weather: null, at: now };
     return { state: 'SET', tone: left <= 300 ? 'red' : left <= 600 ? 'amber' : 'normal', dj: on.dj, endsAt: end, endIs: nx ? 'SET' : 'MUSIC OFF',
       left: left, over: null, startsAt: null, startsIn: null, next: next, prev: null, musicOffAt: OFF, shift: 0, at: now, hold: null, frozenAt: null,
-      heldMin: 0, from: 'ghostlink', musicOff: hm(OFF), night: today, wrap: crew(now), calls: [], weather: WIND, nextNote: nx && nx.note || null };
+      heldMin: 0, from: 'ghostlink', musicOff: hm(OFF), night: today, wrap: crew(now), calls: [], weather: CALM ? null : WIND, nextNote: nx && nx.note || null };
   }
   function moment(crowd) {
     var m = { n: 'SPEECHES', at: SPEECHES }, left = SPEECHES - Date.now();
     var say = left > 30 * MIN || left <= -5 * MIN ? '' : left <= 0 ? 'SPEECHES NOW' : 'SPEECHES IN ' + Math.ceil(left / MIN);
-    if (!say) return { moment: null, from: 'ghostlink', count: 1, now: Date.now() };
+    if (!say || CALM) return { moment: null, from: 'ghostlink', count: 1, now: Date.now() };
     m.say = say;
     if (!crowd) m.nt = 'mic 2 on';
     return crowd ? { moment: m, now: Date.now() } : { moment: m, from: 'ghostlink', count: 1, now: Date.now() };
@@ -206,7 +220,7 @@
     'requests/all': function () { var r = status().requests; r.asks = ASKS; r.at = Date.now(); return r; },
     'requests/where': { lan: 'http://ghostlink.local/ask.html', anywhere: null, anywhereLive: false, exp: null },
     'requests/blocked': { blocked: [], max: 500, len: 40 },
-    weather: function () { return { on: true, line: WIND, offline: false, units: 'mph', wind: 8, gust: 14, gustHour: 14, storm: false, readAt: Date.now() - 4 * MIN, suggest: null, at: Date.now() }; },
+    weather: function () { if (CALM) return { on: false, line: null, offline: false, at: Date.now() }; return { on: true, line: WIND, offline: false, units: 'mph', wind: 8, gust: 14, gustHour: 14, storm: false, readAt: Date.now() - 4 * MIN, suggest: null, at: Date.now() }; },
     'weather/settings': { on: true, place: { name: 'THE ROLLER RINK · OUTDOOR STAGE' }, units: 'auto', unitsNow: 'mph', gust: 50, gustChoices: [40, 50, 60, 70, 80, 90, 100], storm: true, line: WIND, readAt: t0, error: null, venueGust: null },
     safety: safety,
     'safety/settings': function () {

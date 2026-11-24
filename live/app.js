@@ -211,7 +211,7 @@ function position(d) {
 const mmss = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 const clock = at => new Date(at + S.skew).toTimeString().slice(0, 5);
 const clockSec = at => new Date(at + S.skew).toTimeString().slice(0, 8);
-const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 /** innerHTML only when it changed: no churn, no lost focus, no re-layout on the 1-a-second status. */
 const setText = (e, t) => { if (e && e.textContent !== t) { e._h = undefined; e.textContent = t; } };
 const setHTML = (e, h) => { if (e && e._h !== h) { e._h = h; e.innerHTML = h; } };
@@ -1951,7 +1951,7 @@ $('restoreFile').addEventListener('change', async () => {
   $('restoreFile').value = '';
   if (!f || !confirm('Put this backup back? It replaces venues, nights and played lists with the ones in the file, then GHOST LINK restarts.')) return;
   const form = new FormData(); form.append('backup', f);
-  const r = await fetch('/api/restore', { method: 'POST', body: form });
+  const r = await fetch('/api/restore', { method: 'POST', headers: { 'X-GhostLink-Dashboard': '1' }, body: form });
   if (r.status === 401) { setUnlocked(false); return needUnlock(); }
   const j = await r.json().catch(() => ({}));
   note('backupNote', r.ok ? 'Restored ' + j.restored + ' files. GHOST LINK is restarting; this page reconnects by itself.' : (j.error || "Couldn't restore that file."), !r.ok);
@@ -2856,7 +2856,7 @@ function renderNearby(s) {
   const l = s.nearby || [];
   box.hidden = !l.length;
   const html = "<h2>WHO'S HERE</h2><dl>" + l.map(n => `<dt>${esc(n.kind)}${n.count > 1 ? ' ×' + n.count : ''}</dt><dd class="bc-ok">${esc(n.detail || 'ON THE DASHBOARD')}</dd>`).join('') + '</dl>';
-  if (box.innerHTML !== html) box.innerHTML = html;
+  if (box._html !== html) { box._html = html; box.innerHTML = html; } // #142: compare what we wrote (esc makes &#39;, innerHTML reads back a plain quote)
 }
 
 function renderBoothCheck(s) {
@@ -2886,7 +2886,7 @@ function renderBoothCheck(s) {
     ['BLACK BOX', s.blackbox ? ['ok', 'WRITING'] : s.blackboxGap ? ['look', 'CARD WON\'T TAKE IT · ' + s.blackboxGap.held + ' LINES WAITING IN MEMORY'] : ['look', 'NOT WRITING']], // #115
   ];
   const html = '<h2>BOOTH CHECK</h2><dl>' + rows.map(([k, [st, t]]) => `<dt>${k}</dt><dd class="bc-${st}">${esc(t)}</dd>`).join('') + '</dl>';
-  if (box.innerHTML !== html) box.innerHTML = html;
+  if (box._html !== html) { box._html = html; box.innerHTML = html; } // #142: compare what we wrote (esc makes &#39;, innerHTML reads back a plain quote)
 }
 
 // WHILE YOU WERE AWAY (from HARD STOP: missed alerts keep their own time). A phone that lost the box for more than

@@ -93,14 +93,43 @@ section[id] { scroll-margin-top: 40px; }
 .spec dd { margin: 0; color: var(--grey); font-size: 15px; }
 @media (max-width: 420px) { .spec > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
 
-/* phone */
+/* phone: what each person gets, under the demo window (#143: lead left, the list right on a laptop) */
 .phone-grid { display: grid; gap: 32px; grid-template-columns: minmax(0, 1fr); margin-bottom: 40px; }
-.phone-grid .live .screen { height: min(640px, 76vh); min-height: 460px; }
 .phone-grid .roles { margin-bottom: 24px; }
 @media (min-width: 960px) {
-  .phone-grid { grid-template-columns: 420px minmax(0, 1fr); gap: 56px; align-items: start; }
-  .phone-grid .live .screen { height: 720px; }
+  .phone-grid #roles { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 56px; align-items: start; }
+  .phone-grid #roles .lead { grid-column: 1; grid-row: 1; margin-top: 0; }
+  .phone-grid #roles .buttons { grid-column: 1; grid-row: 2; }
+  .phone-grid #roles .roles { grid-column: 2; grid-row: 1 / span 3; }
 }
+
+/* SEE IT LIVE (#143): the demo as a laptop-sized window with a title bar. EXPAND fills the browser, CLOSE / Esc. */
+.demo-win { margin: 0 0 40px; }
+.demo-win [hidden] { display: none !important; }
+.demo-win .win-top { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 6px 0 12px; border: 1px solid #333; border-bottom: 0; background: #0b0b0b; font-size: 11px; letter-spacing: .1em; }
+.demo-win .win-dots { display: flex; gap: 6px; flex: 0 0 auto; }
+.demo-win .win-dots i { width: 9px; height: 9px; border: 1px solid #555; border-radius: 50%; }
+.demo-win .win-name { color: var(--grey); flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.demo-win .win-act { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border: 1px solid #444; background: #000; color: var(--fg);
+  font: inherit; letter-spacing: inherit; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.demo-win .win-act:hover, .demo-win .win-act:focus-visible { border-color: var(--fg); }
+.demo-win #demoExpand { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.demo-win kbd { font: inherit; color: var(--grey); border: 1px solid #444; padding: 1px 4px; }
+.demo-win .screen { height: min(640px, 76vh); min-height: 460px; }
+@media (max-width: 560px) { .demo-win #demoOpen { display: none; } .demo-win .win-name { font-size: 10px; } }
+@media (min-width: 960px) {
+  /* a real laptop window: the full width of the page, 16:10-ish, never taller than the browser leaves room for */
+  .demo-win .screen { height: clamp(560px, calc(100vh - 100px), 800px); min-height: 0; }
+}
+/* EXPANDED: the window fills the browser (inside the Fullscreen API, or as a fixed layer when there's none) */
+.demo-win.big { position: fixed; inset: 0; z-index: 2147483000; margin: 0; display: flex; flex-direction: column; background: #000;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+.demo-win.big .win-top { border-left: 0; border-right: 0; flex: 0 0 auto; }
+.demo-win.big .screen { flex: 1 1 auto; height: auto; min-height: 0; border-left: 0; border-right: 0; border-bottom: 0; }
+.demo-win.big figcaption, .demo-win.big .tap { display: none !important; }
+.demo-win.big iframe { pointer-events: auto !important; }
+.demo-win:fullscreen { width: 100%; height: 100%; }
+html.demo-open, html.demo-open body { overflow: hidden; }
 
 /* desk window: a monitor drawn in lines, the real dashboard in its corner */
 .monitor { margin: 8px 0 0; }
@@ -230,3 +259,4 @@ section[id] { scroll-margin-top: 40px; }
 .dna-try canvas { width: 100%; max-width: 380px; aspect-ratio: 1; display: block; border: 1px solid var(--line); background: #000; }
 .dna-try b { display: block; letter-spacing: .1em; font-size: 14px; margin-bottom: 6px; }
 .dna-try p { color: var(--grey); margin: 0 0 14px; font-size: 14px; }
+@media (hover: none), (pointer: coarse) { .demo-win kbd { display: none; } }

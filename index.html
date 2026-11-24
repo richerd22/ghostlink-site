@@ -177,16 +177,24 @@
   <div class="wrap">
     <p class="s-no">03 <span>OUT · YOUR PHONE</span></p>
     <h2 id="live-h">This is the real dashboard. Try it.</h2>
+    <!-- SEE IT LIVE (#143): a laptop-sized window on desktop; EXPAND fills the browser (Fullscreen API, else a fixed
+         full-page layer; CLOSE / Esc), OPEN IT FULL PAGE goes to live/. Phones: tap = EXPAND (no JavaScript: live/). -->
+    <figure class="live demo-win" id="demoWin">
+      <div class="win-top">
+        <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-name">GHOST LINK · DEMO</span>
+        <button type="button" class="win-act" id="demoExpand" hidden aria-label="Expand the demo to fill the screen">EXPAND <span aria-hidden="true">&#x2922;</span></button>
+        <a class="win-act" id="demoOpen" href="live/">OPEN IT FULL PAGE <span aria-hidden="true">&#x2197;</span></a>
+        <button type="button" class="win-act win-close" id="demoClose" hidden>CLOSE <span aria-hidden="true">&#x2715;</span><kbd>ESC</kbd></button>
+      </div>
+      <div class="screen">
+        <iframe src="live/" title="The GHOST LINK dashboard running on made-up decks" loading="lazy" allow="fullscreen"></iframe>
+        <a class="tap" href="live/"><span>TAP TO EXPAND</span></a>
+      </div>
+      <figcaption><span class="dot" aria-hidden="true"></span>SEE IT LIVE · the real dashboard on made-up decks. No box needed.</figcaption>
+    </figure>
     <div class="phone-grid">
-      <figure class="live">
-        <div class="screen">
-          <iframe src="live/" title="The GHOST LINK dashboard running on made-up decks" loading="lazy"></iframe>
-          <a class="tap" href="live/"><span>TAP TO TRY IT</span></a>
-        </div>
-        <figcaption><span class="dot" aria-hidden="true"></span>SEE IT LIVE · the real dashboard on made-up decks. No box needed.</figcaption>
-      </figure>
       <div id="roles">
-        <p class="lead"><b>What each person in the room gets.</b> One box, a view for every job. Pick yours on the NOW tab. Anyone can see everything and rearrange their own screen.</p>
+        <p class="lead"><b>What each person in the room gets.</b> One box, a view for every job. Try a few in the window above with SEE IT AS; on the box you pick yours on the NOW tab. Anyone can see everything and rearrange their own screen.</p>
         <dl class="spec roles">
           <div><dt>DJ</dt><dd>Time left, BPM, key and the next section on every deck.</dd></div>
           <div><dt>LIGHTS &amp; VJ</dt><dd>Big beat squares, master BPM and the phrase you're in. Cut on the one. The same beat can go over OSC to Resolume, TouchDesigner or a lighting desk.</dd></div>
@@ -196,7 +204,7 @@
           <div><dt>HARD STOP</dt><dd>Works with HARD STOP, the booth countdown panel. Enter the night once and both know the lineup and the cutoff. <a href="help/hard-stop.html">How they work together</a>.</dd></div>
           <div><dt>MORE</dt><dd>TECH, SOUND and HOST views too. <a href="help/roles/dj.html">Every role, in detail</a>.</dd></div>
         </dl>
-        <div class="buttons"><a class="btn solid" href="live/">OPEN IT FULL SCREEN</a></div>
+        <div class="buttons"><a class="btn solid" href="live/">OPEN IT FULL PAGE</a></div>
       </div>
     </div>
     <div class="shots">
@@ -222,7 +230,7 @@
         <div class="mon-corner" id="deskWin">
           <div class="win-bar" id="deskBar" aria-label="The window's title bar. With the arrow keys you can move the window."><span class="win-t">GHOST LINK</span><span class="win-wh" id="deskWH">480 x 300</span>
             <span class="win-btns" id="deskBtns" hidden><button type="button" data-size="S" aria-label="Small window">S</button><button type="button" data-size="M" aria-label="Medium window">M</button><button type="button" data-size="L" aria-label="Large window">L</button><button type="button" data-size="reset" aria-label="Put the window back">RESET</button></span></div>
-          <iframe src="live/" title="The GHOST LINK dashboard as a small corner window, made-up decks" loading="lazy" tabindex="-1"></iframe>
+          <iframe src="live/?bare=1" title="The GHOST LINK dashboard as a small corner window, made-up decks" loading="lazy" tabindex="-1"></iframe>
           <span class="win-grip" id="deskGrip" aria-hidden="true"></span>
         </div>
       </div>
@@ -540,5 +548,6 @@
 <script src="home.js"></script>
 <script src="home2.js"></script>
 <script src="home3.js"></script>
+<script src="home4.js"></script>
 </body>
 </html>

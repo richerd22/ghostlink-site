@@ -15,6 +15,8 @@ const Demo = (() => {
     ['Kettle Hum', 'Ivo Brandt', 123, '7B', 'House', '#ffb000'],
   ];
   const PER_SEC = 150; // waveform columns per second, same as the players' detail waveform
+  // How many made-up decks: 4, or ?decks=1..4 with ?demo=1 (#143: the website's calm demo shows 2).
+  const PLAYERS = [1, 2, 3, 4].slice(0, Math.min(4, Math.max(1, +new URLSearchParams(location.search).get('decks') || 4)));
   let on = false, timer = null, next = 0, fake = {};
   const real = {}; // what the box last said about players we're covering, put back when the demo ends
 
@@ -66,7 +68,7 @@ const Demo = (() => {
   }
 
   function tick() {
-    const ps = [1, 2, 3, 4].filter(p => !(S.decks[p] && S.decks[p].load === 'LOADED' && !S.decks[p].demo));
+    const ps = PLAYERS.filter(p => !(S.decks[p] && S.decks[p].load === 'LOADED' && !S.decks[p].demo));
     for (const p in fake) if (!ps.includes(+p)) delete fake[p]; // a real track arrived: it wins
     // Real music playing? Then the made-up decks just sit cued next to it; the real ones stay on air and MASTER.
     const realPlaying = Object.values(S.decks).some(d => !d.demo && d.load === 'LOADED' && d.playing);

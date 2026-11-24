@@ -11,25 +11,113 @@
 <style>
 @font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; font-display: swap; }
 html, body { margin: 0; height: 100%; background: #000; color: #fff; }
-body { display: flex; flex-direction: column; font: 600 12px/1 "JetBrains Mono", ui-monospace, Menlo, monospace; letter-spacing: .1em; }
+body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; font: 600 12px/1 "JetBrains Mono", ui-monospace, Menlo, monospace; letter-spacing: .1em; }
+button { font: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 16px; height: 44px; border-bottom: 1px solid #222; flex: 0 0 auto; }
-.bar a { color: #9a9a9a; text-decoration: none; }
-.bar a:hover, .bar a:focus-visible { color: #fff; }
-.bar span { color: #9a9a9a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-iframe { flex: 1 1 auto; width: 100%; border: 0; display: block; background: #000; }
+.bar a, .bar button { color: #9a9a9a; text-decoration: none; white-space: nowrap; }
+.bar a:hover, .bar a:focus-visible, .bar button:hover { color: #fff; }
+.bar span { color: #9a9a9a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1 1 auto; text-align: center; }
+.bar button { border: 1px solid #333; padding: 6px 10px; }
 .framed .bar { display: none; }
+.bar i { font-style: normal; }
+@media (max-width: 480px) { .bar .long { display: none; } }
+/* SEE IT AS: one row of views, then one line saying what this view is for (and the quiet SHOW EVERYTHING). */
+.as { flex: 0 0 auto; padding: 10px 16px 0; border-bottom: 1px solid #222; }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.chips > span { color: #9a9a9a; font-size: 11px; margin-right: 4px; }
+.chips button { border: 1px solid #333; color: #cfcfcf; padding: 7px 9px; font-size: 11px; }
+.chips button:hover { border-color: #777; color: #fff; }
+.chips button[aria-pressed="true"] { background: #fff; border-color: #fff; color: #000; }
+.say { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 0 10px; }
+.say p { margin: 0; color: #9a9a9a; font-size: 12px; line-height: 1.35; letter-spacing: .04em; min-width: 0; }
+.say button { color: #9a9a9a; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; flex: 0 0 auto; }
+.say button:hover, .say button[aria-pressed="true"] { color: #fff; }
+.bare .as { display: none; }
+iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; display: block; background: #000; }
+@media (max-width: 420px) { .as { padding: 8px 12px 0; } .chips { gap: 4px; } .chips button { padding: 7px 6px; font-size: 10.5px; } .chips > span { margin-right: 2px; font-size: 10.5px; } .say { flex-wrap: wrap; row-gap: 6px; } }
+/* A laptop: one row (views, what this one is for, SHOW EVERYTHING), so the dashboard keeps its height. */
+@media (min-width: 900px) { .as { display: flex; align-items: center; gap: 16px; padding: 8px 16px; } .say { flex: 1 1 auto; padding: 0; min-width: 0; } .say p { font-size: 11px; } }
 </style>
 </head>
 <body>
-<!-- SEE IT LIVE: the real dashboard (dash.html, copied from the box's files by bin/site) on made-up decks. -->
-<div class="bar"><a href="../">&larr; GHOST LINK</a><span>DEMO · MADE-UP DECKS</span></div>
-<iframe id="dash" title="GHOST LINK dashboard demo, made-up decks"></iframe>
+<!-- SEE IT LIVE (#83, #140, #143): the real dashboard (dash.html, copied from the box's files by bin/site) on made-up
+     decks. It opens CALM (?calm=1 in the frame: two decks, no crew call, no extras; shim.js) with a SEE IT AS row:
+     DJ = DECKS, LIGHTS + MANAGER = NOW's roles, CREW = the STAGE CLOCK, TV = NEXT UP (the room's screen). SHOW
+     EVERYTHING = the whole dashboard, every tab and card. ?as=<view> picks one (a link can share it); ?bare=1 is the
+     plain dashboard with no row (the home page's desk window); an old #tab or ?layout= link opens everything, as before. -->
+<div class="bar"><a href="../">&larr; GHOST LINK</a><span>DEMO<i class="long"> · MADE-UP DECKS</i></span><button type="button" id="fs" hidden>FULL SCREEN</button></div>
+<div class="as" id="as">
+  <div class="chips" role="group" aria-label="See it as"><span>SEE IT AS</span>
+    <button type="button" data-as="dj" aria-pressed="false">DJ</button><button type="button" data-as="lights" aria-pressed="false">LIGHTS</button><button type="button" data-as="manager" aria-pressed="false">MANAGER</button><button type="button" data-as="crew" aria-pressed="false">CREW</button><button type="button" data-as="tv" aria-pressed="false">TV</button>
+  </div>
+  <div class="say"><p id="say" aria-live="polite"></p><button type="button" id="all" aria-pressed="false">SHOW EVERYTHING</button></div>
+</div>
+<iframe id="dash" title="GHOST LINK dashboard demo, made-up decks" allow="fullscreen"></iframe>
 <script>
 (function () {
-  if (window.top !== window) document.documentElement.className = 'framed';
-  var q = new URLSearchParams(location.search), hash = location.hash; // no tab in the address = DECKS (a #tab here would scroll the home page to the frame)
-  var extra = q.has('layout') ? '&layout=' + encodeURIComponent(q.get('layout')) : '';
-  document.getElementById('dash').src = 'dash.html?demo=1&notour' + extra + hash;
+  var framed = window.top !== window, root = document.documentElement;
+  if (framed) root.classList.add('framed');
+  var q = new URLSearchParams(location.search), hash = location.hash, frame = document.getElementById('dash');
+  var CALM = 'dash.html?demo=1&notour&calm=1&decks=2';
+  var VIEWS = {
+    dj: { src: CALM, tab: '', say: 'Every deck: track, time left, BPM, what’s cued next.' },
+    lights: { src: CALM, tab: '#now/lights', say: 'Big BPM, the beat and the next chorus. Cut on the one.' },
+    manager: { src: CALM, tab: '#now/manager', say: 'Who’s on, who’s next, the lineup, the night so far.' },
+    crew: { src: 'stage.html?calm=1', say: 'The stage clock: when the set ends, the wrap-up call.' },
+    tv: { src: 'crowd.html', say: 'For a screen in the room: who’s on now, who’s next.' },
+    all: { src: 'dash.html?demo=1&notour', tab: '', say: 'The whole dashboard: every tab, every card. Tap around.' }
+  };
+  var cur = null, loaded = '';
+  frame.addEventListener('load', function () { loaded = frame.getAttribute('src').split('#')[0]; hookEsc(); });
+
+  function show(v, first) {
+    if (!VIEWS[v]) v = 'dj';
+    var V = VIEWS[v], was = cur;
+    cur = v;
+    document.querySelectorAll('[data-as]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-as') === v)); });
+    var all = document.getElementById('all');
+    all.setAttribute('aria-pressed', String(v === 'all'));
+    all.textContent = v === 'all' ? 'BACK TO SIMPLE' : 'SHOW EVERYTHING';
+    document.getElementById('say').textContent = V.say;
+    if (!first && framed === false) try { history.replaceState(null, '', v === 'dj' ? './' : '?as=' + v); } catch (e) {}
+    // Same calm dashboard, another tab: switch inside it (no reload, the decks keep playing). replaceState, not
+    // location.hash: a #decks jump would scroll the page around the frame too.
+    if (!first && was && VIEWS[was].src === V.src && loaded === V.src && V.src.indexOf('dash.html') === 0) {
+      try {
+        var w = frame.contentWindow;
+        w.history.replaceState(null, '', V.tab || '#decks');
+        w.dispatchEvent(new HashChangeEvent('hashchange'));
+        return;
+      } catch (e) {}
+    }
+    frame.setAttribute('src', V.src + (V.tab || ''));
+  }
+
+  if (q.has('bare') || q.has('layout') || (hash && hash.length > 1)) {
+    // The plain dashboard, as before #143: the desk window (?bare=1), old #tab and ?layout= links.
+    root.classList.add('bare');
+    var extra = q.has('layout') ? '&layout=' + encodeURIComponent(q.get('layout')) : '';
+    frame.setAttribute('src', 'dash.html?demo=1&notour' + extra + hash);
+    if (q.has('bare')) frame.addEventListener('load', hookEsc);
+  } else {
+    document.querySelectorAll('[data-as]').forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-as')); }); });
+    document.getElementById('all').addEventListener('click', function () { show(cur === 'all' ? 'dj' : 'all'); });
+    show(q.get('as') || 'dj', true);
+  }
+
+  // Esc inside the frame: tell the home page (it closes EXPAND). Same site, so the frame's keys can be heard here.
+  function esc(e) { if (e.key === 'Escape' && framed) try { parent.postMessage({ gl: 'esc' }, location.origin); } catch (x) {} }
+  window.addEventListener('keydown', esc);
+  function hookEsc() { try { frame.contentWindow.addEventListener('keydown', esc); } catch (e) {} }
+
+  // FULL SCREEN on the page itself (laptop, TV, Android). Not on iPhone (no Fullscreen API): the page already fills it.
+  var fs = document.getElementById('fs');
+  if (!framed && document.fullscreenEnabled) {
+    fs.hidden = false;
+    fs.addEventListener('click', function () { if (document.fullscreenElement) document.exitFullscreen(); else root.requestFullscreen().catch(function () {}); });
+    document.addEventListener('fullscreenchange', function () { fs.textContent = document.fullscreenElement ? 'EXIT FULL SCREEN' : 'FULL SCREEN'; });
+  }
 })();
 </script>
 </body>
