@@ -181,7 +181,7 @@ const ShareLinks = (() => {
     const r = await post('/api/share', { label: $('slLabel').value.trim(), scopes, expiry: $('slExpiry').value });
     const j = await r.json().catch(() => ({}));
     if (r.status === 401) return;
-    if (!r.ok) { note('slFormNote', r.status === 403 ? "Share links need the owner's password." : j.error || "Didn't work (" + r.status + ').', true); return; }
+    if (!r.ok) { note('slFormNote', r.status === 403 ? "Share links need the owner's password." : j.error || "Didn't work: " + glWhy(r.status, j), true); return; }
     $('slForm').hidden = true;
     showMade(j);
     await load();

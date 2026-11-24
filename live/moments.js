@@ -87,7 +87,7 @@ const Moments = (() => {
       try {
         const r = await fetch('/api/schedule/moments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ date: d, text: ta.value }) });
         const j = await r.json().catch(() => ({}));
-        msg.textContent = r.ok ? '' : r.status === 401 ? 'Moments not saved: unlock, then SAVE again.' : (j.error || 'Moments not saved (' + r.status + ').');
+        msg.textContent = r.ok ? '' : r.status === 401 ? 'Moments not saved: unlock, then SAVE again.' : (j.error || 'Moments not saved: ' + glWhy(r.status, j));
         if (r.ok) load();
       } catch (e) { msg.textContent = 'Moments not saved: no answer from the box.'; }
     });

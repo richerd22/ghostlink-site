@@ -96,7 +96,7 @@ const Ear = (() => {
     try { r = await post('/api/ear', { on: want }); } catch (x) { note('earNote', "Couldn't reach the box.", true); return; }
     if (r.status === 401) return; // post() opened the lock
     if (r.status === 403) { note('earNote', "That needs the owner's password, not tonight's crew code.", true); return; }
-    if (!r.ok) { note('earNote', "Didn't change (" + r.status + ').', true); return; }
+    if (!r.ok) { note('earNote', "Didn't change: " + glWhy(r.status), true); return; }
     if (S.status) S.status.earOn = want;
     note('earNote', want ? 'On: with no DJ Link deck playing, the box shows the BPM it hears, marked BY EAR.' : 'Off: nothing by ear.');
     label();

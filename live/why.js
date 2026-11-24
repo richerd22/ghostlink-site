@@ -105,7 +105,7 @@ const Why = (() => {
       const r = await post('/api/reload/' + p);
       if (r.status === 401) return; // post() asked for the password; RELOAD stays there to tap again
       const j = await r.json().catch(() => ({}));
-      notes[p] = { text: r.ok ? 'Asked the player again...' : (j.error || "Couldn't ask (" + r.status + ")"), until: Date.now() + 6000 };
+      notes[p] = { text: r.ok ? 'Asked the player again...' : (j.error || "Couldn't ask: " + glWhy(r.status, j)), until: Date.now() + 6000 };
     } catch (e) {
       notes[p] = { text: "Couldn't reach the box.", until: Date.now() + 6000 };
     } finally {

@@ -30,6 +30,7 @@ const Lines = (() => {
     ['eon', '#eonReady', 'END OF NIGHT card ready'],
     ['sound', '#soundSetupLine, #soundChip:not(.warn)', 'SOUND CARD FOUND / IN · SET UP (goes by itself after 60 s)'],
     ['away', '#away', 'WHILE YOU WERE AWAY'],
+    ['milestone', '#milestoneLine', 'MILESTONE: 100TH TRACK (owner only, once, never while music plays; #146)'],
     ['demo', '#demoBar', 'DEMO (you started it)'],
   ];
   const SMALL_MAX = 2, MAX = 4;

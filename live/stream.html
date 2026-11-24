@@ -45,6 +45,16 @@ pre.out { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-si
 .ok { color: var(--fg); } .off { color: var(--warn); }
 ol.how { margin: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; color: var(--grey); }
 ol.how b { color: var(--fg); font-weight: 600; }
+/* #148 HIDE IDS, per place */
+.hid-sum { font-size: 13px; letter-spacing: .08em; font-weight: 600; overflow-wrap: anywhere; }
+.hid-places { display: grid; gap: 0; }
+.hid-places .pl { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--line); padding: 6px 0; }
+.hid-places .pl:last-child { border-bottom: 0; }
+.hid-places .pl .w { flex: 1; min-width: 0; }
+.hid-places .pl .w b { display: block; font-size: 14px; letter-spacing: .06em; font-weight: 600; }
+.hid-places .pl .w small { display: block; color: var(--grey); font-size: 12px; }
+.hid-places .pl button { flex: none; font-size: 12px; padding: 6px 10px; min-width: 76px; }
+.hid-own { font-size: 12px; }
 </style>
 </head>
 <body>
@@ -87,7 +97,10 @@ ol.how b { color: var(--fg); font-weight: 600; }
       <h2>HIDE IDS</h2>
       <div class="box">
         <div class="buttons"><button type="button" id="hideIds"></button></div>
+        <div class="hid-sum" id="hideSum" role="status"></div><!-- #148 HIDDEN ON: ... · SHOWN ON: ... -->
         <div class="note" id="hideNote"></div>
+        <div class="hid-places" id="hidePlaces"></div><!-- #148 one row per place: HIDE / SHOW -->
+        <div class="note hid-own" id="hideOwn"></div>
         <ul class="tracks" id="tracks"></ul>
       </div>
       <h2>STREAM CLOCK</h2>
@@ -108,6 +121,7 @@ ol.how b { color: var(--fg); font-weight: 600; }
   </div>
 </main>
 <script src="shim.js"></script>
+<script src="plainwhy.js"></script><!-- #144 errors in plain words -->
 <script src="overlay.js"></script>
 <script src="stream.js"></script>
 </body>

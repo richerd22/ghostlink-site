@@ -220,7 +220,7 @@ const NightPage = (() => {
       try {
         const res = await fetch('/api/night/address', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ venue: r.royalty.venue, address: inp.value }) });
         const j = await res.json().catch(() => ({}));
-        note.textContent = res.ok ? (j.address ? 'Saved. The downloads carry it now.' : 'Cleared.') : (j.error || 'Didn\'t save (' + res.status + ').');
+        note.textContent = res.ok ? (j.address ? 'Saved. The downloads carry it now.' : 'Cleared.') : (j.error || 'Didn\'t save: ' + glWhy(res.status, j));
         note.classList.toggle('warn', !res.ok);
         if (res.ok) { r.royalty.address = j.address || null; inp.value = j.address || ''; }
       } catch (err) { note.textContent = 'Couldn\'t reach the box.'; note.classList.add('warn'); }
@@ -259,6 +259,7 @@ const NightPage = (() => {
     render(j);
     nights(j.night);
     document.title = 'GHOST LINK NIGHT REPORT ' + j.night;
+    if ($('insights')) $('insights').href = 'setinsights.html?night=' + encodeURIComponent(j.night); // #147
   }
 
   function page() {

@@ -85,7 +85,7 @@ const WifiQuiet = (() => {
       const r = await post('/api/wifi/quiet', { kind, length });
       const j = await r.json().catch(() => ({}));
       if (r.ok) { s.wifiQuiet = j.quiet || s.wifiQuiet; pick = null; }
-      else if (r.status !== 401) err = j.error || 'Didn\'t take (' + r.status + ').';
+      else if (r.status !== 401) err = j.error || 'Didn\'t take: ' + glWhy(r.status, j);
     } catch (e) { err = 'The box didn\'t answer: it may already be off the Wi-Fi.'; }
     busy = false; render();
   }
@@ -102,7 +102,7 @@ const WifiQuiet = (() => {
         if (S.status) S.status.wifiBack = mine;
       }
       if (r.ok && S.status) S.status.wifiQuiet = null;
-      else if (r.status !== 401) err = 'Didn\'t take (' + r.status + ').';
+      else if (r.status !== 401) err = 'Didn\'t take: ' + glWhy(r.status);
     } catch (e) { err = 'The box didn\'t answer.'; }
     busy = false; render();
     if (typeof Easy !== 'undefined' && Easy.renderReady) Easy.renderReady(); // READY: the line, no JOIN NOW

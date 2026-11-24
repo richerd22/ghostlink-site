@@ -186,7 +186,7 @@ const Recordings = (() => {
       const r = await post('/api/share/recording', { name: f.name, outside: ob.checked });
       const j = await r.json().catch(() => ({}));
       if (r.status === 401) return;
-      if (!r.ok) { msg.textContent = r.status === 403 ? "That needs the owner's password." : j.error || "Didn't work (" + r.status + ').'; msg.classList.add('warn'); return; }
+      if (!r.ok) { msg.textContent = r.status === 403 ? "That needs the owner's password." : j.error || "Didn't work: " + glWhy(r.status, j); msg.classList.add('warn'); return; }
       showLink(f, j);
     });
     const no = el('button', null, 'CANCEL'); no.type = 'button';
@@ -224,7 +224,7 @@ const Recordings = (() => {
       if (rv.dataset.armed !== '1') { rv.dataset.armed = '1'; rv.textContent = 'TAP AGAIN TO REVOKE'; setTimeout(() => { rv.dataset.armed = ''; rv.textContent = 'REVOKE'; }, 4000); return; }
       const r = await post('/api/share/revoke', { id: l.id });
       if (r.ok) { hand.textContent = ''; hand.appendChild(el('div', 'note', 'Revoked: that link no longer opens anything.')); closeBtn(); }
-      else { msg.textContent = r.status === 403 ? "REVOKE needs the owner's password." : "Didn't work (" + r.status + ').'; msg.classList.add('warn'); }
+      else { msg.textContent = r.status === 403 ? "REVOKE needs the owner's password." : "Didn't work: " + glWhy(r.status); msg.classList.add('warn'); }
     });
     const done = el('button', null, 'DONE'); done.type = 'button';
     done.addEventListener('click', () => { hand.hidden = true; });

@@ -147,7 +147,7 @@ const Sell = (() => {
       const r = await post('/api/sell', { password, confirm, nights });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) done = j;
-      else if (r.status !== 401) err = j.error || 'Didn\'t work (' + r.status + ').';
+      else if (r.status !== 401) err = j.error || 'Didn\'t work: ' + glWhy(r.status, j);
     } catch (e) { err = 'The box didn\'t answer. If it restarted, it\'s done: open the dashboard again in a minute.'; }
     busy = false; render(box);
   }

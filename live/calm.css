@@ -1,0 +1,19 @@
+/* CALM (#145, calm.js): STATUS's MORE fold, ALL SETTINGS' MORE, NOW's quiet blocks. Own file so app.css merges stay clean. */
+#status details.calm-more { border-top: 0; margin-top: 26px; }
+#status details.calm-more > summary { display: grid; gap: 6px; padding: 0 0 8px; border-bottom: 1px solid var(--fg); font-size: 11px; font-weight: 600; letter-spacing: .18em; color: var(--fg); }
+#status details.calm-more.sect > summary::before, #status details.calm-more.sect[open] > summary::before { content: none; }
+#status details.calm-more > summary .calm-more-t::before { content: '+ '; }
+#status details.calm-more[open] > summary .calm-more-t::before { content: '\2212  '; }
+#status details.calm-more > summary .calm-more-names { color: var(--grey); font-size: 11px; letter-spacing: .06em; line-height: 1.45; text-transform: none; }
+#status details.calm-more[open] > summary .calm-more-names { display: none; }
+#status details.calm-more > details.sect { margin-left: 10px; }
+#status details.calm-more > details.sect:first-of-type { border-top: 0; }
+.st-more { border-top: 1px solid var(--line); margin-top: 12px; }
+.st-more > summary { cursor: pointer; padding: 10px 0; color: var(--fg); font-size: 13px; letter-spacing: .1em; display: grid; gap: 3px; }
+.st-more > summary { list-style: none; }
+.st-more > summary::-webkit-details-marker { display: none; }
+.st-more > summary .st-more-t::before { content: '+ '; }
+.st-more[open] > summary .st-more-t::before { content: '\2212  '; }
+.st-more > summary small { color: var(--grey); font-size: 11px; letter-spacing: .05em; line-height: 1.4; }
+#now .cell.calm-quiet { display: none !important; }
+#safetyNow .sfc .sfc-row[hidden] { display: none; }

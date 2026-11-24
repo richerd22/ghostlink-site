@@ -88,7 +88,7 @@ const HsHub = (() => {
     const r = await fetch('/api/hardstop/hub/key', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-GhostLink-Dashboard': '1' }, body: '{}' });
     const j = await r.json().catch(() => ({}));
     if (r.status === 401) { setUnlocked(false); return needUnlock(); }
-    if (!r.ok) return note('hubNote', j.error || 'Not made (' + r.status + ').', true);
+    if (!r.ok) return note('hubNote', j.error || 'Not made: ' + glWhy(r.status, j), true);
     // the QR is the box's own SVG (zxing on the box); the code and times are text
     const qr = new DOMParser().parseFromString(j.qr, 'image/svg+xml').documentElement;
     $('hubQr').textContent = '';
@@ -101,7 +101,7 @@ const HsHub = (() => {
 
   async function end() {
     const r = await post('/api/hardstop/hub/end');
-    if (!r.ok) return note('hubNote', 'Not ended (' + r.status + ').', true);
+    if (!r.ok) return note('hubNote', 'Not ended: ' + glWhy(r.status), true);
     $('hubLink').hidden = true;
     state = await r.json().catch(() => state);
     if (state) state.owner = true;

@@ -56,7 +56,7 @@ const Updates = (() => {
     const r = await post(path, body);
     const j = await r.json().catch(() => ({}));
     if (r.status === 403) say(j.error && /View only/.test(j.error) ? 'From outside the venue this needs a link with UPDATE AFTER TONIGHT.' : "Updates need the owner's password, not tonight's crew code.", true);
-    else if (!r.ok && r.status !== 401) say(j.error || "Didn't work (" + r.status + ').', true);
+    else if (!r.ok && r.status !== 401) say(j.error || "Didn't work: " + glWhy(r.status, j), true);
     else if (r.ok) { const u = j.status || j; say(u.error || '', !!u.error); key = ''; show(u); }
     return r;
   }

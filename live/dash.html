@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="updates.css"><!-- #138 UPDATES card -->
 <link rel="stylesheet" href="settime.css"><!-- #121 SET TIME -->
 <link rel="stylesheet" href="settings.css"><!-- #114 SETTINGS · NIGHT PRESETS -->
+<link rel="stylesheet" href="calm.css"><!-- #145 CALM -->
 <link rel="stylesheet" href="lights.css"><!-- #119 LIGHTS -->
 <link rel="stylesheet" href="requests.css"><!-- #122 ASK THE DJ -->
 </head>
@@ -156,8 +157,10 @@
       <span class="actions">
         <button id="eonBtn" title="One card for the night: tracks, hours, DJs, highlights, HARD STOP kept or not">END OF NIGHT</button>
         <a class="btn local-only" id="reportLink" href="night.html" title="Planned vs actual, the NIGHT LOG, royalty setlists (crew code or owner)">NIGHT REPORT</a><!-- #125 -->
+        <a class="btn local-only" id="insightsLink" href="setinsights.html" title="The night's journey, each change-over, the night against the others (crew code or owner)">SET INSIGHTS</a><!-- #147 -->
         <button id="recapBtn">RECAP IMAGE</button>
         <details class="more-menu" id="playedMore"><summary>COPY · SAVE</summary><div class="more-box">
+          <a class="btn" id="wrappedLink" href="wrapped.html" title="Your night (or every night) as swipeable cards and a picture to post" onclick="var n=(typeof viewNight!=='undefined'&&viewNight)||(typeof S!=='undefined'&&S.status&&S.status.night)||'';this.href='wrapped.html'+(n?'?night='+encodeURIComponent(n):'')">GHOST WRAPPED</a><!-- #146 -->
           <select id="tlDj" aria-label="Downloads for" hidden></select><!-- #121: the whole night or one DJ -->
           <button id="setlistBtn">COPY SETLIST</button>
           <button id="tracklistBtn" title="Times from the start of each set, for Mixcloud / 1001Tracklists">COPY TRACKLIST</button>
@@ -415,7 +418,7 @@
     </form>
     <div class="note" id="roomsNote"></div>
 
-    <h3 class="group" id="g-screens">SCREENS &amp; OUTPUTS</h3>
+    <h3 class="group" id="g-screens">WHO SEES WHAT</h3><!-- #145: calm.js orders STATUS (most-used first, specialist sections in MORE) -->
     <h2 class="local-only" data-k="show-control">SHOW CONTROL</h2>
     <div class="local-only showctl" id="showctl">
       <div class="note">The DJ's tempo and bar, to the room's lights and visuals. All off until you turn it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
@@ -443,13 +446,13 @@
       <a class="btn" href="stage.html?rotate=90" target="_blank" title="The stage clock for a screen mounted on its side (R on its keyboard turns it again)">STAGE CLOCK SIDEWAYS</a><!-- #132 -->
       <a class="btn" href="crowd.html" target="_blank">NEXT UP</a><!-- #131 the crowd's view of the stage clock -->
       <a class="btn" href="whatson.html" target="_blank">WHAT'S ON</a>
-      <a class="btn local-only" href="song.html" target="_blank">SONG PAGE</a>
+      <a class="btn local-only" href="song.html" target="_blank">SONG ID PAGE</a>
       <a class="btn" href="sticker.html" target="_blank">PRINT STICKER</a>
       <a class="btn" href="tv.html?vis=1" target="_blank">VISUALIZER</a>
       <a class="btn" href="pocket.html" target="_blank">NOW PLAYING</a>
     </div>
     <div class="note">A booth TV, a stream, the crowd, the box's sticker. <button type="button" class="q" data-tip aria-label="More">?</button></div>
-    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: now playing for OBS or any browser source (lower third, corner ticker, big card, BPM + key, played before); pick the look and COPY LINK, plus HIDE IDS and START STREAM CLOCK for the setlist. CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown (the HOLD while one is up), who's on with the weather line, who's next with their set note, the next drop, the DOOR COUNT, crew calls; no track titles. STAGE CLOCK: for an LED wall or a monitor the DJ can see: time left in the set (amber at 10 min, red at 5, over in red), when it ends, who's on and next, the changeover, the time, WRAP-UP CALLS (also tv.html?clock=1); tap it for HOLD (crew code). STAGE CLOCK SIDEWAYS: the same for a screen mounted on its side (?rotate=90; R on its keyboard turns it again). NEXT UP: the stage clock for the crowd: who's on, who's next and when, the changeover countdown; no crew lines (add ?weather=1 for the wind line). WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR. VISUALIZER: TV MODE as a full-screen picture of the music for a spare screen (tv.html?vis=1). NOW PLAYING: a lock-screen style card for a phone (art, title, time left; KEEP AWAKE).</div><!-- #132: one tip (two had piled up) -->
+    <div class="note tip" hidden>TV MODE: a booth screen or projector (tap for full screen). STREAM OVERLAY: now playing for OBS or any browser source (lower third, corner ticker, big card, BPM + key, played before); pick the look and COPY LINK, plus HIDE IDS and START STREAM CLOCK for the setlist. CREW SCREEN: a screen to leave on for the crew: MUSIC OFF countdown (the HOLD while one is up), who's on with the weather line, who's next with their set note, the next drop, the DOOR COUNT, crew calls; no track titles. STAGE CLOCK: for an LED wall or a monitor the DJ can see: time left in the set (amber at 10 min, red at 5, over in red), when it ends, who's on and next, the changeover, the time, WRAP-UP CALLS (also tv.html?clock=1); tap it for HOLD (crew code). STAGE CLOCK SIDEWAYS: the same for a screen mounted on its side (?rotate=90; R on its keyboard turns it again). NEXT UP: the stage clock for the crowd: who's on, who's next and when, the changeover countdown; no crew lines (add ?weather=1 for the wind line). WHAT'S ON: see-through text for a stream (who's on, who's next; the track only while SONG ID is on; ?size=48); /api/whatson?format=text for chat bots. SONG ID PAGE: what's playing for the room (turn it on under TONIGHT -> SONG ID). PRINT STICKER: the box's Wi-Fi and address as a QR. VISUALIZER: TV MODE as a full-screen picture of the music for a spare screen (tv.html?vis=1). NOW PLAYING: a lock-screen style card for a phone (art, title, time left; KEEP AWAKE).</div><!-- #132: one tip (two had piled up) -->
     <h2 class="local-only" data-k="watch">WATCH FROM HOME</h2>
     <div class="local-only">
       <div class="buttons"><button type="button" id="remoteBtn">TURN ON</button></div>
@@ -502,7 +505,7 @@
     <h2 data-k="box">BOX DETAILS</h2>
     <dl class="facts" id="facts"></dl>
     <h2 data-k="tools">TOOLS</h2>
-    <div class="buttons"><button type="button" data-demo>DEMO</button><button type="button" data-tour>SHOW THE TOUR</button><a class="btn" href="arcade.html" id="arcadeLink" onclick="if(/[?&]embed/.test(location.search))this.href='arcade.html?embed=1'">BOO'S ARCADE</a></div>
+    <div class="buttons"><button type="button" data-demo>DEMO</button><button type="button" data-tour>SHOW THE TOUR</button><a class="btn" href="arcade.html" id="arcadeLink" onclick="if(/[?&]embed/.test(location.search))this.href='arcade.html?embed=1'">BOO'S ARCADE</a><a class="btn" href="wrapped.html?night=all">GHOST WRAPPED</a><!-- #146 --></div>
     <div class="buttons ghost-row"><small>GHOST</small><button type="button" data-fun>GHOST MOODS: ON</button><button type="button" data-roam>GHOST: GOES TO THE DECKS</button><button type="button" data-gsize>GHOST SIZE: M</button><button type="button" data-rips>GHOST SMELLS RIPS: OFF</button></div>
     <div class="note">DEMO: made-up tracks on empty players, only on this phone. Theme and text size: HELP → DISPLAY. <button type="button" class="q" data-tip aria-label="More">?</button></div>
     <div class="note tip" hidden>DEMO plays made-up tracks on any empty player so you can show someone everything with nothing plugged in. Nothing is saved or sent. TEST RUN is for setting up a box at a new venue: each line ticks itself as that part works.</div>
@@ -528,10 +531,11 @@
     <h2>WHERE THINGS ARE</h2>
     <dl class="facts">
       <dt>STATUS, top</dt><dd>READY FOR TONIGHT (the one thing to fix first, then anything worth a look), GO TO (type wifi, record, venue... and it opens there), BOOTH CHECK, warnings, the lock.</dd>
-      <dt>STATUS &rarr; TONIGHT</dt><dd>NIGHTS (plan a lineup, set notes after a name, SET TIMES FROM A SHEET), DECK CONTROLS (stop all, AUTO-STOP at music off), ANNOUNCEMENTS, SONG ID FOR THE CROWD, NIGHT SAFETY (SHOW STOP, HOLD, CURFEW LADDER, DOOR COUNT, WEATHER), ASK THE DJ, WANTLIST.</dd>
-      <dt>STATUS &rarr; THIS VENUE</dt><dd>VENUE (+ MUSIC AT THIS VENUE), WI-FI, ROOMS.</dd>
-      <dt>STATUS &rarr; SCREENS &amp; OUTPUTS</dt><dd>SHOW CONTROL (Link, MIDI clock, Resolume, grandMA3, QLab, VISUALS LINK), OSC OUT, LIGHTS, SCREENS (TV mode, stream overlay, crew screen, stage clock, next up, song page, sticker), WATCH FROM HOME, SHARE, API KEYS.</dd>
-      <dt>STATUS &rarr; THE BOX</dt><dd>CONTROLS (rejoin, listen only, restart, shut down), BACKUP (+ black box, logs), UPDATES (check, install, from a file, go back), BOX DETAILS, TOOLS (demo, tour, arcade, test run).</dd>
+      <dt>STATUS &rarr; TONIGHT</dt><dd>NIGHTS (plan a lineup, set notes after a name, SET TIMES FROM A SHEET), NIGHT SAFETY (SHOW STOP, HOLD, CURFEW LADDER, DOOR COUNT, WEATHER).</dd>
+      <dt>STATUS &rarr; THIS VENUE</dt><dd>VENUE (+ MUSIC AT THIS VENUE), WI-FI.</dd>
+      <dt>STATUS &rarr; WHO SEES WHAT</dt><dd>SCREENS (TV mode, stream overlay, crew screen, stage clock, next up, song page, sticker), SONG ID FOR THE CROWD, ASK THE DJ, WANTLIST, SHARE, WATCH FROM HOME.</dd>
+      <dt>STATUS &rarr; THE BOX</dt><dd>CONTROLS (rejoin, listen only, restart, shut down), BACKUP (+ black box, logs), UPDATES (check, install, from a file, go back), SET UP THIS BOX, BOX DETAILS, TOOLS (demo, tour, arcade, test run).</dd>
+      <dt>STATUS &rarr; MORE</dt><dd>Folded until you open it (GO TO finds everything in it): LIGHTS, SHOW CONTROL (Link, MIDI clock, Resolume, grandMA3, QLab, VISUALS LINK), OSC OUT, DECK CONTROLS (stop all, AUTO-STOP at music off), ANNOUNCEMENTS, API KEYS, HARD STOP HUB, ROOMS, GET READY TO SELL. Its line says which are ON.</dd>
       <dt>NETWORK</dt><dd>Devices, MIXER (USB MIDI), SOUND IN + SET RECORDINGS, EVENTS.</dd>
       <dt>Keys (laptop)</dt><dd>1-6 or &larr; &rarr; switch tabs (on a phone: swipe the page sideways), / opens GO TO, Esc closes it, R = READY FOR TONIGHT, P = plan tonight. The page opens on the tab you used last.</dd>
       <dt>Links</dt><dd>Add a place to the address to open it: #status/venue, #status/wifi, #network/sound, #now/vj.</dd>
@@ -552,7 +556,7 @@
       <dt>DECKS</dt><dd>Every player: track, art, BPM, pitch, time left, key, waveform, song sections (intro, up, chorus, down...) when rekordbox has phrase analysis, and a beat counter.</dd>
       <dt>NETWORK</dt><dd>Everything on the DJ network and how busy it is. GHOST LINK sits on a number 7-15 and never takes a player's number.</dd>
       <dt>PLAYED</dt><dd>Every track that was on air 10+ seconds. Past nights, recap numbers, BPM across the night, CSV/JSON, a recap image to post, and END OF NIGHT: one card per night with MUSIC OFF kept or not. ON THE DECKS: type the next DJ and SET at each changeover; tracks get grouped by DJ.</dd>
-      <dt>STATUS</dt><dd>Health, then four groups: TONIGHT, THIS VENUE, SCREENS &amp; OUTPUTS, THE BOX. GO TO at the top finds any setting. Watching is open to anyone; changing anything needs the password once per phone. LISTEN ONLY never needs it. VENUE keeps address, rooms, gear, contacts and venue Wi-Fi (the box joins it by itself). NIGHTS: plan a date, venue and lineup with times; on the night it switches by itself.</dd>
+      <dt>STATUS</dt><dd>Health, then four groups: TONIGHT, THIS VENUE, WHO SEES WHAT, THE BOX, and MORE (the specialist sections, folded). GO TO at the top finds any setting. Watching is open to anyone; changing anything needs the password once per phone. LISTEN ONLY never needs it. VENUE keeps address, rooms, gear, contacts and venue Wi-Fi (the box joins it by itself). NIGHTS: plan a date, venue and lineup with times; on the night it switches by itself.</dd>
       <dt>Share the dashboard</dt><dd>Tap GHOST LINK at the top: the address on this network, a QR code and COPY. Off-site: <b>gl.cold.fyi</b>.</dd>
       <dt>Share links</dt><dd>STATUS &rarr; SHARE (owner): NEW LINK gives someone a link instead of the password, doing only what you tick (WATCH, CREW CALLS, STOP / START THE DECKS, SETTINGS), until the end of the night unless you choose longer. REVOKE ends one at once; REMOTE OFF refuses them from outside the venue, or all of them.</dd>
       <dt>ghostlink.local doesn't open</dt><dd>Some phones or guest Wi-Fi don't support it. Tap GHOST LINK at the top for the number address and QR, or use the GHOST LINK Wi-Fi (10.42.0.1).</dd>
@@ -562,14 +566,14 @@
       <dt>PLAYED / MIX tags</dt><dd>On a deck: PLAYED 23:14 means it was on air earlier tonight; LAST PLAYED is a past night. MIX 8A→9A ✓ +2.1% on a cued deck: the key fits what's on air and the tempo change needed.</dd>
       <dt>TV mode / stream</dt><dd>STATUS &rarr; SCREENS &rarr; TV MODE for a booth screen or projector (tap for full screen). STREAM OVERLAY: pick the look, COPY LINK, paste it into an OBS Browser source.</dd>
       <!-- #132: one line for each Nov 22-23 card, each with its help page (online) -->
-      <dt>Lights</dt><dd>STATUS &rarr; SCREENS &amp; OUTPUTS &rarr; LIGHTS (owner): a WLED strip or Art-Net / sACN lights follow the beat, with crew calls, the drop and silence on top. Off until you turn it on; BLACKOUT is one tap. <a href="https://ghostlink.cold.fyi/help/how-to/lights.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Lights</dt><dd>STATUS &rarr; MORE &rarr; LIGHTS (owner): a WLED strip or Art-Net / sACN lights follow the beat, with crew calls, the drop and silence on top. Off until you turn it on; BLACKOUT is one tap. <a href="https://ghostlink.cold.fyi/help/how-to/lights.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Visuals link</dt><dd>STATUS &rarr; SHOW CONTROL &rarr; VISUALS LINK: a Resolume clip per track and cues on the song sections. Off until you turn it on. <a href="https://ghostlink.cold.fyi/help/how-to/with-resolume.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>On stream</dt><dd>STATUS &rarr; SCREENS &rarr; STREAM OVERLAY: pick the look, COPY LINK for OBS, HIDE IDS, START STREAM CLOCK for the setlist. <a href="https://ghostlink.cold.fyi/help/how-to/with-obs.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Ask the DJ</dt><dd>STATUS &rarr; TONIGHT &rarr; ASK THE DJ: song requests and votes from the crowd's phones. No money, no sign-up. Off until you turn it on. <a href="https://ghostlink.cold.fyi/help/how-to/ask-the-dj.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Stage clock</dt><dd>STATUS &rarr; SCREENS &rarr; STAGE CLOCK (or STAGE CLOCK SIDEWAYS): the set's time left for the DJ, wrap-up calls from NOW. Tap it for HOLD (crew code). NEXT UP is the crowd's version. <a href="https://ghostlink.cold.fyi/help/how-to/stage-clock.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Night safety</dt><dd>NOW: SHOW STOP and HOLD (crew code). STATUS &rarr; TONIGHT &rarr; NIGHT SAFETY: the CURFEW LADDER, the HEARING card, the DOOR COUNT. <a href="https://ghostlink.cold.fyi/help/how-to/night-safety.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Weather</dt><dd>STATUS &rarr; NIGHT SAFETY &rarr; WEATHER (owner): wind, gusts and thunder for outdoor nights; it asks HOLD?, never holds by itself. Each venue remembers its gust number. <a href="https://ghostlink.cold.fyi/help/how-to/weather.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
-      <dt>API keys</dt><dd>STATUS &rarr; SCREENS &amp; OUTPUTS &rarr; API KEYS (owner): a key for a Stream Deck, Companion or a script, with only the powers you tick. REVOKE ends it. <a href="https://ghostlink.cold.fyi/help/how-to/buttons-and-tools.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>API keys</dt><dd>STATUS &rarr; MORE &rarr; API KEYS (owner): a key for a Stream Deck, Companion or a script, with only the powers you tick. REVOKE ends it. <a href="https://ghostlink.cold.fyi/help/how-to/buttons-and-tools.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Set times from a sheet</dt><dd>STATUS &rarr; NIGHTS: paste the cells or a published Google Sheet link, PREVIEW, USE THESE TIMES. <a href="https://ghostlink.cold.fyi/help/how-to/plan-a-night.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Lights & visuals (OSC)</dt><dd>STATUS &rarr; OSC OUT: add the lighting/visuals computer as host:port. It gets every beat, downbeat, BPM, section and the on-air track.</dd>
       <dt>Song ID</dt><dd>STATUS &rarr; SONG ID FOR THE CROWD: a "what's playing" page and QR for the room. Off unless the DJ says yes.</dd>
@@ -613,9 +617,11 @@
     <div class="buttons"><button id="shareCopy">COPY</button><button type="button" id="unitEdit">CHANGE NAME</button><button type="button" id="shareLinksBtn" class="local-only">SHARE LINKS</button><button id="shareClose">CLOSE</button></div>
   </div>
 </div>
+<script src="plainwhy.js"></script><!-- #144 errors in plain words -->
 <script src="waves.js"></script>
 <script src="views.js"></script>
 <script src="thin.js"></script><!-- #125 THIN TRACK NOTE -->
+<script src="hints.js"></script><!-- #147 SET INSIGHTS live tags: PLAYED 23:14 / HERE NOV 12 -->
 <script src="app.js"></script>
 <script src="showctl.js"></script>
 <script src="visuals.js"></script>
@@ -664,7 +670,8 @@
 <script src="hub.js"></script><!-- HARD STOP HUB (#130), own file -->
 <script src="safety.js"></script><script>Safety.start('dash');</script><script src="safetyctl.js"></script><!-- NIGHT SAFETY (#127), own files -->
 <script src="stageclock.js"></script><script src="setnotes.js"></script><script src="weather.js"></script><script>WeatherView.start('dash');</script><!-- #131 SET NOTES + WEATHER, own files -->
-<script src="moments.js"></script><script>Moments.start('dash');</script><script src="whatcan.js"></script><script src="hsonly.js"></script><script src="lines.js"></script><!-- #135 MOMENTS + THE LINE RULE (at most 2 lines in the corner window), own files -->
+<script src="moments.js"></script><script>Moments.start('dash');</script><script src="whatcan.js"></script><script src="hsonly.js"></script><script src="milestones.js"></script><!-- #146 MILESTONES: one quiet line, owner only, once --><script src="lines.js"></script><!-- #135 MOMENTS + THE LINE RULE (at most 2 lines in the corner window), own files -->
+<script src="calm.js"></script><!-- #145 CALM: STATUS order + MORE, ALL SETTINGS sections, NOW hides empty blocks; last, own file -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \
 |      |

@@ -183,7 +183,7 @@ const SetTimeUI = (() => {
     const r = await post('/api/schedule/late', body);
     if (r.status === 401) return;
     const j = await r.json().catch(() => ({}));
-    if (!r.ok) lateErr = j.error || 'Didn\'t move (' + r.status + ').';
+    if (!r.ok) lateErr = j.error || 'Didn\'t move: ' + glWhy(r.status, j);
     if (r.ok && j.schedule && typeof nights !== 'undefined') { nights = j.schedule; if (typeof renderNightsPlan === 'function') renderNightsPlan(); if (typeof renderPlanNow === 'function') renderPlanNow(); }
     $('lateBox').dataset.sig = '';
     renderLate();

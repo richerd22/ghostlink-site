@@ -180,7 +180,7 @@
         ph.append(btn('ALSO FROM PHONE DATA', '', async () => {
           if (typeof unlocked !== 'undefined' && !unlocked) return needUnlock();
           const r = await post('/api/requests/link', {});
-          if (r.ok) { where = await r.json(); settingsKey = ''; } else note('Couldn\'t make the link (' + r.status + ').');
+          if (r.ok) { where = await r.json(); settingsKey = ''; } else note('Couldn\'t make the link: ' + glWhy(r.status));
         }), el('span', 'note', 'Most guests are on phone data, not the venue Wi-Fi. This makes one link for tonight that can only ask and vote. It works while WATCH FROM HOME is on (anyone with the link can then also watch the decks, like any WATCH FROM HOME link). Revoke it in SHARE.'));
       } else if (!where.anywhereLive) {
         ph.append(el('span', 'note', 'The phone-data link is made. Turn on WATCH FROM HOME and this QR switches to it.'));
@@ -209,7 +209,7 @@
       const r = await post('/api/requests/settings', { blocked: ta.value.split('\n') });
       const j = await r.json().catch(() => ({}));
       msgEl.textContent = r.ok ? 'Saved. Asks with these words get "can\'t go on the list tonight" (never which word).'
-        : r.status === 403 ? 'That needs the owner\'s password, not tonight\'s crew code.' : (j.error || 'Didn\'t save (' + r.status + ').');
+        : r.status === 403 ? 'That needs the owner\'s password, not tonight\'s crew code.' : (j.error || 'Didn\'t save: ' + glWhy(r.status, j));
       msgEl.classList.toggle('warn', !r.ok);
       if (r.ok) load();
     });

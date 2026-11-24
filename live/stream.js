@@ -99,7 +99,7 @@
         say(r.status === 401 ? 'Unlock first: on the dashboard, STATUS, the lock (crew code or password). Then try again.' : (j.error || 'Not from here.'), true);
         return null;
       }
-      if (!r.ok) { say("Didn't save (" + r.status + '). Try again.', true); return null; }
+      if (!r.ok) { say("Didn't save: " + glWhy(r.status), true); return null; }
       say('');
       return await r.json();
     } catch (e) { say("Can't reach the box. Same Wi-Fi?", true); return null; }
@@ -119,14 +119,46 @@
     hb.textContent = st.hideIds ? 'HIDE IDS: ON' : 'HIDE IDS: OFF';
     hb.classList.toggle('on', st.hideIds);
     $('hideNote').textContent = st.hideIds
-      ? 'Tracks marked HIDE, or that say unreleased (title, artist or comment), go out as ID - ID. HIDE is remembered for every night.'
+      ? 'Tracks marked HIDE, or that say unreleased (title, artist or comment), show as ID - ID with no cover wherever it says HIDES below. HIDE is remembered for every night.'
       : 'Off: every track shows as it is. Turn it on to show unreleased tracks as ID - ID.';
+    renderPlaces();
     const ul = $('tracks');
     ul.hidden = !st.hideIds;
     const sig = JSON.stringify([st.decks, st.played]);
     if (ul._sig !== sig) { ul._sig = sig; tracks(ul); } // rebuilt only when something changed (keeps the scroll)
     renderClock();
   }
+  // ---- #148 HIDE IDS, per place: one row each (from the box: names, what each covers), HIDES / SHOWS; the summary
+  // line comes from the box too. A place another product owns only shows once that product has been seen.
+  function renderPlaces() {
+    $('hideSum').textContent = st.summary || '';
+    const box = $('hidePlaces'), rows = st.placeRows || [];
+    box.hidden = $('hideOwn').hidden = !st.hideIds;
+    $('hideOwn').textContent = 'Always the real names: your own PLAYED, NIGHT REPORT, ROYALTY SETLISTS and downloads.';
+    const sig = JSON.stringify(rows);
+    if (box._sig === sig) return;
+    box._sig = sig;
+    box.replaceChildren(...rows.map(p => {
+      const row = document.createElement('div'); row.className = 'pl';
+      const w = document.createElement('div'); w.className = 'w';
+      const b = document.createElement('b'); b.textContent = p.name;
+      const s = document.createElement('small'); s.textContent = p.what;
+      w.append(b, s);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = p.on ? 'HIDES' : 'SHOWS';
+      btn.classList.toggle('on', !!p.on);
+      btn.setAttribute('aria-pressed', p.on ? 'true' : 'false');
+      btn.title = p.on ? 'A hidden track shows as ID here. Tap to show its name here.' : 'A hidden track shows its name here. Tap to hide it here.';
+      btn.addEventListener('click', async () => {
+        const r = await post('/api/onstream/place', { place: p.place, on: !p.on });
+        if (r) { st = r; renderState(); }
+      });
+      row.append(w, btn);
+      return row;
+    }));
+  }
+
   function tracks(ul) {
     ul.replaceChildren();
     const row = (t, label) => {

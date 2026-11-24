@@ -112,7 +112,7 @@ const Wantlist = (() => {
     try { r = await post('/api/wantlist', { on: want }); } catch (e) { note('wantNote', "Couldn't reach the box.", true); return; }
     if (r.status === 401) { pending = sw; return; } // post() opened the lock: it runs once the password is in
     if (r.status === 403) { note('wantNote', "That needs the owner's password, not tonight's crew code.", true); return; }
-    if (!r.ok) { note('wantNote', "Didn't change (" + r.status + ').', true); return; }
+    if (!r.ok) { note('wantNote', "Didn't change: " + glWhy(r.status), true); return; }
     try { const j = await r.json(); if (S.status) S.status.wantlist = !!j.on; } catch (e) {}
     note('wantNote', want ? 'On: every phone gets + WANT on NOW and DECKS. Lists stay on each phone.' : 'Off. Lists already saved stay on their phones.');
     tick();

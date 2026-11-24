@@ -351,10 +351,11 @@ function renderDeck(p) {
   const metaHtml = [
     i.color ? `<span><i class="dot" style="background:${esc(i.color)}"></i></span>` : '',
     i.key ? `<span>KEY ${esc(i.key)}${camelot(i.key) && camelot(i.key) !== i.key ? ' · ' + camelot(i.key) : ''}</span>` : '',
-    lk && lk.tonight.length ? `<span style="color:var(--warn)">PLAYED ${clock(lk.tonight[lk.tonight.length - 1].at)}${lk.tonight[lk.tonight.length - 1].dj ? ' · ' + esc(lk.tonight[lk.tonight.length - 1].dj) : ''}</span>`
+    lk && lk.tonight.length && (typeof Hints === 'undefined' || Hints.again()) ? `<span style="color:var(--warn)">PLAYED ${clock(lk.tonight[lk.tonight.length - 1].at)}${lk.tonight[lk.tonight.length - 1].dj ? ' · ' + esc(lk.tonight[lk.tonight.length - 1].dj) : ''}</span>`
       : lk && lk.past.length ? `<span>LAST PLAYED ${esc(nightLabel(lk.past[0].night))}</span>` : '',
     mix ? `<span style="color:${mix.ok ? 'var(--fg)' : 'var(--warn)'}">MIX ${esc(mix.text)}</span>` : '',
     ...venueNotes(d, lk),
+    ...(typeof Hints !== 'undefined' ? Hints.tile(d, lk).map(w => `<span style="color:var(--grey)">${esc(w)}</span>`) : []), // #147 PLAYED HERE BEFORE (hints.js)
     i.genre ? `<span>${esc(i.genre)}</span>` : '',
     i.looping ? '<span style="color:var(--warn)">LOOP' + (i.loopBeats ? ' ' + i.loopBeats : '') + '</span>' : '',
     i.synced ? '<span>' + (i.bpmSyncOnly ? 'BPM SYNC' : 'SYNC') + '</span>' : '',
@@ -715,6 +716,7 @@ function frameNow() {
   const set = (s, v) => { const e = q(s); if (e && e.textContent !== v) e.textContent = v; };
   const setH = (s, v) => { const e = q(s); if (e && e._h !== v) { e._h = v; e.innerHTML = v; } };
   frameNight(q, set, setH);
+  if (typeof Calm !== 'undefined') Calm.now(q); // #145 CALM: a block with nothing to say hides (calm.js)
   if (!d) return;
   const pos = position(d), rate = 1 + d.pitch / 100;
   set('.n-title', d.title || '');
@@ -1307,7 +1309,7 @@ $('nightForm').addEventListener('submit', async e => {
     preset: $('nPreset') ? $('nPreset').value : undefined }); // #116 (settings.js adds the PRESET pick)
   if (r.ok) { nights = await r.json(); $('nightForm').hidden = true; renderNightsPlan(); }
   else if (r.status === 400) note('nightNote', (await r.json()).error, true);
-  else if (r.status !== 401) note('nightNote', "Didn't save (" + r.status + '). Try again.', true);
+  else if (r.status !== 401) note('nightNote', "Didn't save: " + glWhy(r.status), true);
 });
 $('nightDelBtn').addEventListener('click', async () => {
   if (!confirm('Delete this planned night?')) return;
@@ -1966,7 +1968,7 @@ async function runPost(b) {
     const r = await post(b.dataset.post);
     if (r.ok && b.dataset.post === '/api/shutdown') shuttingDown();
     else if (r.ok && DONE[b.dataset.post]) note('ctlNote', DONE[b.dataset.post]);
-    else if (!r.ok && r.status !== 401) note('ctlNote', "Didn't work (" + r.status + '). Try again, or RESTART.', true);
+    else if (!r.ok && r.status !== 401) note('ctlNote', "Didn't work: " + glWhy(r.status), true);
   } finally { b.disabled = false; }
 }
 document.querySelectorAll('[data-post]').forEach(b => {
@@ -2101,7 +2103,7 @@ $('venueForm').addEventListener('submit', async e => {
     home: $('vHome').checked });
   if (r.ok) { venues = await r.json(); $('venueForm').hidden = true; note('venueNote', ''); renderVenue(); }
   else if (r.status === 400) note('venueNote', (await r.json()).error, true);
-  else if (r.status !== 401) note('venueNote', "Didn't save (" + r.status + '). Try again.', true);
+  else if (r.status !== 401) note('venueNote', "Didn't save: " + glWhy(r.status), true);
 });
 $('venueDelBtn').addEventListener('click', async () => {
   if (!venueEditing || !confirm('Delete this venue? Past nights keep its name.')) return;
@@ -2444,7 +2446,8 @@ function stackCanvas(p, pos) {
   const fl = deckFlags(d);
   row.classList.toggle('loop', fl.some(f => f.startsWith('LOOP')));
   const title = loaded ? Views.title(row._stt, d) : ''; // artist + title, shortened to fit, remix name kept (#90)
-  const flags = (loaded && typeof Thin !== 'undefined' && Thin.of(d) ? fl.concat('NO ANALYSIS') : fl).join(' · '); // #125
+  const flags = (loaded && typeof Thin !== 'undefined' && Thin.of(d) ? fl.concat('NO ANALYSIS') : fl)
+    .concat(loaded && typeof Hints !== 'undefined' ? Hints.flags(d, S.lookups[p + '|' + d.trackKey]) : []).join(' · '); // #125 + #147 PLAYED 23:14 / HERE NOV 12 (hints.js)
   if (row._sf.textContent !== flags) row._sf.textContent = flags;
   if (row._stt.textContent !== title) row._stt.textContent = title;
   if (FIT.on) {

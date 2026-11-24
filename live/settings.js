@@ -29,7 +29,7 @@ const NightSettings = (() => {
     try {
       const r = await fetch('/api/settings', { cache: 'no-store' });
       if (r.status === 401) { data = null; err = 'locked'; }
-      else if (!r.ok) { const j = await r.json().catch(() => ({})); data = null; err = j.mustChange ? 'new' : 'Couldn\'t read the settings (' + r.status + ').'; }
+      else if (!r.ok) { const j = await r.json().catch(() => ({})); data = null; err = j.mustChange ? 'new' : 'Couldn\'t read the settings: ' + glWhy(r.status); }
       else { data = await r.json(); err = ''; if (!data || !Array.isArray(data.list) || !Array.isArray(data.presets)) { data = null; err = 'locked'; } } // the website's demo answers {}
     } catch (e) { err = 'The box didn\'t answer.'; }
     render();
@@ -159,7 +159,7 @@ const NightSettings = (() => {
       }
       const rr = await post('/api/settings/presets', { action: 'delete', id: p.id });
       if (rr.ok) { await load(); if (after) after(); try { if (typeof renderNightsPlan === 'function') renderNightsPlan(); } catch (x) {} }
-      else if (rr.status !== 401) { msg.textContent = 'Didn\'t delete (' + rr.status + ').'; msg.classList.add('warn'); }
+      else if (rr.status !== 401) { msg.textContent = 'Didn\'t delete: ' + glWhy(rr.status); msg.classList.add('warn'); }
     });
     r.append(name, row(ren, del), msg);
     return r;
@@ -354,7 +354,7 @@ const NightSettings = (() => {
   function layoutKeys() { const out = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('layout:')) out.push(k); } } catch (e) {} return out; }
   function clickTill(sel, done) { const b = document.querySelector(sel); for (let i = 0; i < 5 && b && !done(); i++) b.click(); }
 
-  let q = '';
+  let q = '', moreOpen = false;
   function openAll() {
     if (!data) return needUnlock();
     const box = openSheet('all');
@@ -384,6 +384,7 @@ const NightSettings = (() => {
       const words = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
       const hit = (...t) => { const h = t.join(' ').toLowerCase(); return words.every(w => h.includes(w)); };
       let group = null, shown = 0;
+      if (typeof Calm !== 'undefined' && Calm.sheet) return fillCalm(words, hit); // #145 CALM: most-used first, MORE folded
       data.list.forEach(x => {
         if (!hit(x.name, x.what.replace(/GHOST LINK/g, ''), x.group, x.valueText || '', x.key)) return;
         if (x.group !== group) { group = x.group; list.append(el('h4', 'st-g', group)); }
@@ -393,6 +394,36 @@ const NightSettings = (() => {
       const ph = PHONE.filter(p => hit(p.name, p.what, 'this phone display'));
       if (ph.length) list.append(el('h4', 'st-g', 'THIS PHONE'));
       ph.forEach(p => { list.append(phoneRow(p)); shown++; });
+      if (!shown) list.append(el('div', 'note', 'Nothing called that. Try fewer letters.'));
+    }
+    // #145 CALM: TONIGHT, THIS VENUE, WHO SEES WHAT, THE BOX, THIS PHONE; then MORE (shut unless searching), whose
+    // line names its sections and how many are changed. Searching shows every match, MORE's too.
+    function fillCalm(words, hit) {
+      let shown = 0;
+      const secs = Calm.sheet(data.list).map(sec => ({ name: sec.name, more: sec.more,
+        items: sec.items.filter(x => hit(x.name, x.what.replace(/GHOST LINK/g, ''), x.group, sec.name, x.valueText || '', x.key)) })).filter(sec => sec.items.length);
+      const put = (host, sec) => { host.append(el('h4', 'st-g', sec.name)); sec.items.forEach(x => { host.append(boxRow(x, own)); shown++; }); };
+      secs.filter(sec => !sec.more).forEach(sec => put(list, sec));
+      const ph = PHONE.filter(p => hit(p.name, p.what, 'this phone display'));
+      if (ph.length) list.append(el('h4', 'st-g', 'THIS PHONE'));
+      ph.forEach(p => { list.append(phoneRow(p)); shown++; });
+      const rest = secs.filter(sec => sec.more);
+      if (rest.length) {
+        let host = list;
+        if (!words.length) {
+          const d = el('details', 'st-more');
+          d.open = moreOpen;
+          d.ontoggle = () => { moreOpen = d.open; };
+          const n = rest.reduce((a, sec) => a + sec.items.filter(x => x.changed).length, 0);
+          const sm = el('summary');
+          sm.append(el('span', 'st-more-t', 'MORE'));
+          sm.append(el('small', null, rest.map(sec => sec.name).join(' · ') + (n ? ' · ' + n + ' CHANGED ●' : '')));
+          d.append(sm);
+          list.append(d);
+          host = d;
+        }
+        rest.forEach(sec => put(host, sec));
+      }
       if (!shown) list.append(el('div', 'note', 'Nothing called that. Try fewer letters.'));
     }
     fill();
@@ -487,5 +518,5 @@ const NightSettings = (() => {
     setInterval(() => { if (unlocked !== was) { was = unlocked; load(); } }, 1000);
   }
   load();
-  return { load, open: openAll, setNightPick, presetName };
+  return { load, open: openAll, setNightPick, presetName, list: () => (data && data.list) || null }; // list: #145 CALM's ON marks
 })();

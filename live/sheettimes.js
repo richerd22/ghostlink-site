@@ -116,7 +116,7 @@ const SheetTimes = (() => {
     if (r.status === 401) return;
     const j = await r.json().catch(() => ({}));
     if (r.status === 409 && j.hardstop) { state = Object.assign({}, state, { hardstop: true }); render(); return; }
-    if (!r.ok && !j.rows) { say(j.error || "Couldn't read that (" + r.status + ').', true); preview.hidden = true; return; }
+    if (!r.ok && !j.rows) { say(j.error || "Couldn't read that: " + glWhy(r.status, j), true); preview.hidden = true; return; }
     say('');
     last = j;
     showPreview(j);
@@ -162,7 +162,7 @@ const SheetTimes = (() => {
     const r = await post('/api/sheet/apply', { previewId: id });
     if (r.status === 401) return;
     const j = await r.json().catch(() => ({}));
-    if (!r.ok) { say(j.error || "Didn't save (" + r.status + ').', true); return; }
+    if (!r.ok) { say(j.error || "Didn't save: " + glWhy(r.status, j), true); return; }
     preview.hidden = true; last = null;
     say('Saved. The lineup is in NIGHTS.');
     if (typeof loadNightsPlan === 'function') loadNightsPlan();

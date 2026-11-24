@@ -99,6 +99,7 @@ let sizeKey = '';
 function draw() {
   const now = Date.now() - skew, v = StageClockView.crowd(feed, now);
   set('tod', StageClockView.clock(now));
+  $('tod').hidden = !v.label; // #144: with nothing planned the big line is already the clock: no second clock in the corner
   set('label', v.label); $('label').hidden = !v.label;
   set('name', v.name);
   set('sub', v.sub); $('sub').hidden = !v.sub;
@@ -121,6 +122,6 @@ draw(); setInterval(draw, 250);
 addEventListener('resize', () => { sizeKey = ''; draw(); });
 </script>
 <script src="safety.js"></script><script>Safety.start('crowd');</script><!-- NIGHT SAFETY (127): SHOW STOP as the plain message -->
-<script src="moments.js"></script><script>Moments.start('crowd');</script><!-- #135 MOMENTS with ?moments=1: the name only -->
+<script src="plainwhy.js"></script><script src="moments.js"></script><script>Moments.start('crowd');</script><!-- #135 MOMENTS with ?moments=1: the name only -->
 </body>
 </html>

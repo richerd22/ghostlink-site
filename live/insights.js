@@ -123,7 +123,7 @@ const Insights = (() => {
     if (!t || !t.count) return '';
     const c = t.cleanest, l = t.longest, m = t.mostDecks, w = t.worstDrift || t.worst;
     const head = `<div class="ins-row"><span><pre style="margin:0;font-size:9px;line-height:9px;color:var(--fg)">${boo(FACE(t.gallopIndex))}</pre></span>` +
-      `<b>${t.gallopIndex != null ? 'GALLOP INDEX ' + t.gallopIndex + ' / 10' : 'NOTHING RATED YET'}</b></div>`;
+      `<b>${t.gallopIndex != null ? 'GALLOP INDEX ' + t.gallopIndex + ' / 10' : t.graded ? 'NOT ENOUGH TO SCORE YET' : 'NOTHING RATED YET'}</b></div>`; // #144: rated but too short / noisy to score
     return card('TRANSITIONS', head + rows([
       ['Overlaps (2+ decks out loud)', t.count + (t.graded ? ' · ' + t.graded + ' rated · ' + t.clean + ' clean' : '') + (t.sync ? ' · ' + t.sync + ' on sync' : '')],
       c ? ['Cleanest blend', c.cleanPct + '% clean · ' + Math.round(c.bars) + ' bars' + into(c) + who(c) + (c.sync ? ' · SYNC' : '')] : null,
@@ -196,10 +196,12 @@ const Insights = (() => {
       const sorted = held.map(h => h[0]).sort((a, b) => a - b), med = sorted[Math.floor(sorted.length / 2)];
       const long = held.reduce((a, b) => b[0] > a[0] ? b : a), short = held.reduce((a, b) => b[0] < a[0] ? b : a);
       out.push(card('PACE', rows([
-        ['Tracks an hour', span > 0 ? (list.length / (span / 3600000)).toFixed(1) : '--'],
+        // #144: an hour's rate from the first few minutes read like 54.8 an hour; wait for 20 minutes of music.
+        ['Tracks an hour', span >= 20 * 60000 ? (list.length / (span / 3600000)).toFixed(1) : 'after 20 min'],
         ['Typical track on air', mmss(med)],
-        ['Longest on air', mmss(long[0]) + ' · ' + name(long[1])],
-        ['Quickest mix', mmss(short[0]) + ' · ' + name(short[1])],
+        held.length > 1 ? ['Longest on air', mmss(long[0]) + ' · ' + name(long[1])] : null,
+        // #144: this is the shortest time a track held the air, not a mix (MIXING's "Quickest" is the mix).
+        held.length > 1 ? ['Shortest on air', mmss(short[0]) + ' · ' + name(short[1])] : null,
       ])));
     }
 

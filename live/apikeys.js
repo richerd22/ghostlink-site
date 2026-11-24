@@ -81,7 +81,7 @@ const ApiKeys = (() => {
         b.addEventListener('click', async () => {
           if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = 'REVOKE: SURE?'; setTimeout(() => { b.dataset.sure = ''; b.textContent = 'REVOKE'; }, 4000); return; }
           const r = await post('/api/keys/revoke', { id: k.id });
-          if (r.ok) load(); else if (r.status !== 401) say("Didn't revoke (" + r.status + ').', true);
+          if (r.ok) load(); else if (r.status !== 401) say("Didn't revoke: " + glWhy(r.status), true);
         });
         const row = el('div', 'buttons'); row.append(b); it.append(row);
       }
@@ -102,7 +102,7 @@ const ApiKeys = (() => {
     const r = await post('/api/keys', { label: $('akLabel').value.trim(), scopes });
     if (r.status === 401) return;
     const j = await r.json().catch(() => ({}));
-    if (!r.ok) { note('akFormNote', r.status === 403 ? "API keys need the owner's password." : j.error || "Didn't work (" + r.status + ').', true); return; }
+    if (!r.ok) { note('akFormNote', r.status === 403 ? "API keys need the owner's password." : j.error || "Didn't work: " + glWhy(r.status, j), true); return; }
     made = j.key;
     $('akForm').hidden = true;
     $('akMadeWho').textContent = j.label + ' · ' + j.scopes.map(s => WORDS[s] || s).join(' · ');

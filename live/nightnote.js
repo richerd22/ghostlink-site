@@ -53,7 +53,7 @@ const NightNote = (() => {
       const r = await post('/api/night/note', { kind, text });
       if (r.status === 401) { pending = save; return; } // runs again once the password is in
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j.ok) { say(j.error || "Didn't save (" + r.status + ').', true); return; }
+      if (!r.ok || !j.ok) { say(j.error || "Didn't save: " + glWhy(r.status, j), true); return; }
       txt.value = '';
       say('Saved ' + hhmm(j.entry.at) + ' on tonight\'s log.');
       shown(j.entry);
