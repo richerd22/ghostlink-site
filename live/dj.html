@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+<title>GHOST LINK DJ PROFILE</title>
+<meta name="robots" content="noindex">
+<style>
+/* DJ PROFILE (#154): one DJ across their nights on this box. Same look as SET INSIGHTS. */
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
+:root { --bg: #000; --fg: #fff; --grey: #9a9a9a; --dim: #555; --line: #222; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 400 15px/1.4 "JetBrains Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 14px 16px 40px; }
+.bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bar .grow { flex: 1; }
+a.btn, button, input { font: inherit; font-size: 13px; color: var(--fg); background: var(--bg); border: 1px solid var(--fg); padding: 6px 10px; text-decoration: none; cursor: pointer; border-radius: 0; }
+input { cursor: text; }
+.card { margin-top: 14px; border: 1px solid var(--line); padding: 18px 16px; }
+h1 { margin: 0; font-size: 20px; letter-spacing: .14em; font-weight: 600; overflow-wrap: anywhere; }
+.sub { color: var(--grey); font-size: 12px; letter-spacing: .08em; margin-top: 4px; }
+h2 { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; font-weight: 400; margin: 22px 0 8px; padding-top: 12px; border-top: 1px solid var(--line); }
+.nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 12px 16px; }
+.nums small { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; }
+.nums b { font-size: 22px; font-weight: 600; overflow-wrap: anywhere; }
+.row { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--fg); text-decoration: none; }
+.row:first-child { border-top: 0; }
+.row span { overflow-wrap: anywhere; }
+.row b { font-weight: 400; color: var(--grey); text-align: right; flex-shrink: 0; max-width: 55%; }
+a.row:hover span, a.row:focus-visible span { text-decoration: underline; text-underline-offset: 3px; }
+.keys { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.keys span { border: 1px solid var(--dim); padding: 2px 8px; font-size: 13px; }
+.keys i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; vertical-align: middle; }
+.line { color: var(--grey); font-size: 13px; margin-top: 6px; }
+.go { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+.msg { color: var(--grey); margin-top: 18px; }
+[hidden] { display: none !important; }
+.unlock { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.foot { color: var(--dim); font-size: 11px; margin-top: 18px; }
+@media (max-width: 480px) { .wrap { padding: 12px 12px 32px; } .card { padding: 14px 12px; } .nums b { font-size: 18px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a class="btn" href="/#played">BACK</a>
+    <a class="btn" id="allDjs" href="dj.html">ALL DJS</a>
+    <span class="grow"></span>
+    <a class="btn" id="wrapped" href="wrapped.html" hidden>GHOST WRAPPED</a>
+  </div>
+  <form class="unlock" id="unlock" hidden>
+    <input type="password" id="pw" placeholder="Password or tonight's crew code" autocomplete="current-password" aria-label="Password">
+    <button type="submit">UNLOCK</button>
+  </form>
+  <div class="msg" id="msg">Loading...</div>
+  <div class="card" id="card" hidden></div>
+</div>
+<script src="shim.js"></script>
+<script src="dj.js"></script>
+<script>DjPage.page();</script>
+</body>
+</html>

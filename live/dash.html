@@ -187,7 +187,7 @@
       <div class="arch-sort"><button type="button" class="mini on" data-sort="plays">MOST PLAYED</button><button type="button" class="mini" data-sort="last">LATEST</button><button type="button" class="mini" data-sort="az">A-Z</button></div>
       <ol class="played arch-tracks" id="aTracks"></ol>
     </div>
-    <details class="wantlist" id="go-wantlist" hidden><summary>WANTLIST <span id="wantN"></span></summary>
+    <details class="wantlist" id="go-played-wantlist" hidden><summary>WANTLIST <span id="wantN"></span></summary>
       <div class="note">Tracks you tapped + WANT on. On this phone only: nothing goes to the box or the DJ. Search links open that site's search in a new tab.</div>
       <div class="buttons"><button type="button" id="wantCopy">COPY</button><button type="button" id="wantShare">SHARE</button><button type="button" id="wantClear">CLEAR</button></div>
       <ol class="want-list" id="wantList"></ol>
@@ -421,7 +421,7 @@
     <h3 class="group" id="g-screens">WHO SEES WHAT</h3><!-- #145: calm.js orders STATUS (most-used first, specialist sections in MORE) -->
     <h2 class="local-only" data-k="show-control">SHOW CONTROL</h2>
     <div class="local-only showctl" id="showctl">
-      <div class="note">The DJ's tempo and bar, to the room's lights and visuals. All off until you turn it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note">The DJ's tempo and bar, to the room's lights and visuals. All off until the owner turns it on. <button type="button" class="q" data-tip aria-label="More">?</button></div>
       <div class="note tip" hidden>GHOST LINK never sends anything to the decks or the mixer. ABLETON LINK and MIDI CLOCK follow the master deck's beat; the OSC presets send ready-made messages to Resolume, grandMA3 or QLab.</div>
       <div id="scRows"></div>
       <div id="vlRows"></div>
@@ -568,10 +568,10 @@
       <dt>PLAYED / MIX tags</dt><dd>On a deck: PLAYED 23:14 means it was on air earlier tonight; LAST PLAYED is a past night. MIX 8A→9A ✓ +2.1% on a cued deck: the key fits what's on air and the tempo change needed.</dd>
       <dt>TV mode / stream</dt><dd>STATUS &rarr; SCREENS &rarr; TV MODE for a booth screen or projector (tap for full screen). STREAM OVERLAY: pick the look, COPY LINK, paste it into an OBS Browser source.</dd>
       <!-- #132: one line for each Nov 22-23 card, each with its help page (online) -->
-      <dt>Lights</dt><dd>STATUS &rarr; MORE &rarr; LIGHTS (owner): a WLED strip or Art-Net / sACN lights follow the beat, with crew calls, the drop and silence on top. Off until you turn it on; BLACKOUT is one tap. <a href="https://ghostlink.cold.fyi/help/how-to/lights.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
-      <dt>Visuals link</dt><dd>STATUS &rarr; SHOW CONTROL &rarr; VISUALS LINK: a Resolume clip per track and cues on the song sections. Off until you turn it on. <a href="https://ghostlink.cold.fyi/help/how-to/with-resolume.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Lights</dt><dd>STATUS &rarr; MORE &rarr; LIGHTS (owner): a WLED strip or Art-Net / sACN lights follow the beat, with crew calls, the drop and silence on top. Off until the owner turns it on; BLACKOUT is one tap. <a href="https://ghostlink.cold.fyi/help/how-to/lights.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Visuals link</dt><dd>STATUS &rarr; SHOW CONTROL &rarr; VISUALS LINK: a Resolume clip per track and cues on the song sections. Off until the owner turns it on. <a href="https://ghostlink.cold.fyi/help/how-to/with-resolume.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>On stream</dt><dd>STATUS &rarr; SCREENS &rarr; STREAM OVERLAY: pick the look, COPY LINK for OBS, HIDE IDS, START STREAM CLOCK for the setlist. <a href="https://ghostlink.cold.fyi/help/how-to/with-obs.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
-      <dt>Ask the DJ</dt><dd>STATUS &rarr; TONIGHT &rarr; ASK THE DJ: song requests and votes from the crowd's phones. No money, no sign-up. Off until you turn it on. <a href="https://ghostlink.cold.fyi/help/how-to/ask-the-dj.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
+      <dt>Ask the DJ</dt><dd>STATUS &rarr; TONIGHT &rarr; ASK THE DJ: song requests and votes from the crowd's phones. No money, no sign-up. Off until the owner turns it on. <a href="https://ghostlink.cold.fyi/help/how-to/ask-the-dj.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Stage clock</dt><dd>STATUS &rarr; SCREENS &rarr; STAGE CLOCK (or STAGE CLOCK SIDEWAYS): the set's time left for the DJ, wrap-up calls from NOW. Tap it for HOLD (crew code). NEXT UP is the crowd's version. <a href="https://ghostlink.cold.fyi/help/how-to/stage-clock.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Night safety</dt><dd>NOW: SHOW STOP and HOLD (crew code). STATUS &rarr; TONIGHT &rarr; NIGHT SAFETY: the CURFEW LADDER, the HEARING card, the DOOR COUNT. <a href="https://ghostlink.cold.fyi/help/how-to/night-safety.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
       <dt>Weather</dt><dd>STATUS &rarr; NIGHT SAFETY &rarr; WEATHER (owner): wind, gusts and thunder for outdoor nights; it asks HOLD?, never holds by itself. Each venue remembers its gust number. <a href="https://ghostlink.cold.fyi/help/how-to/weather.html" target="_blank" rel="noopener">HELP PAGE</a></dd>
@@ -624,6 +624,7 @@
 <script src="views.js"></script>
 <script src="thin.js"></script><!-- #125 THIN TRACK NOTE -->
 <script src="hints.js"></script><!-- #147 SET INSIGHTS live tags: PLAYED 23:14 / HERE NOV 12 -->
+<script src="related.js"></script><!-- #154 RELATED TRACKS: OFTEN NEXT on a loaded deck (off by default) -->
 <script src="app.js"></script>
 <script src="showctl.js"></script>
 <script src="visuals.js"></script>

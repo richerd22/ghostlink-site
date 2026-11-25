@@ -57,7 +57,7 @@ const Wantlist = (() => {
   }
 
   // ---------- PLAYED -> WANTLIST ----------
-  const box = $('go-wantlist');
+  const box = $('go-played-wantlist'); // #152: its own id (STATUS's WANTLIST fold is #go-wantlist)
   function render() {
     if (!box) return;
     box.hidden = !on() && !list.length; // it's this phone's list: still there after the owner turns the buttons off

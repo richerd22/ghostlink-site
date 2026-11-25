@@ -6,6 +6,9 @@
  *  - Not claimed: KEEP IT shows the code and a QR to <site>/claim/#CODE (the code in the #fragment only).
  *  - WAITING FOR THE OWNER: another account holds this box; it moves when they let it go (or in 7 days).
  *  - CLAIMED (no email shown): EMAILS ME ABOUT UPDATES on/off, the account link, HAND OVER.
+ *  - #152 ASK ONCE: while the account says the owner never answered (askUpdates), one small question on top:
+ *    TELL ME WHEN GHOST LINK HAS AN UPDATE? YES / NO THANKS. Either answer is the same signed switch (POST
+ *    /api/owner/emails), which ends the asking. No nag, nothing gated; the switch below stays.
  * Own file; uses app.js globals ($, unlocked, needUnlock, glWhy). Network text goes in as text nodes only.
  */
 const Owner = (() => {
@@ -132,6 +135,7 @@ const Owner = (() => {
     const acct = st.account, acctShort = st.accountShort || short(acct);
     if (st.claimed) {
       host.append(el('div', 'note own-state', 'CLAIMED. This box is in your account.'));
+      if (pure.askShown(st)) host.append(askOnce(host));
       if (st.updates !== null && st.updates !== undefined) {
         const on = !!st.updates;
         const b = btn('EMAILS ME ABOUT UPDATES: ' + (on ? 'ON' : 'OFF'), on ? 'on' : '', async () => {
@@ -159,6 +163,27 @@ const Owner = (() => {
     host.append(row(k), slot);
   }
 
+  /** #152 ASK ONCE: the one question. Either answer posts the switch; the account then stops asking. */
+  function askOnce(host) {
+    const q = el('div', 'own-ask');
+    q.style.margin = '8px 0 18px'; // its own little block, apart from the switch below
+    q.append(el('div', 'note', 'TELL ME WHEN GHOST LINK HAS AN UPDATE?'));
+    const answer = async on => {
+      yes.disabled = no.disabled = true;
+      const r = await send('/api/owner/emails', { updates: on });
+      if (r.status === 401) { yes.disabled = no.disabled = false; return needUnlock(); }
+      if (r.ok) { st = Object.assign(st, r.j); mount(); return; }
+      yes.disabled = no.disabled = false;
+      host.append(el('div', 'note warn', r.j.error || glWhy(r.status, r.j)));
+    };
+    const yes = btn('YES', null, () => answer(true));
+    const no = btn('NO THANKS', 'ghostbtn', () => answer(false));
+    q.append(row(yes, no));
+    return q;
+  }
+  const pure = { askShown: s => !!(s && s.claimed && s.askUpdates === true) };
+  if (typeof document === 'undefined') return pure;
+
   if ($('ownerBox')) mount();
   // Opening the section (after an unlock, say) asks the account again.
   document.addEventListener('toggle', e => { if (e.target && e.target.id === 'go-account' && e.target.open) mount(true); }, true);
@@ -169,5 +194,6 @@ const Owner = (() => {
     new MutationObserver(() => { const now = stEl.classList.contains('locked'); if (now !== was) { was = now; mount(true); } })
       .observe(stEl, { attributes: true, attributeFilter: ['class'] });
   }
-  return { wantsCard, card, mount, state: () => st };
+  return Object.assign({ wantsCard, card, mount, state: () => st }, pure);
 })();
+if (typeof module !== 'undefined') module.exports = Owner;

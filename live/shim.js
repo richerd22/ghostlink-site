@@ -23,7 +23,7 @@
   function two(n) { return (n < 10 ? '0' : '') + n; }
   function hm(ms) { var d = new Date(ms); return two(d.getHours()) + ':' + two(d.getMinutes()); }
   var page = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '');
-  var HOSTED = ["crowd.html", "dash.html", "endnight.html", "night.html", "overlay.html", "stage.html", "stream.html"]; // filled in by bin/livedemo.py from its PAGES: the box pages this demo has
+  var HOSTED = ["crowd.html", "dash.html", "dj.html", "endnight.html", "night.html", "overlay.html", "setinsights.html", "stage.html", "stream.html", "wrapped.html"]; // filled in by bin/livedemo.py from its PAGES: the box pages this demo has
   var CALM = /[?&]calm=1\b/.test(location.search);
   if (CALM) {
     document.documentElement.setAttribute('data-gl-calm', '');
@@ -231,7 +231,10 @@
     },
     'night/report': report,
     onstream: function () {
-      return { hideIds: false, titles: false, start: { from: 'night', at: ago(94) }, clockSet: false, nudged: 0, now: 1, decks: [],
+      // #148 / #155: the line under the switch, as a new box says it (GHOST LINK alone: no HARD STOP row)
+      return { hideIds: false, summary: 'HIDE IDS IS OFF: every track shows by its name.',
+        places: { stream: true, song: false, tv: false, hardstop: false }, placeRows: [],
+        titles: false, start: { from: 'night', at: ago(94) }, clockSet: false, nudged: 0, now: 1, decks: [],
         played: PLAYED.slice(-4).map(function (t) { return { at: t.at, title: t.title, artist: t.artist, listed: false, says: false }; }), hidden: [] };
     },
     // SHOW CONTROL (#123 VISUALS LINK, the OSC targets): everything off, as on a new box (the box's own answer).
@@ -271,12 +274,37 @@
   };
   function json(code, body) { return Promise.resolve(new Response(JSON.stringify(body), { status: code, headers: { 'Content-Type': 'application/json' } })); }
   var realFetch = window.fetch && window.fetch.bind(window);
+  // GHOST WRAPPED, SET INSIGHTS and the DJ PROFILE (#154): five made-up show nights (TICK, LIL TICK, TICK JR at THE BLUE
+  // ARCH and LOW TIDE), the box's own answers captured from a mock box into demo-nights.json, read once from this
+  // site. Only these reads; never a write.
+  var nightsData = null;
+  function nightsAnswer(path, q) {
+    var k = path === 'wrapped' ? 'w' : /^night\/(journey|across|related|dj|next)$/.test(path) ? path.slice(6) : null;
+    if (!k || !realFetch) return null;
+    if (!nightsData) nightsData = realFetch('demo-nights.json').then(function (r) { return r.json(); });
+    return nightsData.then(function (d) {
+      var p = new URLSearchParams(q.replace(/^\?/, ''));
+      if (k === 'w') {
+        if (p.get('year')) { var y = JSON.parse(JSON.stringify(d.wrappedAll)); y.scope = 'year'; y.year = +p.get('year'); return json(200, y); }
+        return json(200, p.get('night') === 'all' ? d.wrappedAll : d.wrappedNight);
+      }
+      if (k === 'next') return json(200, { next: [], nights: 0 });
+      if (k === 'dj') {
+        if (!p.get('dj')) return json(200, { djs: d.djs });
+        var one = d.dj[String(p.get('dj')).trim().toUpperCase()];
+        return one ? json(200, one) : json(404, { error: 'No show nights on this box for that DJ.' });
+      }
+      return json(200, d[k]);
+    }).catch(function () { return json(200, {}); });
+  }
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
     var m = /^(?:https?:\/\/[^/]+)?\/api\/([^?#]*)(\?[^#]*)?/.exec(url);
     if (!m) return /^https?:/.test(url) || !realFetch ? json(404, { error: SENT }) : realFetch(input, init);
     var method = ((init && init.method) || (input && input.method) || 'GET').toUpperCase();
     if (method !== 'GET') { toast(); return json(403, { error: SENT, demo: true }); } // never 401: that opens the lock
+    var nd = nightsAnswer(m[1], m[2] || '');
+    if (nd) return nd;
     var a = API[m[1]];
     if (a === undefined) return json(200, {});
     return json(200, typeof a === 'function' ? a(m[2] || '') : a);

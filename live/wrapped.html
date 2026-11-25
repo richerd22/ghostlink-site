@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>GHOST WRAPPED</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+<script src="shim.js"></script>
+<script src="ghostmode.js"></script>
+<style>
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
+:root { --bg: #000; --fg: #fff; --grey: #9a9a9a; --dim: #555; --line: #222; color-scheme: dark; }
+/* GHOST MODE (a secret: tap the ghost three times, or type B O O): the page turns into BOO's sheet */
+:root.ghost-mode { --bg: #fff; --fg: #000; --grey: #555; --dim: #777; --line: #ccc; color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 400 15px/1.35 "JetBrains Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 12px 16px 28px; }
+.bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bar a, .bar button, .bar select { font: inherit; font-size: 13px; color: var(--fg); background: var(--bg); border: 1px solid var(--fg); padding: 6px 10px; text-decoration: none; cursor: pointer; min-height: 34px; }
+.bar .grow { flex: 1; }
+.bar .opt { border-color: var(--dim); color: var(--grey); }
+.bar .opt[aria-pressed="true"] { color: var(--fg); border-color: var(--fg); }
+.msg { color: var(--grey); margin-top: 18px; }
+.msg[hidden], [hidden] { display: none !important; }
+.cards { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; margin-top: 14px; padding-bottom: 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.cards::-webkit-scrollbar { display: none; }
+.card { flex: 0 0 min(340px, calc(100vw - 48px)); min-height: min(520px, calc(100vh - 170px)); scroll-snap-align: center; border: 1px solid var(--line);
+  padding: 22px 20px 16px; display: flex; flex-direction: column; position: relative; }
+:root.ghost-mode .card { border-color: var(--fg); }
+/* the sheet's zigzag hem along the bottom of every card in GHOST MODE */
+:root.ghost-mode .card::after { content: "\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"; position: absolute; left: 0; right: 0; bottom: -1.1em; overflow: hidden; white-space: nowrap; font-size: 11px; line-height: 1; color: var(--fg); }
+pre.boo { margin: 0 0 18px; font-size: 13px; line-height: 13px; cursor: default; user-select: none; -webkit-user-select: none; }
+.kicker { color: var(--grey); font-size: 12px; letter-spacing: .14em; }
+.big { font-size: 34px; font-weight: 600; letter-spacing: .04em; line-height: 1.1; margin: 8px 0 14px; overflow-wrap: anywhere; }
+.c-cover .big, .c-you .big { font-size: 30px; }
+.keydot { display: block; width: 44px; height: 44px; margin: 0 0 14px; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { padding: 7px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+li:first-child { border-top: 0; }
+li small { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; }
+li b { font-weight: 600; font-size: 15px; }
+.c-cover li b, .c-you li b { font-weight: 400; color: var(--grey); }
+.own { color: var(--dim); font-size: 11px; letter-spacing: .1em; margin-top: 10px; }
+.foot { margin-top: auto; padding-top: 12px; color: var(--dim); font-size: 11px; letter-spacing: .1em; }
+.nav { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.nav button { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--fg); min-width: 44px; min-height: 36px; cursor: pointer; }
+.dots { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; justify-content: center; }
+.dots button { width: 12px; height: 12px; min-width: 0; min-height: 0; padding: 0; border: 1px solid var(--dim); background: none; }
+.dots button.on { background: var(--fg); border-color: var(--fg); }
+.note { color: var(--dim); font-size: 11px; margin-top: 14px; }
+footer { color: var(--dim); font-size: 11px; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a href="/#played">BACK</a>
+    <select id="which" aria-label="Which nights"><option value="all">ALL NIGHTS</option></select>
+    <span class="grow"></span>
+    <button type="button" class="opt" id="venuesBtn" title="Venue names on the cards and the picture (off: never shown)">VENUES: OFF</button>
+    <button type="button" class="opt" id="titlesBtn" title="Track and artist names on the cards and the picture">TITLES: ON</button>
+    <button type="button" id="save">SAVE IMAGE</button>
+    <button type="button" id="share" hidden>SHARE</button>
+  </div>
+  <div class="msg" id="msg">Adding it all up...</div>
+  <div class="cards" id="cards" aria-live="polite"></div>
+  <div class="nav"><button type="button" id="prev" aria-label="Back one card">&lt;</button><div class="dots" id="dots"></div><button type="button" id="next" aria-label="Next card">&gt;</button></div>
+  <div class="note">Swipe, or the arrow keys. SAVE IMAGE makes the picture on this phone; nothing is sent anywhere. Venue names are off unless VENUES is on.</div>
+  <footer>GHOST LINK · made with &lt;3 in Boston, MA by Third Polar Arch</footer>
+</div>
+<script src="wrapped.js"></script>
+<script>Wrapped.page();</script>
+</body>
+</html>

@@ -230,6 +230,14 @@ const Recordings = (() => {
     done.addEventListener('click', () => { hand.hidden = true; });
     row.append(cp, rv, done);
     hand.append(row, msg);
+    // #154: their GHOST WRAPPED picture, made on this phone for the owner to hand over (AirDrop, a message). The DJ's
+    // link itself stays this one set (#117: never another night, never the venue).
+    const dj = String(f.dj || '').trim();
+    if (dj && dj.charAt(0) !== '(' && !/^(SOUNDCHECK|NEXT DJ|SET \d+)$/.test(dj)) {
+      const w = el('a', 'btn mini', 'THEIR GHOST WRAPPED →');
+      w.href = 'wrapped.html?dj=' + encodeURIComponent(dj);
+      hand.append(el('div', 'note', 'Their nights on this box as a picture to save and send them yourself (the link above stays just this set):'), w);
+    }
     hand.scrollIntoView({ block: 'nearest' });
   }
 

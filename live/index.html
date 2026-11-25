@@ -33,9 +33,12 @@ button { font: inherit; letter-spacing: inherit; color: inherit; background: non
 .say p { margin: 0; color: #9a9a9a; font-size: 12px; line-height: 1.35; letter-spacing: .04em; min-width: 0; }
 .say button { color: #9a9a9a; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; flex: 0 0 auto; }
 .say button:hover, .say button[aria-pressed="true"] { color: #fff; }
+.say .btns { display: flex; gap: 14px; flex: 0 0 auto; }
 .bare .as { display: none; }
 iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; display: block; background: #000; }
 @media (max-width: 420px) { .as { padding: 8px 12px 0; } .chips { gap: 4px; } .chips button { padding: 7px 6px; font-size: 10.5px; } .chips > span { margin-right: 2px; font-size: 10.5px; } .say { flex-wrap: wrap; row-gap: 6px; } }
+/* #154: six views fit one row on a phone (the row keeps its "See it as" label for screen readers) */
+@media (max-width: 420px) { .chips > span { display: none; } }
 /* A laptop: one row (views, what this one is for, SHOW EVERYTHING), so the dashboard keeps its height. */
 @media (min-width: 900px) { .as { display: flex; align-items: center; gap: 16px; padding: 8px 16px; } .say { flex: 1 1 auto; padding: 0; min-width: 0; } .say p { font-size: 11px; } }
 </style>
@@ -43,15 +46,16 @@ iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; display: block; 
 <body>
 <!-- SEE IT LIVE (#83, #140, #143): the real dashboard (dash.html, copied from the box's files by bin/site) on made-up
      decks. It opens CALM (?calm=1 in the frame: two decks, no crew call, no extras; shim.js) with a SEE IT AS row:
-     DJ = DECKS, LIGHTS + MANAGER = NOW's roles, CREW = the STAGE CLOCK, TV = NEXT UP (the room's screen). SHOW
+     DJ = DECKS, LIGHTS + MANAGER = NOW's roles, CREW = the STAGE CLOCK, TV = NEXT UP (the room's screen), AFTER = GHOST
+     WRAPPED on made-up nights with SET INSIGHTS one tap on (#154; their answers: demo-nights.json). SHOW
      EVERYTHING = the whole dashboard, every tab and card. ?as=<view> picks one (a link can share it); ?bare=1 is the
      plain dashboard with no row (the home page's desk window); an old #tab or ?layout= link opens everything, as before. -->
 <div class="bar"><a href="../">&larr; GHOST LINK</a><span>DEMO<i class="long"> · MADE-UP DECKS</i></span><button type="button" id="fs" hidden>FULL SCREEN</button></div>
 <div class="as" id="as">
   <div class="chips" role="group" aria-label="See it as"><span>SEE IT AS</span>
-    <button type="button" data-as="dj" aria-pressed="false">DJ</button><button type="button" data-as="lights" aria-pressed="false">LIGHTS</button><button type="button" data-as="manager" aria-pressed="false">MANAGER</button><button type="button" data-as="crew" aria-pressed="false">CREW</button><button type="button" data-as="tv" aria-pressed="false">TV</button>
+    <button type="button" data-as="dj" aria-pressed="false">DJ</button><button type="button" data-as="lights" aria-pressed="false">LIGHTS</button><button type="button" data-as="manager" aria-pressed="false">MANAGER</button><button type="button" data-as="crew" aria-pressed="false">CREW</button><button type="button" data-as="tv" aria-pressed="false">TV</button><button type="button" data-as="after" aria-pressed="false">AFTER</button>
   </div>
-  <div class="say"><p id="say" aria-live="polite"></p><button type="button" id="all" aria-pressed="false">SHOW EVERYTHING</button></div>
+  <div class="say"><p id="say" aria-live="polite"></p><span class="btns"><button type="button" id="also" hidden></button><button type="button" id="all" aria-pressed="false">SHOW EVERYTHING</button></span></div>
 </div>
 <iframe id="dash" title="GHOST LINK dashboard demo, made-up decks" allow="fullscreen"></iframe>
 <script>
@@ -66,16 +70,22 @@ iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; display: block; 
     manager: { src: CALM, tab: '#now/manager', say: 'Who’s on, who’s next, the lineup, the night so far.' },
     crew: { src: 'stage.html?calm=1', say: 'The stage clock: when the set ends, the wrap-up call.' },
     tv: { src: 'crowd.html', say: 'For a screen in the room: who’s on now, who’s next.' },
+    // #154: after the night, on made-up nights: GHOST WRAPPED (AFTER), and SET INSIGHTS one tap from it
+    after: { src: 'wrapped.html?night=all', say: 'After the night: your nights as cards to swipe and save.', also: 'insights', alsoSay: 'SET INSIGHTS' },
+    insights: { src: 'setinsights.html', chip: 'after', say: 'How a night flowed: tempo, keys, each change-over, what usually comes next.', also: 'after', alsoSay: 'GHOST WRAPPED' },
     all: { src: 'dash.html?demo=1&notour', tab: '', say: 'The whole dashboard: every tab, every card. Tap around.' }
   };
   var cur = null, loaded = '';
   frame.addEventListener('load', function () { loaded = frame.getAttribute('src').split('#')[0]; hookEsc(); });
 
   function show(v, first) {
-    if (!VIEWS[v]) v = 'dj';
+    if (!Object.prototype.hasOwnProperty.call(VIEWS, v)) v = 'dj'; // #155: ?as=constructor isn't a view
     var V = VIEWS[v], was = cur;
     cur = v;
-    document.querySelectorAll('[data-as]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-as') === v)); });
+    document.querySelectorAll('[data-as]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-as') === (V.chip || v))); });
+    var also = document.getElementById('also');
+    also.hidden = !V.also;
+    if (V.also) { also.textContent = V.alsoSay; also.setAttribute('data-to', V.also); }
     var all = document.getElementById('all');
     all.setAttribute('aria-pressed', String(v === 'all'));
     all.textContent = v === 'all' ? 'BACK TO SIMPLE' : 'SHOW EVERYTHING';
@@ -103,6 +113,7 @@ iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; display: block; 
   } else {
     document.querySelectorAll('[data-as]').forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-as')); }); });
     document.getElementById('all').addEventListener('click', function () { show(cur === 'all' ? 'dj' : 'all'); });
+    document.getElementById('also').addEventListener('click', function () { show(this.getAttribute('data-to')); });
     show(q.get('as') || 'dj', true);
   }
 

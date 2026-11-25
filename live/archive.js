@@ -49,6 +49,7 @@ const Archive = (() => {
     const mixBits = Object.keys(names).filter(k => st[k]).map(k => names[k] + ' ' + Math.round(st[k] / p.mixes * 100) + '%').join(' · ');
     const row = (a, b) => b == null || b === '' ? '' : `<div class="ins-row"><span>${a}</span><b>${b}</b></div>`;
     return card('DJ PROFILE · ' + esc(p.dj.toUpperCase()),
+      `<a class="btn mini" href="dj.html?dj=${esc(encodeURIComponent(p.dj))}">DJ PAGE · THEIR WRAPPED →</a>` + // #154 DJ PROFILE across nights
       row('Nights', p.nights + ' · ' + p.tracks + ' tracks · ' + p.hours + ' h') +
       row('Tempo', p.avgBpm ? p.avgBpm + ' BPM avg · ' + Math.round(p.bpmLow) + '-' + Math.round(p.bpmHigh) : null) +
       row('Mixes', p.mixes ? p.mixes + ' · typical ' + secs(p.avgMixSec) : null) +
@@ -107,7 +108,7 @@ const Archive = (() => {
     $('aCards').innerHTML = !s.tracks ? '' : [
       profileCard(),
       card('MOST PLAYED ARTISTS', bars(s.topArtists, 'q')),
-      $('aDj').value ? '' : card('DJS', bars(s.topDjs, 'dj')),
+      $('aDj').value ? '' : card('DJS', bars(s.topDjs, 'dj') + ((s.topDjs || []).length ? '<a class="btn mini" href="dj.html">EACH DJ\'S PAGE →</a>' : '')), // #154
       $('aVenue').value ? '' : card('VENUES', bars(s.topVenues, 'venue')),
       card('GENRES', bars(s.genres)),
       card('KEYS', bars(s.keys)),

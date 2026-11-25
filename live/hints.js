@@ -9,7 +9,7 @@
 // No sound, no pop-up, no colour change beyond the word. Screen only; nothing is sent; the players are never touched.
 // Pure helpers (of / words / day) are tested in src/test/js/setinsights.test.js. Text only: app.js escapes what it shows.
 const Hints = (() => {
-  let cfg = { again: true, here: false }, at = 0;
+  let cfg = { again: true, here: false, next: false }, at = 0; // #154 next = OFTEN NEXT (related.js)
   const MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   const pad = n => String(n).padStart(2, '0');
 
@@ -17,7 +17,7 @@ const Hints = (() => {
     if (typeof fetch === 'undefined' || Date.now() - at < 60000) return;
     at = Date.now();
     fetch('/api/hints', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(j => {
-      if (j && typeof j.again === 'boolean') cfg = { again: j.again, here: j.here === true };
+      if (j && typeof j.again === 'boolean') cfg = { again: j.again, here: j.here === true, next: j.next === true };
     }).catch(() => {}); // the box's defaults stay
   }
 
@@ -68,7 +68,10 @@ const Hints = (() => {
     return h ? [words(h, skew())] : [];
   }
 
-  return { of, words, day, again, tile, flags, _set: c => { cfg = c; at = Date.now(); } };
+  /** #154 Is OFTEN NEXT on? (off by default) */
+  function next() { load(); return cfg.next === true; }
+
+  return { of, words, day, again, tile, flags, next, _set: c => { cfg = c; at = Date.now(); } };
 })();
 // PLAYED's SET INSIGHTS link follows the night picked there (like the NIGHT REPORT's, nightnote.js)
 if (typeof document !== 'undefined') addEventListener('DOMContentLoaded', () => {

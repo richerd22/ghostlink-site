@@ -950,6 +950,7 @@ body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(3)) > :first-child 
 .hide-next .hn-row span { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hide-next .hn-row.on span { color: var(--fg); }
 .hide-next .hn-row .mini { margin: 0; flex: 0 0 auto; }
+.hide-next .hn-where { font-size: 10px; letter-spacing: .08em; color: var(--grey); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* #152 */
 /* #125 AFTER THE NIGHT: NO ANALYSIS tag on a deck (thin.js) + NOW's + NOTE (nightnote.js) */
 .tag.thin { border: 1px solid var(--grey); color: var(--grey); font-weight: 400; }
 .night-note { margin-top: 10px; }

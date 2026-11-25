@@ -158,7 +158,7 @@
     sw.append(a);
     if (s.on) sw.append(btn('SEE THE LIST', '', () => { open(true); window.scrollTo(0, 0); }));
     rows.push(sw);
-    rows.push(el('div', 'note', 'Song requests from the crowd\'s phones: a song, an artist, votes. No money, no sign-up. Off until you turn it on; it closes again on the next night. A night preset you saved can turn it on.'));
+    rows.push(el('div', 'note', 'Song requests from the crowd\'s phones: a song, an artist, votes. No money, no sign-up. Off until the owner turns it on; it closes again on the next night. A night preset you saved can turn it on.'));
     const opt = (label, key, val, what) => {
       const d = el('div', 'rq-opt');
       d.append(btn(label + ': ' + (val ? 'ON' : 'OFF'), val ? 'on' : '', () => setting(key, !val)), el('span', 'note', what));

@@ -356,6 +356,7 @@ function renderDeck(p) {
     mix ? `<span style="color:${mix.ok ? 'var(--fg)' : 'var(--warn)'}">MIX ${esc(mix.text)}</span>` : '',
     ...venueNotes(d, lk),
     ...(typeof Hints !== 'undefined' ? Hints.tile(d, lk).map(w => `<span style="color:var(--grey)">${esc(w)}</span>`) : []), // #147 PLAYED HERE BEFORE (hints.js)
+    ...(typeof Related !== 'undefined' ? Related.tile(d).map(w => `<span style="color:var(--grey)">${esc(w)}</span>`) : []), // #154 OFTEN NEXT (related.js, off by default)
     i.genre ? `<span>${esc(i.genre)}</span>` : '',
     i.looping ? '<span style="color:var(--warn)">LOOP' + (i.loopBeats ? ' ' + i.loopBeats : '') + '</span>' : '',
     i.synced ? '<span>' + (i.bpmSyncOnly ? 'BPM SYNC' : 'SYNC') + '</span>' : '',
@@ -2525,7 +2526,8 @@ function showView() {
   if (v === 'status') { renderStatus(); renderGhostDeck(); }
   if (v === 'now' && sub && ROLES[sub]) setRole(sub);
   if (v === 'decks' && sub === 'layout' && $('layoutPanel').hidden) $('layoutBtn').click();
-  const target = sub && ($('go-' + sub) || (sub === 'layout' ? $('layoutPanel') : v !== 'now' && $(sub)));
+  // #152: a view's own part first (#played/wantlist = #go-played-wantlist), then the shared go-<k> (STATUS's folds)
+  const target = sub && ($('go-' + v + '-' + sub) || $('go-' + sub) || (sub === 'layout' ? $('layoutPanel') : v !== 'now' && $(sub)));
   if (target) {
     if (target.tagName === 'DETAILS') target.open = true;
     requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));

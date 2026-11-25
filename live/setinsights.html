@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
+<title>GHOST LINK SET INSIGHTS</title>
+<meta name="robots" content="noindex">
+<style>
+/* SET INSIGHTS (#147): the night's journey, each change-over, the night against the others. Prints on white. */
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
+:root { --bg: #000; --fg: #fff; --grey: #9a9a9a; --dim: #555; --line: #222; --air: #ff2a2a; --warn: #ffb000; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 400 15px/1.4 "JetBrains Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 14px 16px 40px; }
+.bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bar .grow { flex: 1; }
+a.btn, button, select, input { font: inherit; font-size: 13px; color: var(--fg); background: var(--bg); border: 1px solid var(--fg); padding: 6px 10px; text-decoration: none; cursor: pointer; border-radius: 0; }
+button.on { background: var(--fg); color: var(--bg); }
+input { cursor: text; }
+.card { margin-top: 14px; border: 1px solid var(--line); padding: 18px 16px; }
+h1 { margin: 0; font-size: 20px; letter-spacing: .14em; font-weight: 600; }
+.sub { color: var(--grey); font-size: 12px; letter-spacing: .08em; margin-top: 4px; overflow-wrap: anywhere; }
+h2 { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; font-weight: 400; margin: 22px 0 8px; padding-top: 12px; border-top: 1px solid var(--line); }
+h3 { font-size: 12px; letter-spacing: .1em; font-weight: 600; margin: 14px 0 4px; }
+.nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 12px 16px; }
+.nums small { display: block; color: var(--grey); font-size: 11px; letter-spacing: .12em; }
+.nums b { font-size: 22px; font-weight: 600; overflow-wrap: anywhere; }
+.chart { width: 100%; height: auto; display: block; margin-top: 6px; }
+.chart text { font: 10px "JetBrains Mono", monospace; fill: var(--grey); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--grey); font-size: 11px; margin-top: 4px; }
+.legend i { display: inline-block; width: 14px; height: 0; border-top: 2px solid var(--fg); vertical-align: middle; margin-right: 4px; }
+.legend i.en { border-top: 2px dashed var(--warn); }
+.legend i.apart { width: 8px; height: 8px; border: 1.5px solid var(--fg); border-radius: 50%; }
+.keys { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.keys span { border: 1px solid var(--dim); padding: 1px 6px; font-size: 12px; }
+.keys span.apart { border-style: dashed; border-color: var(--grey); }
+.keys span.lift { border-color: var(--fg); }
+.keys em { font-style: normal; color: var(--grey); font-size: 11px; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { padding: 8px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+li:first-child { border-top: 0; }
+.co { display: grid; grid-template-columns: 6ch 1fr; gap: 2px 10px; }
+.co .tm { color: var(--grey); font-size: 13px; }
+.co .tt { font-size: 14px; }
+.co .tt span { color: var(--grey); }
+.co .w { grid-column: 2; color: var(--grey); font-size: 12px; letter-spacing: .04em; }
+.co .w b { color: var(--fg); font-weight: 400; }
+.co .w b.jump { font-weight: 600; }
+.co .hand { grid-column: 2; font-size: 11px; letter-spacing: .1em; }
+.row { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.row:first-child { border-top: 0; }
+.row span { overflow-wrap: anywhere; }
+.row b { font-weight: 400; color: var(--grey); text-align: right; flex-shrink: 0; max-width: 55%; }
+.share { height: 6px; background: var(--line); margin: 2px 0 6px; }
+.share i { display: block; height: 100%; background: var(--fg); }
+.line { color: var(--grey); font-size: 13px; margin-top: 6px; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 4px; }
+.filters button { font-size: 12px; padding: 4px 8px; }
+.hours { width: 100%; border-collapse: collapse; font-size: 13px; }
+.hours th { color: var(--grey); font-weight: 400; font-size: 11px; letter-spacing: .08em; text-align: right; padding: 4px 6px; }
+.hours th:first-child, .hours td:first-child { text-align: left; }
+.hours td { text-align: right; padding: 4px 6px; border-top: 1px solid var(--line); }
+/* #154 RELATED TRACKS + the DJ PROFILE link on ON AIR */
+.rel { padding: 7px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.rel .tt { font-size: 14px; }
+.rel .w { color: var(--grey); font-size: 12px; letter-spacing: .04em; }
+.rel .w.dim { color: var(--fg); }
+a.djlink { color: var(--fg); text-underline-offset: 3px; }
+.msg { color: var(--grey); margin-top: 18px; }
+.unlock[hidden], [hidden] { display: none !important; }
+.unlock { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.foot { color: var(--dim); font-size: 11px; margin-top: 18px; }
+@media (max-width: 480px) {
+  .wrap { padding: 12px 12px 32px; }
+  .card { padding: 14px 12px; }
+  .nums b { font-size: 18px; }
+}
+@media print {
+  :root { --bg: #fff; --fg: #000; --grey: #444; --dim: #666; --line: #bbb; --air: #b00000; --warn: #8a5a00; color-scheme: light; }
+  body { font-size: 11pt; }
+  .bar, .unlock, .filters, .noprint, select, button { display: none !important; }
+  .card { border: 0; padding: 0; margin: 0; }
+  .wrap { max-width: none; padding: 0; }
+  h2 { break-after: avoid; }
+  li, .row { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a class="btn" href="/#played">BACK</a>
+    <select id="pick" aria-label="Night"></select>
+    <span class="grow"></span>
+    <a class="btn" id="report" href="night.html">NIGHT REPORT</a>
+    <button type="button" id="print">PRINT</button>
+  </div>
+  <form class="unlock" id="unlock" hidden>
+    <input type="password" id="pw" placeholder="Password or tonight's crew code" autocomplete="current-password" aria-label="Password">
+    <button type="submit">UNLOCK</button>
+  </form>
+  <div class="msg" id="msg">Loading the night...</div>
+  <div class="card" id="card" hidden></div>
+</div>
+<script src="shim.js"></script>
+<script src="setinsights.js"></script>
+<script>SetInsights.page();</script>
+</body>
+</html>

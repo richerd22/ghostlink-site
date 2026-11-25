@@ -14,8 +14,10 @@
  *    NOT ON THIS BOX instead of a row of its own up top.
  *  - NOW: a block with nothing to say hides (ON NOW with no plan and no DJ, the LINEUP with none, SHOW CONTROL all
  *    off, ROOM without a panel mic, SOUND IN without a card). EDIT still lists and shows every block.
- *    SHOW STOP / HOLD sit on NOW for a phone with the crew code or the owner password (or while a HOLD is on); a
- *    locked phone doesn't get two big buttons it can't use. The picker and WEATHER's HOLD? are unchanged.
+ *    SHOW STOP / HOLD sit on NOW for a phone with the crew code or the owner password (or while the box's HOLD is on:
+ *    RESUME); a locked phone doesn't get two big buttons it can't use. #152: the owner's WHO SEES SHOW STOP / HOLD
+ *    (ALL SETTINGS -> TONIGHT) can put them on EVERY PHONE; pressing still needs the code. The picker and WEATHER's
+ *    HOLD? are unchanged.
  * Nothing here turns anything on or off, sends or records: it only orders, folds and hides empty cards.
  * Loaded after app.js, settings.js, firstrun.js and safetyctl.js; the pure parts load under Node for the tests.
  */
@@ -66,7 +68,7 @@ const Calm = (() => {
 
   // ---------- ALL SETTINGS ----------
   const SHEET = [
-    ['TONIGHT', false, k => ['tonight.home', 'ear', 'rec.autoMp3', 'crew.autoDrop'].includes(k) || k.startsWith('safety.') || k.startsWith('hints.')],
+    ['TONIGHT', false, k => ['tonight.home', 'ear', 'rec.autoMp3', 'crew.autoDrop', 'safety.phones', 'moments.crewCall'].includes(k) || k.startsWith('safety.') || k.startsWith('hints.')], // #152: WHO SEES SHOW STOP / HOLD, A MOMENT SENDS ITS CREW CALL
     ['THIS VENUE', false, k => k === 'wifi.mode'],
     ['WHO SEES WHAT', false, k => ['songid', 'stream.hideIds', 'wantlist', 'fun.tvGhost'].includes(k) || k.startsWith('requests.') || k.startsWith('transitions.')],
     ['THE BOX', false, k => k === 'unit' || k === 'password' || k === 'fun.milestones'],
@@ -113,8 +115,13 @@ const Calm = (() => {
       default: return false;
     }
   }
-  /** SHOW STOP / HOLD on NOW: for a phone with the crew code or the password, or while a HOLD is on. */
-  const safetyRowShown = c => !!(c.unlocked || c.hold);
+  /**
+   * SHOW STOP / HOLD on NOW. c: {unlocked, hold, holdSrc, phones}. A phone with the crew code or the password always
+   * (it can press them). #152 phones 'all' (EVERY PHONE, the owner's choice): every phone. While a HOLD is on its RESUME
+   * shows to whoever can use it: the box's own HOLD on any phone (pressing asks for the code); a HARD STOP HOLD ends in
+   * HARD STOP, so a locked phone doesn't get a button it can't use. hold true without holdSrc = the box's (as before).
+   */
+  const safetyRowShown = c => !!(c.unlocked || c.phones === 'all' || (c.hold && (c.holdSrc == null || c.holdSrc === 'box')));
 
   const pure = { statusPlan, onSections, moreLine, sheet, sheetSection, knownKey, quietBlock, safetyRowShown, KNOWN, NOT_HERE };
   if (typeof document === 'undefined') return pure;
@@ -126,7 +133,7 @@ const Calm = (() => {
 
   function arrangeStatus() {
     if (!status) return;
-    // By element, never by id alone: PLAYED has its own #go-wantlist (the list), STATUS's fold has the same id.
+    // By element (the folds app.js built). #152: PLAYED's WANTLIST list is #go-played-wantlist, so ids are unique now.
     const secs = [...status.querySelectorAll(':scope > details.sect[id^="go-"]')];
     const byKey = new Map(secs.map(d => [d.id.slice(3), d]));
     const sec = k => byKey.get(k);
@@ -228,9 +235,9 @@ const Calm = (() => {
     });
     const row = document.querySelector('#safetyNow .sfc-row');
     if (row) {
-      let hold = false;
-      try { hold = !!(Safety.now() && Safety.now().hold); } catch (e) {}
-      const hide = !safetyRowShown({ unlocked: typeof unlocked !== 'undefined' && unlocked, hold });
+      let hold = false, holdSrc = null, phones = 'crew';
+      try { const sn = Safety.now(); hold = !!(sn && sn.hold); holdSrc = hold ? sn.hold.src || null : null; phones = (sn && sn.phones) || 'crew'; } catch (e) {}
+      const hide = !safetyRowShown({ unlocked: typeof unlocked !== 'undefined' && unlocked, hold, holdSrc, phones });
       if (row.hidden !== hide) row.hidden = hide;
     }
   }

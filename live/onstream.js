@@ -61,15 +61,25 @@ const HideNext = (() => {
     if (!st || !st.hideIds || !Array.isArray(st.decks)) return [];
     return st.decks.filter(d => d && d.deck !== st.now && String(d.title || '').trim()).slice(0, 3);
   }
+  /**
+   * #152 (#148's suggestion): the one tiny line under HIDE NEXT, "HIDES ON: STREAM, TV", only while HIDE IDS is on and
+   * a place other than the stream is ticked (the stream alone is the default: no line). The names are the box's own
+   * placeRows (the box decides which places to list).
+   */
+  function placesHint(st) {
+    const rows = st && st.hideIds && Array.isArray(st.placeRows) ? st.placeRows.filter(r => r && r.on === true) : [];
+    if (!rows.some(r => r.place !== 'stream')) return '';
+    return 'HIDES ON: ' + rows.map(r => String(r.name || '')).join(', ');
+  }
   /** The words: [button text or null, line text]. */
   function words(d) {
     const t = String(d.title || '').trim();
     if (d.says && !d.listed) return [null, 'DECK ' + d.deck + ' GOES OUT AS ID · ' + t];
     return d.listed ? ['SHOW IT', 'NEXT IS HIDDEN ON STREAM · DECK ' + d.deck + ' · ' + t] : ['HIDE NEXT', 'DECK ' + d.deck + ' · ' + t];
   }
-  if (typeof document === 'undefined' || typeof $ !== 'function') return { lines, words };
+  if (typeof document === 'undefined' || typeof $ !== 'function') return { lines, words, placesHint };
   const body = $('nowBody');
-  if (!body) return { lines, words };
+  if (!body) return { lines, words, placesHint };
   const bar = document.createElement('div');
   bar.className = 'hide-next';
   bar.id = 'hideNext';
@@ -82,7 +92,8 @@ const HideNext = (() => {
     let st = null;
     try { const r = await fetch('/api/onstream', { cache: 'no-store' }); if (r.ok) st = await r.json(); } catch (e) { return; }
     const ls = lines(st);
-    const s = JSON.stringify(ls);
+    const hint = ls.length ? placesHint(st) : '';
+    const s = JSON.stringify([ls, hint]);
     if (s === sig) return;
     sig = s;
     bar.replaceChildren();
@@ -107,10 +118,11 @@ const HideNext = (() => {
       }
       bar.append(row);
     });
+    if (hint) { const h = document.createElement('small'); h.className = 'hn-where'; h.textContent = hint; bar.append(h); }
     bar.hidden = !ls.length;
   }
   tick();
   setInterval(tick, 3000);
-  return { lines, words };
+  return { lines, words, placesHint };
 })();
 if (typeof module !== 'undefined') module.exports = HideNext;

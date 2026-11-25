@@ -98,7 +98,7 @@
 
   const say = el('div', 'note');
   const help = el('div', 'note');
-  help.append('Off until you turn it on. Plain RGB or RGBW lights: a WLED strip, or Art-Net / sACN fixtures. ');
+  help.append('Off until the owner turns it on. Plain RGB or RGBW lights: a WLED strip, or Art-Net / sACN fixtures. ');
   const q = el('button', 'q', '?'); q.type = 'button'; q.setAttribute('data-tip', ''); q.setAttribute('aria-label', 'More');
   help.append(q);
   const tip = el('div', 'note tip');
