@@ -868,6 +868,8 @@ function frameNight(q, set, setH) {
     const rm = s && s.room;
     set('.n-room', rm ? (rm.cal ? '' : '~') + Math.round(rm.db) + ' dB' : '--');
     set('.n-room-s', rm ? 'AVG ' + Math.round(rm.leq) + ' dB' + (rm.over100 ? ' · ' + Math.round(rm.over100 / 60) + ' MIN OVER 100' : '') : 'needs a HARD STOP panel mic');
+    const rp = q('.n-room-p'), also = roomAlso(rm); // #158: the other panels' mics, only when 2+ report
+    if (rp) { rp.hidden = !also; set('.n-room-p', also); }
   }
   if (q('.n-sc')) {
     const c = S.sc;
@@ -900,7 +902,7 @@ const BLOCKS = {
   health: { name: 'DJ Link health', always: true, html: `<div class="cell"><small>DJ LINK</small><div class="v n-link" style="font-size:28px"></div><div class="s n-health"></div></div>` },
   boxhealth: { name: 'The box (temp, Wi-Fi, sound, REC)', always: true, html: `<div class="cell wide"><small>THE BOX <a href="#status/box" class="cell-link">DETAILS →</a></small><div class="n-box mini-stats"></div></div>` },
   sound: { name: 'Sound in (level, silence)', always: true, html: `<div class="cell wide"><small>SOUND IN <a href="#network/sound" class="cell-link">RECORD →</a></small><div class="v n-snd"></div><div class="snd-bar"><b class="n-snd-bar"></b></div><div class="s n-snd-s"></div></div>` },
-  room: { name: 'Room level (dB)', always: true, html: `<div class="cell"><small>ROOM</small><div class="v n-room"></div><div class="s n-room-s"></div></div>` },
+  room: { name: 'Room level (dB)', always: true, html: `<div class="cell"><small>ROOM</small><div class="v n-room"></div><div class="s n-room-s"></div><div class="s n-room-p" hidden></div></div>` },
   showctl: { name: 'Show control', always: true, html: `<div class="cell wide"><small>SHOW CONTROL <a href="#status/show-control" class="cell-link">SET UP →</a></small><div class="n-sc sc-list"></div></div>` },
   set: { name: 'Tracks + avg BPM', html: `<div class="cell"><small>TRACKS PLAYED</small><div class="v n-count"></div><div class="s n-since"></div></div><div class="cell"><small>AVG BPM</small><div class="v n-avg"></div></div>` },
 };
@@ -1193,6 +1195,14 @@ $('recapBtn').addEventListener('click', () => {
 
 // ---------- status ----------
 
+// #158 PANELS: the other panels' room levels, one short line ("ALSO UNIT 02 ~88 dB"), or '' (fewer than 2 report)
+function roomAlso(rm) {
+  const ls = rm && Array.isArray(rm.levels) ? rm.levels.filter(l => !l.room) : [];
+  if (!ls.length) return '';
+  const one = l => String(l.unit) + ' ' + (l.cal ? '' : '~') + Math.round(l.db);
+  return 'ALSO ' + (ls.length === 1 ? 'UNIT ' + one(ls[0]) : ls.map(one).join(' · ')) + ' dB';
+}
+
 function renderStatus() {
   const s = S.status;
   if (!s) return;
@@ -1203,7 +1213,8 @@ function renderStatus() {
   const gc = (s.gearCare || []).slice();
   const rm = s.room;
   if (rm) gc.unshift({ title: 'ROOM ' + (rm.cal ? '' : '~') + Math.round(rm.db) + ' dB · AVG ' + Math.round(rm.leq) + ' dB',
-    fix: (rm.over100 ? Math.round(rm.over100 / 60) + ' min over 100 dB tonight. ' : '') + "A HARD STOP panel's mic" + (rm.cal ? '.' : ', not calibrated: like a phone meter.') });
+    fix: (rm.over100 ? Math.round(rm.over100 / 60) + ' min over 100 dB tonight. ' : '') + "A HARD STOP panel's mic" + (rm.cal ? '.' : ', not calibrated: like a phone meter.')
+      + (roomAlso(rm) ? ' ' + (rm.unit ? 'UNIT ' + rm.unit + ' is the room; ' : '') + roomAlso(rm) + '.' : '') }); // #158
   $('gearCare').hidden = !gc.length;
   setHTML($('gearList'), gc.map(p => `<li><b>${esc(p.title)}</b> ${esc(p.fix || p.detail || '')}</li>`).join(''));
   const up = s.uptimeSeconds;
