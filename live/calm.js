@@ -70,7 +70,7 @@ const Calm = (() => {
   const SHEET = [
     ['TONIGHT', false, k => ['tonight.home', 'ear', 'rec.autoMp3', 'crew.autoDrop', 'safety.phones', 'moments.crewCall'].includes(k) || k.startsWith('safety.') || k.startsWith('hints.')], // #152: WHO SEES SHOW STOP / HOLD, A MOMENT SENDS ITS CREW CALL
     ['THIS VENUE', false, k => k === 'wifi.mode'],
-    ['WHO SEES WHAT', false, k => ['songid', 'stream.hideIds', 'wantlist', 'fun.tvGhost'].includes(k) || k.startsWith('requests.') || k.startsWith('transitions.')],
+    ['WHO SEES WHAT', false, k => ['songid', 'stream.hideIds', 'wantlist', 'fun.tvGhost', 'watch.olderNights'].includes(k) || k.startsWith('requests.') || k.startsWith('transitions.')],
     ['THE BOX', false, k => k === 'unit' || k === 'password' || k === 'fun.milestones'],
     ['LIGHTS', true, k => k.startsWith('lights.')],
     ['SHOW CONTROL', true, k => k.startsWith('showctl.') || k.startsWith('osc.')],

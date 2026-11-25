@@ -457,6 +457,10 @@
     <div class="local-only">
       <div class="buttons"><button type="button" id="remoteBtn">TURN ON</button></div>
       <div class="note" id="remoteNote">A view-only link anyone can open from anywhere. Needs the box on a Wi-Fi with internet.</div>
+      <!-- #156 WATCH FROM HOME: OLDER NIGHTS (watchscope.js): what a viewer outside sees, one line + the owner's switch -->
+      <div class="note" id="remoteShowsRow" hidden><b id="remoteShows">SHOWS: TONIGHT ONLY</b> <button type="button" class="q" data-tip aria-label="More">?</button></div>
+      <div class="note tip" hidden>From outside the venue: the decks live, and PLAYED only for a night the DJ shared (TRACKLIST: SHARED, or SHARE THIS NIGHT). OLDER NIGHTS ON (owner): once tonight is shared, the older nights' PLAYED and the all-nights numbers (ALL TIME, records, WRAPPED) show too, without venue names. Never from outside: DJ pages, ALL NIGHTS search, SET INSIGHTS, the night report, milestones. Set recordings go only by their own links.</div>
+      <div class="buttons" id="remoteOlderRow" hidden><button type="button" id="remoteOlder">OLDER NIGHTS: OFF</button></div>
       <div class="remote-box" id="remoteBox" hidden>
         <div class="share-addr" id="remoteUrl"></div>
         <img class="share-qr" id="remoteQr" alt="">
@@ -675,6 +679,7 @@
 <script src="safety.js"></script><script>Safety.start('dash');</script><script src="safetyctl.js"></script><!-- NIGHT SAFETY (#127), own files -->
 <script src="stageclock.js"></script><script src="setnotes.js"></script><script src="weather.js"></script><script>WeatherView.start('dash');</script><!-- #131 SET NOTES + WEATHER, own files -->
 <script src="moments.js"></script><script>Moments.start('dash');</script><script src="whatcan.js"></script><script src="hsonly.js"></script><script src="milestones.js"></script><!-- #146 MILESTONES: one quiet line, owner only, once --><script src="lines.js"></script><!-- #135 MOMENTS + THE LINE RULE (at most 2 lines in the corner window), own files -->
+<script src="watchscope.js"></script><!-- #156 WATCH FROM HOME: OLDER NIGHTS, own file -->
 <script src="calm.js"></script><!-- #145 CALM: STATUS order + MORE, ALL SETTINGS sections, NOW hides empty blocks; last, own file -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \

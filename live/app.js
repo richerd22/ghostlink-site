@@ -1692,9 +1692,10 @@ let remoteState = {};
 async function loadRemote() {
   let res;
   try { res = await fetch('/api/remote'); } catch (e) { return; }
-  if (res.status === 401) { remoteState = {}; $('remoteBox').hidden = true; $('remoteBtn').textContent = 'TURN ON'; return; } // locked: keep the plain description
+  if (res.status === 401) { remoteState = {}; $('remoteBox').hidden = true; $('remoteBtn').textContent = 'TURN ON'; if (typeof WatchScope !== 'undefined') WatchScope.hide(); return; } // locked: keep the plain description
   try { remoteState = await res.json(); } catch (e) { return; }
   const r = remoteState;
+  if (typeof WatchScope !== 'undefined') WatchScope.show(r); // #156 SHOWS: TONIGHT ONLY / + OLDER NIGHTS
   $('remoteBtn').textContent = r.on ? 'TURN OFF' : 'TURN ON';
   $('remoteBtn').classList.toggle('on', !!r.on);
   $('remoteBox').hidden = !r.url;
@@ -2704,6 +2705,7 @@ const GOTO = [
   ['OSC OUT', 'status/osc', 'osc lights visuals touchdesigner madmapper'],
   ['SCREENS · TV, stream overlay, sticker', 'status/screens', 'tv screen projector stream obs overlay sticker print song page'],
   ['WATCH FROM HOME', 'status/watch', 'remote watch home link share'],
+  ['WATCH FROM HOME: OLDER NIGHTS (owner)', 'status/watch', 'remote older nights history outside shows tonight only'], // #156
   ['CONTROLS · rejoin, listen only, restart', 'status/controls', 'rejoin listen only restart shut down shutdown power reading'],
   ['BACKUP · restore, black box, logs', 'status/backup', 'backup restore black box blackbox logs'],
   ['SET UP THIS BOX · first run, what kind of nights', 'status/setup', 'setup set up first run new box welcome start kinds nights what kind wizard'], // #136
