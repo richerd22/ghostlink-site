@@ -60,7 +60,7 @@ const ShareLinks = (() => {
     <div class="sl-claim" id="slClaim" hidden>
       <small>CLAIM THIS BOX (LINK TO YOUR ACCOUNT)</small>
       <div class="sl-code" id="slClaimCode"></div>
-      <div class="note">In the HARD STOP app: ACCOUNT &rarr; CLAIM A BOX, and enter this code (your Third Polar Arch account, one for HARD STOP and GHOST LINK). When OPEN MY ACCOUNT shows, that opens it with the code filled in. Your box keeps working without an account.</div>
+      <div class="note">Your account (optional, one for GHOST LINK and HARD STOP): OPEN MY ACCOUNT opens it with the code filled in. Your box keeps working without an account. Same as STATUS &rarr; YOUR ACCOUNT &rarr; KEEP IT.</div>
       <div class="note" id="slClaimUntil"></div>
       <div class="buttons"><a class="button" id="slClaimOpen" target="_blank" rel="noopener" hidden>OPEN MY ACCOUNT</a><button type="button" id="slClaimCopy">COPY</button><button type="button" id="slClaimClose">DONE</button></div>
     </div>
@@ -200,6 +200,7 @@ const ShareLinks = (() => {
     if (!unlocked) { pending = null; return needUnlock(); }
     const r = await post('/api/claim/start', {});
     if (r.status === 401) return;
+    if (r.status === 409) { const j = await r.json().catch(() => ({})); say(j.error || 'This box is in an account already.', true); return; } // #151: claimed
     if (!r.ok) { say(r.status === 403 ? "Claiming needs the owner's password." : "Couldn't make a code.", true); return; }
     claim = await r.json();
     $('slClaimCode').textContent = claim.code;
@@ -215,7 +216,7 @@ const ShareLinks = (() => {
         claim.deposited = rr.status === 201;
       } catch (e) { /* no internet here either: COPY still works */ }
     }
-    $('slClaimUntil').textContent += claim.deposited ? ' Ready: enter the code in the HARD STOP app' + (claim.claimUrl ? ', or tap OPEN MY ACCOUNT.' : '.')
+    $('slClaimUntil').textContent += claim.deposited ? (claim.claimUrl ? ' Ready: tap OPEN MY ACCOUNT.' : ' Ready: type the code on your account\'s CLAIM page.')
       : ' Neither the box nor this phone could reach the accounts site right now. Try again when one of them has internet.';
   });
   $('slClaimCopy').addEventListener('click', () => claim && copy(claim.code, $('slClaimCopy')));

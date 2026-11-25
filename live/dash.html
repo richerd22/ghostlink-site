@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="gear.css">
 <link rel="stylesheet" href="announce.css">
 <link rel="stylesheet" href="soundboard.css">
-<link rel="stylesheet" href="sell.css"><!-- #112 GET READY TO SELL -->
+<link rel="stylesheet" href="sell.css"><!-- #112 GET READY TO SELL, #151 YOUR ACCOUNT -->
 <link rel="stylesheet" href="firstrun.css"><!-- #136 FIRST RUN -->
 <link rel="stylesheet" href="updates.css"><!-- #138 UPDATES card -->
 <link rel="stylesheet" href="settime.css"><!-- #121 SET TIME -->
@@ -498,7 +498,9 @@
     <div class="note tip" hidden>BACKUP + RECORDINGS adds the set recordings (big). RESTORE puts a backup back and restarts GHOST LINK. BLACK BOX is the night's record of everything that happened; LOGS are the program's own notes.</div>
     <h2 class="local-only" data-k="setup">SET UP THIS BOX</h2><!-- #136, firstrun.js -->
     <div class="local-only" id="setupBox"></div>
-    <h2 class="local-only" data-k="sell">GET READY TO SELL</h2><!-- #112, sell.js -->
+    <h2 class="local-only" data-k="account">YOUR ACCOUNT</h2><!-- #151, owner.js -->
+    <div class="local-only" id="ownerBox"></div>
+    <h2 class="local-only" data-k="sell">HAND OVER</h2><!-- #112 GET READY TO SELL, #151 HAND OVER, sell.js -->
     <div class="local-only" id="sellBox"></div>
     <h2 data-k="updates">UPDATES</h2>
     <div id="updBox"></div>
@@ -662,6 +664,7 @@
 <script src="sharelinks.js"></script>
 <script src="ear.js"></script><!-- THE EAR (#108): BPM by ear for laptop DJs, own file -->
 <script src="sell.js"></script><!-- GET READY TO SELL (#112), own file -->
+<script src="owner.js"></script><!-- OWNERSHIP: YOUR ACCOUNT, KEEP IT (#151), own file -->
 <script src="firstrun.js"></script><!-- FIRST RUN (#136), own file -->
 <script src="settings.js"></script><!-- SETTINGS · NIGHT PRESETS (#114), own file -->
 <script src="onstream.js"></script><!-- ON STREAM (#120): HIDE in PLAYED while HIDE IDS is on, own file -->

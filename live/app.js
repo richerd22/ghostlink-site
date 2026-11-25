@@ -2705,7 +2705,8 @@ const GOTO = [
   ['CONTROLS · rejoin, listen only, restart', 'status/controls', 'rejoin listen only restart shut down shutdown power reading'],
   ['BACKUP · restore, black box, logs', 'status/backup', 'backup restore black box blackbox logs'],
   ['SET UP THIS BOX · first run, what kind of nights', 'status/setup', 'setup set up first run new box welcome start kinds nights what kind wizard'], // #136
-  ['GET READY TO SELL · hand the box on', 'status/sell', 'sell selling sold reset factory wipe erase new owner give away hand on'],
+  ['HAND OVER · sell it, give it away, start over', 'status/sell', 'sell selling sold reset factory wipe erase new owner give away hand on hand over get ready to sell keep my music'], // #112, #151
+  ['YOUR ACCOUNT · keep it in your account, claimed, update emails', 'status/account', 'account claim claimed keep it my gear email emails updates owner third polar arch'], // #151
   ['BOX DETAILS · self-check, uptime, temperature', 'status/box', 'uptime temp temperature cpu source facts self-check selfcheck health card memory disk space'],
   ['TOOLS · demo, tour, arcade, test run', 'status/tools', 'demo tour arcade games boo test run'],
   ['PASSWORD · lock, crew code', 'status/lock', 'password lock unlock crew code'],

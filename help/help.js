@@ -19,7 +19,7 @@
     ["how-to/night-presets.html", "NIGHT PRESETS AND ALL SETTINGS", "HOW TO"],
     ["how-to/ask-the-dj.html", "ASK THE DJ: SONG REQUESTS", "HOW TO"],
     ["how-to/update-the-box.html", "UPDATE THE BOX: UPDATES, AUTO-UPDATE, GO BACK", "HOW TO"],
-    ["how-to/sell-or-hand-on.html", "SELLING OR HANDING ON A GHOST LINK", "HOW TO"],
+    ["how-to/sell-or-hand-on.html", "HAND OVER: SELLING IT, GIVING IT AWAY, STARTING OVER", "HOW TO"],
     ["how-to/crew-code.html", "GIVE THE CREW CODE", "HOW TO"],
     ["how-to/restart-reading.html", "RESTART READING A DECK", "HOW TO"],
     ["how-to/turn-it-off.html", "TURN IT OFF", "HOW TO"],

@@ -26,7 +26,7 @@ const Calm = (() => {
     ['g-tonight', 'TONIGHT', ['nights', 'night-safety']],
     ['g-venue', 'THIS VENUE', ['venue', 'wifi']],
     ['g-screens', 'WHO SEES WHAT', ['screens', 'song-id', 'ask-dj', 'wantlist', 'share', 'watch']],
-    ['g-box', 'THE BOX', ['controls', 'backup', 'updates', 'setup', 'box', 'tools']],
+    ['g-box', 'THE BOX', ['controls', 'backup', 'updates', 'setup', 'account', 'box', 'tools']],
   ];
   const MORE = ['lights', 'show-control', 'osc', 'deck-controls', 'announce', 'api-keys', 'hardstop-hub', 'rooms', 'sell'];
   const KNOWN = new Set([...TOP, ...GROUPS.flatMap(g => g[2]), ...MORE]);

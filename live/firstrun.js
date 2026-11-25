@@ -327,6 +327,15 @@ const FirstRun = (() => {
     note(box);
     const finish = async tour => {
       if (fr.owner && !fr.mustChange) await send('/api/firstrun/done', { done: true });
+      // #151: the walk ends with ONE optional card, KEEP IT IN YOUR ACCOUNT? (never once answered, never when claimed)
+      if (!only && fr.owner && !fr.mustChange && typeof Owner !== 'undefined' && await Owner.wantsCard()) {
+        const box = frame('KEEP IT IN YOUR ACCOUNT?', null);
+        Owner.card(box, () => end(tour));
+        return;
+      }
+      end(tour);
+    };
+    const end = async tour => {
       await load(); arrange();
       store.set('firstrunLater', '1');
       if (!tour) store.set('toured', '1'); // the tour stays in STATUS -> TOOLS; it doesn't pop up on the next visit

@@ -8,3 +8,11 @@
 .sell-go { position: relative; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
 .sell-go::before { content: ''; position: absolute; inset: 0; background: var(--warn); opacity: .3; transform: scaleX(0); transform-origin: left; }
 .sell-go.holding::before { transform: scaleX(1); transition: transform 3s linear; }
+/* #151 YOUR ACCOUNT + FIRST RUN's KEEP IT IN YOUR ACCOUNT? (owner.js) */
+.own-slot { display: grid; gap: 8px; }
+.own-slot:not(:empty) { margin-top: 12px; }
+.own-code { font-size: 28px; letter-spacing: .12em; font-variant-numeric: tabular-nums; }
+.own-qr { width: min(220px, 70vw); background: #fff; padding: 10px; }
+.own-qr svg { display: block; width: 100%; height: auto; }
+.own-note { margin: 0; line-height: 1.35; }
+.own-state { margin: 0; letter-spacing: .04em; }
