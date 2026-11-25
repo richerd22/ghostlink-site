@@ -173,7 +173,7 @@
       const img = el('img', 'share-qr'); img.alt = 'QR code for the guest page'; img.src = '/api/qr.svg?text=' + encodeURIComponent(url);
       rows.push(img);
       rows.push(el('div', 'note', url === where.lan
-        ? 'This QR works for phones on the venue Wi-Fi or the GHOST LINK hotspot.'
+        ? 'This QR works for phones on the venue Wi-Fi or the GHOST LINK Wi-Fi.'
         : 'This QR works on the Wi-Fi and on phone data (through WATCH FROM HOME), until ' + hhmm(where.exp) + '.'));
       const ph = el('div', 'rq-opt');
       if (!where.anywhere) {

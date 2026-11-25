@@ -165,7 +165,7 @@ const FirstRun = (() => {
   function wifi() {
     const st = (typeof S !== 'undefined' && S.status) || {};
     const box = frame('THE WI-FI IT JOINS',
-      "Give it your home or venue Wi-Fi and it joins by itself, so any phone on that Wi-Fi opens it at ghostlink.local. No Wi-Fi? It makes its own GHOST LINK Wi-Fi: fine for the booth.");
+      "Give it your home or venue Wi-Fi and it joins by itself, so any phone on that Wi-Fi opens it at ghostlink.local (or gl.cold.fyi, which finds it). No Wi-Fi? It makes its own GHOST LINK Wi-Fi: fine for the booth.");
     if ((fr.wifi || []).length) box.append(el('p', 'fr-ok', 'SAVED: ' + fr.wifi.join(', ')));
     const name = input('text', 'Wi-Fi name', 'off');
     const near = (st.wifiNearby || []).slice(0, 6);
@@ -264,7 +264,7 @@ const FirstRun = (() => {
   // ---------- 4. VENUE (only when there's none yet) ----------
   function venue() {
     const box = frame('YOUR FIRST VENUE', 'Where the next night is. The box remembers its Wi-Fi, gear and contacts there. Add more any time in STATUS -> VENUE.');
-    const n = field(box, 'VENUE NAME', input('text', '', 'off')); n.maxLength = 60;
+    const n = field(box, 'VENUE NAME', input('text', 'e.g. THE BLUE ARCH', 'off')); n.maxLength = 60;
     const p = field(box, 'HOW MANY PLAYERS THERE (IF YOU KNOW)', input('number', '', 'off')); p.min = 0; p.max = 6; p.inputMode = 'numeric';
     note(box);
     row(box, btn('LATER', 'ghostbtn', next), btn('SAVE', 'fr-main', async () => {
@@ -320,7 +320,7 @@ const FirstRun = (() => {
     if (ssid && !onIt) {
       join = btn('JOIN "' + ssid + '" NOW', 'ghostbtn', async () => {
         const r = await send('/api/wifi/join-now', {});
-        box.append(el('p', 'fr-ok', r.ok ? 'Looking for "' + ssid + '". Your phone may drop off the GHOST LINK Wi-Fi: join "' + ssid + '" too, then open ghostlink.local.' : (r.j.error || "Didn't work.")));
+        box.append(el('p', 'fr-ok', r.ok ? 'Looking for "' + ssid + '". Your phone may drop off the GHOST LINK Wi-Fi: join "' + ssid + '" too, then open gl.cold.fyi (it finds the box).' : (r.j.error || "Didn't work.")));
         join.disabled = true;
       });
     }

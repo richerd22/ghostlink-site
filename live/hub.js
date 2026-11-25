@@ -65,14 +65,16 @@ const HsHub = (() => {
       return;
     }
     const net = state.internet || {};
-    $('hubNet').textContent = 'LINKED TO THE INTERNET ROOM: ' + (state.linked ? 'YES' + (net.boxIsBridge ? ' (the booth comes through the box)' : '')
+    $('hubNet').textContent = 'LINKED TO THE INTERNET ROOM: ' + (state.linked ? 'YES' + (net.boxIsBridge ? ' (the panels here come through the box)' : '')
       : 'NO' + (!state.key ? '' : !net.invite ? ' (the HARD STOP app hands the box the internet room when it has one)' : net.state === 'refused' ? ' (the internet room said no; the app can send a new invite)' : ' (trying; the room on this network works without it)'));
     const ms = state.members || [];
     if (!ms.length) list.append(el('small', null, state.key ? 'Nobody in yet. Panels join once the app has tonight\'s key.' : 'No key tonight yet.'));
     ms.forEach(m => {
       const row = el('div', 'hub-row');
       row.append(el('b', null, m.name));
-      row.append(el('small', null, (KIND[m.kind] || 'GUEST') + (m.bridge ? " · THE BOOTH'S BRIDGE" : '')));
+      // #157: several panels can be in (HARD STOP 1.13.9): say which unit and which is the booth's, when they say it
+      row.append(el('small', null, (KIND[m.kind] || 'GUEST') + (m.unit ? ' ' + m.unit : '') + (m.booth ? ' · BOOTH' : '')
+        + (m.bridge && !m.booth ? ' · CARRIES THE BOOTH' : '')));
       list.append(row);
     });
     const owner = !!state.owner;
@@ -80,7 +82,7 @@ const HsHub = (() => {
     $('hubEnd').hidden = !owner || !state.key;
     $('hubMake').textContent = state.key ? 'SHOW THE CODE AGAIN' : 'LINK PANELS TONIGHT';
     if (!owner) $('hubLink').hidden = true;
-    note('hubNote', state.key ? "Tonight's key ends " + hhmm(state.key.exp) + '.' + (state.held ? ' ' + state.held + ' waiting for the booth.' : '')
+    note('hubNote', state.key ? "Tonight's key ends " + hhmm(state.key.exp) + '.' + (state.held ? ' ' + state.held + ' waiting for a panel to come back.' : '')
       : owner ? '' : 'The owner links the panels (password, not the crew code).');
   }
 

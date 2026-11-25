@@ -867,7 +867,7 @@ function frameNight(q, set, setH) {
   if (q('.n-room')) {
     const rm = s && s.room;
     set('.n-room', rm ? (rm.cal ? '' : '~') + Math.round(rm.db) + ' dB' : '--');
-    set('.n-room-s', rm ? 'AVG ' + Math.round(rm.leq) + ' dB' + (rm.over100 ? ' · ' + Math.round(rm.over100 / 60) + ' MIN OVER 100' : '') : 'needs the HARD STOP panel mic');
+    set('.n-room-s', rm ? 'AVG ' + Math.round(rm.leq) + ' dB' + (rm.over100 ? ' · ' + Math.round(rm.over100 / 60) + ' MIN OVER 100' : '') : 'needs a HARD STOP panel mic');
   }
   if (q('.n-sc')) {
     const c = S.sc;
@@ -1203,7 +1203,7 @@ function renderStatus() {
   const gc = (s.gearCare || []).slice();
   const rm = s.room;
   if (rm) gc.unshift({ title: 'ROOM ' + (rm.cal ? '' : '~') + Math.round(rm.db) + ' dB · AVG ' + Math.round(rm.leq) + ' dB',
-    fix: (rm.over100 ? Math.round(rm.over100 / 60) + ' min over 100 dB tonight. ' : '') + "HARD STOP's mic at the booth" + (rm.cal ? '.' : ', not calibrated: like a phone meter.') });
+    fix: (rm.over100 ? Math.round(rm.over100 / 60) + ' min over 100 dB tonight. ' : '') + "A HARD STOP panel's mic" + (rm.cal ? '.' : ', not calibrated: like a phone meter.') });
   $('gearCare').hidden = !gc.length;
   setHTML($('gearList'), gc.map(p => `<li><b>${esc(p.title)}</b> ${esc(p.fix || p.detail || '')}</li>`).join(''));
   const up = s.uptimeSeconds;

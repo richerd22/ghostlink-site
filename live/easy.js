@@ -45,7 +45,7 @@ const Easy = (() => {
   function wifiAdvice(s) {
     const near = s.wifiNearby || [], saved = ((s.venue || {}).wifi || []).map(w => w.ssid).filter(Boolean);
     const seen = saved.map(n => near.find(x => x.ssid === n)).filter(Boolean);
-    if (seen.length) return { say: '"' + seen[0].ssid + '" is in range (' + seen[0].signal + '%). Tap JOIN: your phone may drop off the GHOST LINK hotspot for a moment; then join "' + seen[0].ssid + '" too and open gl.cold.fyi.', join: true };
+    if (seen.length) return { say: '"' + seen[0].ssid + '" is in range (' + seen[0].signal + '%). Tap JOIN: your phone may drop off the GHOST LINK Wi-Fi for a moment; then join "' + seen[0].ssid + '" too and open gl.cold.fyi.', join: true };
     const norm = x => x.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
     for (const n of saved) {
       const k = norm(n), like = near.find(x => { const y = norm(x.ssid); return y && k && (y.includes(k) || k.includes(y) || y.split(' ').some(t => t.length > 1 && k.split(' ').includes(t))); });
@@ -88,7 +88,7 @@ const Easy = (() => {
       // #134: JOIN VENUE WI-FI NOW only when it would really do something: on its hotspot, a saved venue Wi-Fi, not in
       // the minute after STAND BY ended. Off Wi-Fi ('none') the box is already retrying every 15 s by itself.
       const join = a.join && (typeof WifiQuiet === 'undefined' || !WifiQuiet.canJoin || WifiQuiet.canJoin(s));
-      if (Date.now() - wifiAsked < 60000) add('WI-FI', 'look', 'Looking for the venue Wi-Fi now (up to a minute). If it joins, this phone loses the GHOST LINK hotspot: join the venue Wi-Fi and open gl.cold.fyi.');
+      if (Date.now() - wifiAsked < 60000) add('WI-FI', 'look', 'Looking for the venue Wi-Fi now (up to a minute). If it joins, this phone loses the GHOST LINK Wi-Fi: join the venue Wi-Fi and open gl.cold.fyi.');
       else if (w.state === 'none') add('WI-FI', 'look', 'Not on Wi-Fi yet: looking for saved Wi-Fi by itself every 15 s. ' + (a.join ? '' : a.say), a.join ? null : 'venue', a.join ? null : 'VENUE WI-FI');
       else add('WI-FI', 'look', 'On its own hotspot. ' + (join || !a.join ? a.say : 'Saved venue Wi-Fi has no password: VENUE -> EDIT, type it, SAVE (the box tries it at once).'), join ? 'joinwifi' : 'venue', join ? 'JOIN VENUE WI-FI NOW' : 'VENUE WI-FI');
     }
