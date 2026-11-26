@@ -32,7 +32,9 @@ const WrapCalls = (() => {
     b.addEventListener('click', async () => {
       if (!unlocked) { pending = b; return needUnlock(); }
       const r = await post('/api/crew/wrap', { kind, from: who() });
-      if (r.ok) note.textContent = kind === 'now' ? 'Sent: WRAP IT UP, now.' : 'Sent: WRAP IT UP in ' + label.toLowerCase() + '.';
+      const j = r.ok ? await r.json().catch(() => ({})) : {};
+      if (r.ok && j.reach && j.reach.queued) note.textContent = j.reach.say; // #162 NEVER A SILENT DROP (CANCEL is right here)
+      else if (r.ok) note.textContent = kind === 'now' ? 'Sent: WRAP IT UP, now.' : 'Sent: WRAP IT UP in ' + label.toLowerCase() + '.';
       else if (r.status !== 401) { let e = 'Not sent.'; try { e = (await r.json()).error || e; } catch (x) {} note.textContent = e; }
     });
     btns.append(b);

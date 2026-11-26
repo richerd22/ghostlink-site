@@ -76,7 +76,11 @@ const CrewSend = (() => {
     if (!unlocked) { pending = send; return needUnlock(); }
     if (atDrop) return sendAtDrop(t, '');
     const r = await post('/api/crew/call', { txt: t, in: s, mo: ciBox.checked, from: who(), urgent: urgBox.checked });
-    if (r.ok) { say('Sent' + (urgBox.checked ? ' URGENT' : '') + ': ' + t + (s ? ' in ' + s + ' s' : ' NOW') + '.'); txt.value = ''; urgBox.checked = false; }
+    if (r.ok) {
+      const j = await r.json().catch(() => ({})), q = j.reach && j.reach.queued; // #162 NEVER A SILENT DROP
+      say(q ? j.reach.say + ' CANCEL it under LIVE.' : 'Sent' + (urgBox.checked ? ' URGENT' : '') + ': ' + t + (s ? ' in ' + s + ' s' : ' NOW') + '.', q);
+      txt.value = ''; urgBox.checked = false;
+    }
     else if (r.status !== 401) { let e = 'Not sent.'; try { e = (await r.json()).error || e; } catch (x) {} say(e, true); }
   });
 

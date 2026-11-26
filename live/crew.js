@@ -48,14 +48,14 @@ const Crew = (() => {
       held.slice(0, Math.max(0, max - rows.length)).forEach(h => rows.push({ c: h, go: false, soon: false, t: 'WAITING' }));
       const pulse = new Set();
       rows.forEach(r => { const n = nudgeKey(r.c, now); if (n && !nudged.has(n)) { nudged.add(n); pulse.add(r.c.id); } });
-      const k = rows.map(r => r.c.id + r.t + r.c.txt + marks(r.c) + (r.c.pri || '')).join('|');
+      const k = rows.map(r => r.c.id + r.t + r.c.txt + marks(r.c) + (r.c.pri || '') + (r.c.queued ? 'q' : '')).join('|');
       if (k === key && !pulse.size) return;
       key = k;
       el.replaceChildren(...rows.map(r => {
         const d = document.createElement('div');
         d.className = 'crew-call' + (r.go ? ' go' : r.soon ? ' soon' : '') + (r.c.wrap ? ' wrap' : '') // #124 WRAP-UP CALLS: bigger
           + (r.c.pri === 'urgent' ? ' urgent' : '') + (pulse.has(r.c.id) ? ' nudge' : '');               // #127 URGENT, the nudge
-        const who = document.createElement('span'); who.className = 'who'; who.textContent = (r.c.pri === 'urgent' ? 'URGENT · ' : '') + (r.c.from || 'CREW');
+        const who = document.createElement('span'); who.className = 'who'; who.textContent = (r.c.pri === 'urgent' ? 'URGENT · ' : '') + (r.c.queued ? 'QUEUED · ' : '') + (r.c.from || 'CREW'); // #162: no panel linked yet
         const what = document.createElement('b'); what.textContent = label(r.c);
         const when = document.createElement('span'); when.className = 'when'; when.textContent = r.t;
         d.append(who, what, when);

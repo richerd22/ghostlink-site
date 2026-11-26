@@ -11,6 +11,7 @@
 <meta name="robots" content="noindex">
 <script src="shim.js"></script>
 <script src="appmode.js"></script><!-- #133 ?app=hardstop: inside the HARD STOP app (own file) -->
+<script src="copytext.js"></script><!-- #162 COPY over plain http (the box's IP, 10.42.0.1, .local) -->
 <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png">
 <link rel="apple-touch-icon" href="../icon-180.png">
 <link rel="stylesheet" href="app.css">
@@ -213,6 +214,7 @@
   <section id="status" class="view" hidden>
     <div class="remote-banner" id="remoteBanner" hidden>VIEW ONLY · watching from afar. Changes can only be made at the venue.</div>
     <div class="ready" id="ready" aria-live="polite"></div>
+    <div class="local-only" id="openPhone" hidden></div><!-- #162 OPEN ON A PHONE: the box's addresses, QR + COPY (address.js) -->
     <div class="goto" id="goto">
       <input id="goQ" type="search" placeholder="GO TO: wifi, record, venue..." aria-label="Go to a setting" autocomplete="off" enterkeyhint="go" maxlength="30">
       <ol class="go-list" id="goList" hidden></ol>
@@ -614,6 +616,7 @@
     <div class="share-addr" id="shareAddr"></div>
     <img class="share-qr" id="shareQr" alt="">
     <small id="shareWifi"></small>
+    <div class="local-only" id="shareOther" hidden></div><!-- #162 the other addresses (address.js) -->
     <small id="unitLabel"></small>
     <small id="shareUnitLinks" style="color: var(--fg); white-space: pre-line; overflow-wrap: anywhere;"></small>
     <small>These work on this Wi-Fi, or from anywhere while WATCH FROM HOME is on.</small>
@@ -680,6 +683,7 @@
 <script src="stageclock.js"></script><script src="setnotes.js"></script><script src="weather.js"></script><script>WeatherView.start('dash');</script><!-- #131 SET NOTES + WEATHER, own files -->
 <script src="moments.js"></script><script>Moments.start('dash');</script><script src="whatcan.js"></script><script src="hsonly.js"></script><script src="milestones.js"></script><!-- #146 MILESTONES: one quiet line, owner only, once --><script src="lines.js"></script><!-- #135 MOMENTS + THE LINE RULE (at most 2 lines in the corner window), own files -->
 <script src="watchscope.js"></script><!-- #156 WATCH FROM HOME: OLDER NIGHTS, own file -->
+<script src="address.js"></script><script src="hsapp.js"></script><script src="tonight.js"></script><!-- #162 OPEN IT: addresses, USE IN THE HARD STOP APP, TONIGHT ISN'T SET UP (own files) -->
 <script src="calm.js"></script><!-- #145 CALM: STATUS order + MORE, ALL SETTINGS sections, NOW hides empty blocks; last, own file -->
 <div id="offScreen" class="off-screen" hidden><pre class="ghost asleep">  .--.
  / -- \

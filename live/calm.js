@@ -68,7 +68,7 @@ const Calm = (() => {
 
   // ---------- ALL SETTINGS ----------
   const SHEET = [
-    ['TONIGHT', false, k => ['tonight.home', 'ear', 'rec.autoMp3', 'crew.autoDrop', 'safety.phones', 'moments.crewCall'].includes(k) || k.startsWith('safety.') || k.startsWith('hints.')], // #152: WHO SEES SHOW STOP / HOLD, A MOMENT SENDS ITS CREW CALL
+    ['TONIGHT', false, k => ['tonight.home', 'tonight.nudge', 'ear', 'rec.autoMp3', 'crew.autoDrop', 'safety.phones', 'moments.crewCall'].includes(k) || k.startsWith('safety.') || k.startsWith('hints.')], // #152: WHO SEES SHOW STOP / HOLD, A MOMENT SENDS ITS CREW CALL
     ['THIS VENUE', false, k => k === 'wifi.mode'],
     ['WHO SEES WHAT', false, k => ['songid', 'stream.hideIds', 'wantlist', 'fun.tvGhost', 'watch.olderNights'].includes(k) || k.startsWith('requests.') || k.startsWith('transitions.')],
     ['THE BOX', false, k => k === 'unit' || k === 'password' || k === 'fun.milestones'],
@@ -77,7 +77,7 @@ const Calm = (() => {
     ['DECK CONTROLS', true, k => k.startsWith('ghostdeck.') || k.startsWith('autostop.') || k.startsWith('house.')],
     ['ANNOUNCEMENTS', true, k => k.startsWith('announce.') || k.startsWith('pa.') || k.startsWith('soundboard.')],
     ['WEATHER', true, k => k.startsWith('weather.')],
-    ['HARD STOP', true, k => k.startsWith('goodnight.')],
+    ['HARD STOP', true, k => k.startsWith('goodnight.') || k === 'hsapp.banner'], // #162 USE IN THE HARD STOP APP
     ['ROOMS', true, k => k.startsWith('rooms.')],
   ];
   const NOT_HERE = 'NOT ON THIS BOX';

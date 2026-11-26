@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#000000">
 <title>GHOST LINK END OF NIGHT</title>
 <meta name="robots" content="noindex">
+<script src="shim.js"></script>
+<script src="copytext.js"></script><!-- #162 COPY over plain http -->
 <style>
 @font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_400Regular.ttf); font-weight: 400; }
 @font-face { font-family: "JetBrains Mono"; src: url(../JetBrainsMono_600SemiBold.ttf); font-weight: 600; }
@@ -60,7 +62,6 @@ li span { color: var(--grey); }
   <div class="msg" id="msg">Loading the night...</div>
   <div class="card" id="card" hidden></div>
 </div>
-<script src="shim.js"></script>
 <script src="endnight.js"></script>
 <script>EndNight.page();</script>
 <script>document.getElementById('report').href = 'night.html' + location.search; // #125 NIGHT REPORT: same night</script>

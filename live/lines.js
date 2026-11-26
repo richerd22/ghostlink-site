@@ -28,8 +28,10 @@ const Lines = (() => {
     ['moment', '#momentNow', 'MOMENTS: SPEECHES IN 12'],
     ['mixcloud', '#mixcloudNow', 'MIXCLOUD CHECK while recording'],
     ['eon', '#eonReady', 'END OF NIGHT card ready'],
+    ['tonight', '#tonightCard', "TONIGHT ISN'T SET UP (NOW; never while music plays; once a night; #162)"],
     ['sound', '#soundSetupLine, #soundChip:not(.warn)', 'SOUND CARD FOUND / IN · SET UP (goes by itself after 60 s)'],
     ['away', '#away', 'WHILE YOU WERE AWAY'],
+    ['hsapp', '#hsAppBar', 'USE IN THE HARD STOP APP (phone browser, HARD STOP seen, × = never again on that phone; #162)'],
     ['milestone', '#milestoneLine', 'MILESTONE: 100TH TRACK (owner only, once, never while music plays; #146)'],
     ['demo', '#demoBar', 'DEMO (you started it)'],
   ];
