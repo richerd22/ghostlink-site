@@ -222,7 +222,8 @@ const SetTimeUI = (() => {
     if (!box) return;
     const m = S.status && S.status.mixcloudNow;
     const t = m && m.line ? m.line : '';
-    if (box.textContent !== t) box.textContent = t;
+    const want = t && typeof Platforms !== 'undefined' ? t + ' ' + Platforms.WHY : t; // #159 WHAT'S THIS?
+    if (box.textContent !== want) { box.textContent = t; if (want !== t) box.append(' ', Platforms.button()); }
     box.hidden = !t;
     box.classList.toggle('warn', !!(m && m.ok === false));
   }

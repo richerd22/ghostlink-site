@@ -116,6 +116,9 @@ const Recordings = (() => {
       const h = el('button', 'mini local-only', 'HAND IT TO THE DJ'); h.type = 'button';
       h.addEventListener('click', () => openHand(f));
       more.appendChild(h);
+      // #159 THE TRIM EDITOR + EXPORTS (WAV / AIFF / FLAC / MP3 / M4A, a set or the whole night): its own page
+      const ed = el('a', 'btn mini', 'TRIM · SPLIT · EXPORT'); ed.href = 'recedit.html?name=' + n;
+      more.appendChild(ed);
       if (f.clips) more.appendChild(el('small', f.levelWarn && f.levelWarn.includes('hot') ? 'warn' : '', 'CLIPPED ' + f.clips + '×'));
       else if (f.levelWarn && f.levelWarn.includes('quiet')) more.appendChild(el('small', 'warn', 'RECORDED QUIET'));
       if (s.state === 'failed' && s.error) more.appendChild(el('small', 'warn', s.error));

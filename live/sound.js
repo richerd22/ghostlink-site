@@ -7,7 +7,7 @@ const Sound = (() => {
   const pill = document.createElement('span');
   pill.className = 'rec-pill'; pill.id = 'recPill'; pill.hidden = true;
   $('link').insertAdjacentElement('afterend', pill);
-  let last = null, listAt = 0, statusKey = '';
+  let last = null, listAt = 0, statusKey = '', listKey = '', listHtml = '', listDirty = true;
 
   const pct = db => Math.max(0, Math.min(100, (db + 60) / 60 * 100)); // -60 dBFS .. 0
   const hms = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(s % 60).padStart(2, '0'); };
@@ -15,8 +15,8 @@ const Sound = (() => {
 
   function levels(d) {
     last = d;
-    pill.hidden = !d.rec;
-    if (d.rec) pill.textContent = '● REC ' + hms(d.recFor) + (d.warn === 'hot' ? ' · TOO HOT' : d.warn === 'quiet' ? ' · TOO QUIET' : ''); // #113
+    if (pill.hidden !== !d.rec) pill.hidden = !d.rec;
+    if (d.rec) { const t = '● REC ' + hms(d.recFor) + (d.warn === 'hot' ? ' · TOO HOT' : d.warn === 'quiet' ? ' · TOO QUIET' : ''); if (pill.textContent !== t) pill.textContent = t; } // #113
     pill.classList.toggle('warn', !!(d.rec && d.warn));
     if ($('network').hidden) return;
     [['L', d.rl, d.pl], ['R', d.rr, d.pr]].forEach(([s, rms, peak]) => {
@@ -30,8 +30,16 @@ const Sound = (() => {
 
   function render() {
     const a = S.status && S.status.audio;
-    const key = JSON.stringify(a);
-    if (key === statusKey && Date.now() - listAt < 30000) return;
+    // #159 (a club Nov 25 lag): the key was the whole audio status, which changes with every clip once a recording runs
+    // hot, so every status (1-2 a second) re-fetched and redrew the whole list, on every tab. Now: the card text
+    // redraws only when what it shows changes, and the list is fetched only when a recording starts / ends / is
+    // deleted, only while SOUND IN is on screen (else once it's opened), and every 30 s while you look at it.
+    const r = a && a.recording;
+    const key = JSON.stringify(a && [a.card, a.live, a.recordOn, r && r.name, r && r.dj, r && r.since, a.ask, a.deaf, S.status.dj]);
+    const lk = JSON.stringify(a && [a.card, r && r.name]);
+    if (lk !== listKey) { listKey = lk; listDirty = true; }
+    const shown = !$('network').hidden;
+    if (key === statusKey) { if (shown && (listDirty || Date.now() - listAt >= 30000)) loadList(); return; }
     statusKey = key;
     const card = a && a.live;
     $('sndMeter').hidden = !card;
@@ -55,17 +63,18 @@ const Sound = (() => {
       if (q) $('sndSplit').textContent = 'NEW FILE FOR ' + (q.dj || 'THIS SET').toUpperCase();
     }
     if (!pill.hidden && a && !a.recording) pill.hidden = true;
-    loadList();
+    if (shown && (listDirty || Date.now() - listAt >= 30000)) loadList();
   }
 
   async function loadList() {
     listAt = Date.now();
+    listDirty = false;
     try {
       const r = await fetch('/api/audio');
       if (!r.ok) return;
       const j = await r.json(), files = j.files || [];
       $('sndListH').hidden = !files.length;
-      $('sndList').innerHTML = files.map(f => {
+      const html = files.map(f => {
         const mins = f.endAt && f.startAt ? Math.round((f.endAt - f.startAt) / 60000) : null;
         const n = encodeURIComponent(f.name);
         return `<li data-name="${esc(f.name)}"><span class="what">${esc(f.dj || 'Set')} <span>${esc(f.venue || '')}</span>` +
@@ -74,6 +83,7 @@ const Sound = (() => {
           (f.live ? '' : `<a class="btn mini" href="/api/audio/file?name=${n}" download>FLAC</a><button type="button" class="mini local-only" data-del="${esc(f.name)}">DELETE</button>`) +
           `</span></li>`;
       }).join('');
+      if (html !== listHtml) { listHtml = html; $('sndList').innerHTML = html; } // #159: unchanged = untouched (the level strips stay)
       if (typeof Recordings !== 'undefined') try { Recordings.decorate(files, j); } catch (e) { console.warn('recordings', e); } // #113
     } catch (e) {}
   }
@@ -81,6 +91,7 @@ const Sound = (() => {
   $('sndRec').addEventListener('click', async () => {
     const a = S.status && S.status.audio, on = !(a && a.recordOn);
     if (on && !unlocked) return needUnlock();   // starting needs the crew password; anyone here can STOP
+    if (on && typeof RecNight !== 'undefined') return RecNight.choose(); // #159: WHAT TO RECORD / HOW TO SAVE, one plain sheet
     await post('/api/audio', { record: on });
   });
   $('sndSplit') && $('sndSplit').addEventListener('click', async () => {
@@ -107,6 +118,6 @@ const Sound = (() => {
     orig.apply(this, arguments);
     try { render(); } catch (e) { console.warn('sound', e); }
   };
-  addEventListener('hashchange', () => { try { if (location.hash === '#network') { statusKey = ''; render(); if (last) levels(last); } } catch (e) {} });
-  return { levels, render };
+  addEventListener('hashchange', () => { try { if (location.hash.startsWith('#network')) { statusKey = ''; listDirty = true; render(); if (last) levels(last); } } catch (e) {} });
+  return { levels, render, reload: () => { listDirty = true; statusKey = ''; render(); } };
 })();

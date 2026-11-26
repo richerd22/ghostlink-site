@@ -1341,7 +1341,9 @@ async function loadMixer() {
   try { m = await (await fetch('/api/mixer')).json(); } catch (e) {}
   if (!m.device) {
     note('mixerNote', 'No mixer cable. Optional: a USB cable from the DJM\'s USB port to the box (with the venue\'s OK) shows FX, filters and buttons live, and warns when an FX is left on into the next track.');
-    $('mixer').innerHTML = '';
+    if ($('mixer').innerHTML) $('mixer').innerHTML = '';
+    mixerTimer = setTimeout(loadMixer, 5000); // #159: no mixer cable: look again every 5 s, not every 0.7 s
+    return;
   } else {
     note('mixerNote', m.device + ' · touch a knob or button and it appears here. Name it once; WATCH it to get FX LEFT ON warnings. GHOST LINK only listens.');
     $('mixer').innerHTML = (m.controls || []).slice(0, 40).map(c =>
