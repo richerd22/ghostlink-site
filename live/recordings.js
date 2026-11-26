@@ -57,8 +57,9 @@ const Recordings = (() => {
   function render() {
     const a = S.status && S.status.audio, r = a && a.recording;
     lvl.hidden = !(r && r.level);
-    if (r && r.level) lvl.textContent = r.level === 'hot' ? 'TOO HOT: turn REC OUT down a little. The recording is hitting the top' + (r.clips ? ' (' + r.clips + ' clips so far).' : '.')
-      : 'TOO QUIET: turn REC OUT up. The loud parts should sit around -12 dB on the meter.';
+    // #161: the box's words name the jack picked in SET UP SOUND IN (levelSay); an older box: the neutral words
+    if (r && r.level) lvl.textContent = r.levelSay || (r.level === 'hot' ? 'TOO HOT: turn the output GHOST LINK is plugged into down a little. The recording is hitting the top' + (r.clips ? ' (' + r.clips + ' clips so far).' : '.')
+      : 'TOO QUIET: turn the output GHOST LINK is plugged into up. The loud parts should sit around -12 dB on the meter.');
     const mins = r && r.roomMins != null ? r.roomMins : roomNow && roomNow.mins;
     room.hidden = !(a && a.card) || mins == null;
     if (mins != null) {

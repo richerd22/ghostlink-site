@@ -98,3 +98,22 @@ dl.kv dd { margin: 0; color: var(--grey); }
   .onepager { border: 0; padding: 0; }
   a { color: inherit; text-decoration: none; }
 }
+
+/* #161 MIXER OUTPUTS (mixers/): one row per mixer, best output first. Phones: each row stacks. */
+.mx-wrap { margin: 0 0 18px; }
+table.mx { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.mx th, table.mx td { text-align: left; vertical-align: top; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); }
+table.mx thead th { color: var(--grey); font-weight: 400; font-size: 12px; letter-spacing: .06em; }
+table.mx tbody th { font-weight: 600; letter-spacing: .04em; }
+table.mx th small { display: block; font-weight: 400; color: var(--grey); font-size: 12px; letter-spacing: 0; margin-top: 2px; }
+table.mx td span { display: block; color: var(--grey); font-size: 12px; }
+@media (max-width: 559px) {
+  table.mx thead { display: none; }
+  table.mx, table.mx tbody, table.mx tr, table.mx th, table.mx td { display: block; width: auto; }
+  table.mx tr { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  table.mx th, table.mx td { border: 0; padding: 2px 0; }
+  table.mx td:empty { display: none; }
+  table.mx td:nth-of-type(2)::before { content: "TAKEN? "; color: var(--grey); font-size: 12px; }
+  table.mx td:nth-of-type(3)::before { content: "THEN "; color: var(--grey); font-size: 12px; }
+  table.mx td span { display: inline; margin-left: 6px; }
+}

@@ -53,3 +53,12 @@ body.remote .ssu-line, body.remote .ssu-again { display: none; }
 .ssu-deaf[hidden] { display: none; }
 .ssu-deaf .mini { justify-self: start; margin-left: 0; }
 body.remote .ssu-chip, body.embed .ssu-chip { display: none; }
+/* #161 WHICH JACK?: every output of the picked mixer, best first; tap the one the cable is in. */
+.ssu-jh { font-size: 13px; color: var(--grey); }
+.ssu-jacks { display: grid; gap: 4px; }
+.ssu-jack { text-align: left; font-size: 13px; line-height: 1.35; padding: 6px 8px; border: 1px solid var(--dim);
+  background: none; color: var(--fg); font-family: inherit; cursor: pointer; }
+.ssu-jack b { letter-spacing: .04em; }
+.ssu-jack span { color: var(--grey); }
+.ssu-jack.on { border-color: var(--fg); background: var(--fg); color: var(--bg); }
+.ssu-jack.on span { color: var(--bg); }

@@ -36,7 +36,8 @@ const Sound = (() => {
     const card = a && a.live;
     $('sndMeter').hidden = !card;
     $('sndCtl').hidden = !a || !a.card;
-    $('sndNote').textContent = card ? 'Reading ' + a.card + '. Set the mixer\'s REC OUT so the loud parts sit around -12 dB here.'
+    const jk = a && a.jack; // #161: the jack picked in SET UP SOUND IN, named; else neutral
+    $('sndNote').textContent = card ? 'Reading ' + a.card + (jk ? ' on the ' + (jk.mixerName || 'mixer') + '\'s ' + jk.jack : '') + '. Set ' + (jk ? jk.jack : 'the mixer\'s output') + ' so the loud parts sit around -12 dB here.'
       : 'No sound card. Plug a USB sound card (UCA202 / UCA222) into the box: SET UP GUIDE shows which plug on the mixer.';
     if (a) {
       const who = (S.status && S.status.dj) || 'this set';

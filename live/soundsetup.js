@@ -29,9 +29,8 @@ const SoundSetup = (() => {
   };
   const venue = () => (S.status && S.status.venue) || null;
   const model = () => {
-    if (pick) return Gear.sound(Gear.byId(pick));
-    const c = Gear.current(S.devices, venue());
-    return c ? Gear.sound(c.entry) : null;
+    const c = Gear.current(S.devices, venue()), x = pick ? Gear.byId(pick) : c && c.entry;
+    return x ? Gear.sound(x, jackNow(x)) : null;          // #161: the jack tapped in WHICH JACK?, else the best one
   };
   const MIXERS = Gear.LIST;
 
@@ -138,12 +137,20 @@ const SoundSetup = (() => {
     const s = seen();
     const c = Gear.current(S.devices, venue());
     const cur = pick || (c && c.entry.id);
-    const pickRow = GearPick.picker(cur, x => { pick = x.id; const v = venue(); Gear.store.set(v && v.id, x.id); render(); });
+    const pickRow = GearPick.picker(cur, x => {
+      pick = x.id; const v = venue(); Gear.store.set(v && v.id, x.id);
+      // #161: a different mixer than the box's saved jack: forget that jack, so no warning names the old mixer's plug
+      const j = S.status && S.status.audio && S.status.audio.jack;
+      if (j && j.mixer !== x.id) post('/api/audio/jack', { clear: true }).catch(() => {});
+      render();
+    });
     inner.append(p(s ? 'Mixer on the DJ network: ' + s.name + (pick ? '' : ' (picked for you).')
       : c && c.from === 'venue' ? 'Which mixer? From this venue\'s GEAR notes: ' + c.entry.name + '. Different tonight? Tap it.'
       : c ? 'Which mixer? Last time here: ' + c.entry.name + '.' : 'Which mixer? (None on the DJ network right now: pick it.)'), pickRow);
     const m = model();
     if (!m) { inner.append(p('Pick the mixer above and the guide says which plug to use.')); return; }
+    const x = Gear.byId(m.id);
+    jackRows(x, jackNow(x));
     const ol = el('ol', 'ssu-steps');
     ol.append(el('li', null, 'On the ' + (m.id === 'OTHER' || m.id === 'LAPTOP' || m.id === 'NONE' ? 'mixer' : m.name) + ': use ' + m.where + '.'));
     ol.append(el('li', null, m.cable));
@@ -151,6 +158,39 @@ const SoundSetup = (() => {
     inner.append(ol);
     if (m.why) inner.append(p(m.why));
     inner.append(p(m.taken, 'ssu-dim'));
+  }
+
+  // ---------- #161 WHICH JACK? ----------
+  // Every output of the picked mixer, best first, each with its knob and who usually has it; tap the one the cable is
+  // really in. The box keeps it for this venue (POST /api/audio/jack) so TOO HOT / TOO QUIET name it. Open at the
+  // venue like DONE: it only changes words. Nothing tapped: the warnings say "the output GHOST LINK is plugged into".
+  let jackLocal = null;                                   // {mixer, jack} tapped on this phone, until the box says so
+  function jackNow(x) {
+    if (!x) return null;
+    if (jackLocal && jackLocal.mixer === x.id) return jackLocal.jack;
+    const j = S.status && S.status.audio && S.status.audio.jack;
+    return j && j.mixer === x.id && Gear.outputs(x).some(o => o.card && o.name === j.jack) ? j.jack : null;
+  }
+  function jackRows(x, cur) {
+    const all = Gear.outputs(x), card = all.filter(o => o.card), not = all.filter(o => !o.card);
+    if (!card.length) return;
+    inner.append(el('h3', 'ssu-h ssu-jh', 'WHICH JACK? BEST FIRST'));
+    const list = el('div', 'ssu-jacks');
+    card.forEach(o => {
+      const b = btn('', () => pickJack(x, o), 'ssu-jack' + (o.name === cur ? ' on' : ''));
+      b.setAttribute('aria-pressed', String(o.name === cur));
+      b.append(el('b', null, o.rank + ' · ' + o.name), el('span', null, ' ' + o.jackSay + ' · ' + o.followShort + (o.useShort ? ' · ' + o.useShort : '')));
+      b.title = o.followSay + '. ' + o.useSay + (o.note ? '. ' + o.note : '');
+      list.append(b);
+    });
+    inner.append(list);
+    if (not.length) inner.append(p('Not for the card: ' + not.map(o => o.name + (o.whyNot ? ' (' + o.whyNot + ')' : '')).join(', ') + '.', 'ssu-dim'));
+    inner.append(p(cur ? 'GHOST LINK\'s level warnings now say ' + cur + '.' : 'Tap the one the cable is in: the level warnings then name it and its knob.', cur ? 'ssu-ok' : 'ssu-dim'));
+  }
+  function pickJack(x, o) {
+    jackLocal = { mixer: x.id, jack: o.name };
+    render();
+    post('/api/audio/jack', Gear.jackBody(x, o)).catch(() => {});
   }
 
   // Live meter in the guide (Sound.levels is wrapped below, about 5 times a second).
