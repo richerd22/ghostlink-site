@@ -250,6 +250,7 @@ function renderHeader() {
     LISTEN_ONLY: 'LISTEN ONLY',
     OFFLINE: s.djLinkTraffic.arriving ? 'LISTENING' : 'NO DJ LINK',
   }[s.link] || s.link;
+  if (s.djCable && s.djCable.problem) { link.textContent = s.djCable.head; link.className = 'link warn'; } // #160 DJ CABLE: NO LINK LIGHT ...
   const view = curView();
   // DEMO with no gear at all: the 'nothing connected' warning would just be noise. With real gear, problems show.
   const quiet = S.demo && !S.devices.some(x => x.kind === 'PLAYER');
@@ -343,7 +344,7 @@ function renderDeck(p) {
   setText(t.q('.artist'), d.artist || '');
   const art = d.hasArtwork ? `/api/art/${p}?k=${encodeURIComponent(d.trackKey)}` : null;
   if (art !== t.art) { t.art = art; const img = t.q('.art'); img.style.visibility = art ? 'visible' : 'hidden'; if (art) img.src = art; }
-  setText(t.q('.bpm'), d.effectiveBpm ? d.effectiveBpm.toFixed(1) : '--');
+  setText(t.q('.bpm'), d.effectiveBpm ? glBpmText(d.effectiveBpm) : '--');
   setText(t.q('.pitch'), (d.pitch >= 0 ? '+' : '') + d.pitch.toFixed(2) + '%');
   lookupTrack(d);
   const lk = S.lookups[d.player + '|' + d.trackKey];
@@ -725,7 +726,7 @@ function frameNow() {
   set('.n-deck', 'DECK ' + d.player + (d.onAir ? ' · ON AIR' : '') + (d.master ? ' · MASTER' : ''));
   const img = q('.n-art');
   if (img) { const a = d.hasArtwork ? `/api/art/${d.player}?k=${encodeURIComponent(d.trackKey)}` : ''; if (img.dataset.src !== a) { img.dataset.src = a; img.style.visibility = a ? 'visible' : 'hidden'; if (a) img.src = a; } }
-  set('.n-bpm', d.effectiveBpm ? d.effectiveBpm.toFixed(1) : '--');
+  set('.n-bpm', d.effectiveBpm ? glBpmText(d.effectiveBpm) : '--');
   set('.n-pitch', (d.pitch >= 0 ? '+' : '') + d.pitch.toFixed(2) + '%');
   set('.n-key', (d.info && d.info.key) || '--');
   set('.n-genre', (d.info && d.info.genre) || '');
@@ -777,7 +778,7 @@ function frameNow() {
       rs('.ad-title', loaded ? x.title || '' : x.load === 'LOADING' ? 'LOADING' : 'EMPTY');
       rs('.ad-sub', loaded ? [...deckFlags(x), x.artist, i.key, x.master ? 'MASTER' : ''].filter(Boolean).join(' · ') : '');
       rs('.ad-r', loaded && x.durationMs ? '-' + mmss((x.durationMs - p) / rt) : '');
-      rs('.ad-b', x.effectiveBpm ? x.effectiveBpm.toFixed(1) : '');
+      rs('.ad-b', x.effectiveBpm ? glBpmText(x.effectiveBpm) : '');
       const c = rq('.ad-w'), w = S.waves[x.player];
       if (loaded && w && w.key === x.trackKey && c.clientWidth) drawOverview(c, w, p, x);
       else if (c.width) { c.getContext('2d').clearRect(0, 0, c.width, c.height); }
@@ -1911,6 +1912,9 @@ function needUnlock() {
   $('lock').scrollIntoView({ block: 'center' });
   $('pw').focus();
 }
+/** #160: a deck's BPM as this phone wants it (DISPLAY -> BPM: 137 / 136.9 / 136.90); 2 decimals only from the decks. */
+function glBpmDp() { try { const v = localStorage.getItem('gl-bpm-dp'); return v === '0' ? 0 : v === '2' ? 2 : 1; } catch (e) { return 1; } }
+function glBpmText(v) { return v.toFixed(glBpmDp()); }
 function note(id, text, warn) {
   $(id).textContent = text;
   $(id).classList.toggle('warn', !!warn);
@@ -2895,7 +2899,7 @@ function renderBoothCheck(s) {
     ['WI-FI', s.wifiQuiet ? ['look', s.wifiQuiet.words + (s.wifiQuiet.until ? ' UNTIL ' + clock(s.wifiQuiet.until) : ' UNTIL YOU END IT')] // #104
       : typeof WifiQuiet !== 'undefined' && WifiQuiet.afterLine && WifiQuiet.afterLine(s) && w.state !== 'client' ? ['look', 'STAND BY JUST ENDED · BACK TO NORMAL WI-FI'] // #134
       : w.state === 'hotspot' ? ['look', 'ON ITS OWN HOTSPOT · venue Wi-Fi saved?'] : w.ssid ? ['ok', w.ssid] : ['none', 'NONE']],
-    ['DJ CABLE', s.cable === false ? ['look', 'UNPLUGGED'] : s.cable && s.djAddress ? ['ok', 'IN'] : s.cable ? ['look', 'IN, NO ADDRESS YET'] : ['none', '--']],
+    ['DJ CABLE', s.djCable && s.djCable.problem ? ['look', s.djCable.head] /* #160 */ : s.cable === false ? ['look', 'UNPLUGGED'] : s.cable && s.djAddress ? ['ok', 'IN'] : s.cable ? ['look', 'IN, NO ADDRESS YET'] : ['none', '--']],
     ['JOINED', s.link === 'LINKED' ? ['ok', 'AS DEVICE ' + s.deviceNumber] : s.link === 'LISTENING' ? ['look', 'LISTENING'] : ['look', s.link || '--']],
     ['PLAYERS', !players ? ['none', 'NONE YET'] : want && players < want ? ['look', players + ' OF ' + want] : ['ok', players + (want ? ' OF ' + want : '')]],
     ['MIXER', mixer ? ['ok', 'ON THE NETWORK'] : players ? ['look', 'NONE · PLAYED GUESSES'] : ['none', '--']],

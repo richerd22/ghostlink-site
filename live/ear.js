@@ -51,7 +51,7 @@ const Ear = (() => {
     c.hidden = !e;
     if (!e) return;
     const p = c._;
-    set(p.bpm, '~' + Math.round(e.bpm));
+    set(p.bpm, e.steady && !(typeof glBpmDp === 'function' && glBpmDp() === 0) ? e.bpm.toFixed(1) : '~' + Math.round(e.bpm)); // #160: one decimal once the readings agree (136.9, like ShowKontrol)
     set(p.lbl, 'BPM BY EAR' + (e.conf < 0.3 ? ' · NOT SURE' : ''));
     set(p.sec, e.section === 'GROOVE' ? 'NO DJ LINK DECK PLAYING' : e.section === 'DROP' ? 'THE DROP' : e.section);
     p.sec.classList.toggle('drop', e.section === 'DROP');
@@ -71,7 +71,8 @@ const Ear = (() => {
     paint(nowCard, e);
     // NOW's "Nothing playing yet" would contradict the card: hide it while the ear hears a beat
     const nothing = nowBody && nowBody.querySelector(':scope > .empty-note');
-    if (nothing && nothing.hidden !== !!e) nothing.hidden = !!e;
+    const byEar = !!(S.status && S.status.byEar && S.status.byEar.minutes && !S.demo); // #160: TONIGHT BY EAR is up: not "nothing playing"
+    if (nothing && nothing.hidden !== (!!e || byEar)) nothing.hidden = !!e || byEar;
   }
   requestAnimationFrame(frame);
 

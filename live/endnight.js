@@ -36,15 +36,43 @@ const EndNight = (() => {
     return out;
   }
 
+  // ---- #160 NO DECKS NIGHT: a night heard only through SOUND IN. Hours, BPM and drops by ear; never a title. ----
+  const ear = c => c.source === 'ear';
+  /** The four big numbers: decks (TRACKS ...) or by ear (MUSIC, BPM BY EAR, AVG, BIG DROPS). */
+  const numbers = c => ear(c)
+    ? [['MUSIC', c.hours], ['BPM BY EAR', bpm(c)], ['AVG', c.avgBpm == null ? '--' : c.avgBpm], ['DROPS', c.byEar && c.byEar.drops != null ? c.byEar.drops : '--']]
+    : [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG BPM', c.avgBpm == null ? '--' : c.avgBpm]];
+  const clock = ms => { const s = Math.max(0, Math.round(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60;
+    return h + ':' + String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+  /** [label, text] rows for BY EAR (#160): loudness, the room, parts, drops (with where they are in the recording). */
+  function byEarRows(c) {
+    const b = c.byEar, out = [];
+    if (!b) return out;
+    if (b.lufs != null) out.push(['LINE LOUDNESS', b.lufs + ' LUFS' + (b.range != null ? ' · range ' + b.range + ' LU' : '') + (b.hot ? ' · MASTERED HOT' : '')
+      + (b.peakDb != null ? ' · peak ' + b.peakDb + ' dBFS' : '') + (b.clipsPerHour ? ' · ' + b.clipsPerHour + ' clips an hour' : '')]);
+    if (b.roomPeak != null) out.push(['THE ROOM', 'about ' + Math.round(b.roomAvg) + ' dB, peak ' + Math.round(b.roomPeak) + ' dB (a HARD STOP panel\'s mic)']);
+    if (b.peakAt) out.push(['LOUDEST', hm(b.peakAt)]);
+    (Array.isArray(b.parts) ? b.parts : []).slice(0, 8).forEach(p => out.push(['PART ' + p.n, hm(p.from) + '-' + hm(p.to)
+      + (p.avgBpm != null ? ' · ~' + Math.round(p.avgBpm) + ' BPM' : '') + (p.drops ? ' · ' + p.drops + (p.drops === 1 ? ' drop' : ' drops') : '') + (p.dj ? ' · ' + p.dj : '')
+      + (p.why === 'silence' ? ' (after a silence)' : p.why === 'tempo' ? ' (the tempo moved)' : '')]));
+    const big = (b.dropList || []).filter(d => d.big !== false);
+    if (big.length) out.push(['DROPS', big.slice(0, 6).map(d => hm(d.at) + (d.recAt != null ? ' (' + clock(d.recAt) + ' in)' : '')).join(' · ') + (big.length > 6 ? ' · +' + (big.length - 6) : '')]);
+    const o = b.before;
+    if (o && o.minutes) out.push(['LAST BY-EAR NIGHT', o.night + ' · ' + Math.floor(o.minutes / 60) + 'h ' + String(o.minutes % 60).padStart(2, '0') + 'm'
+      + (o.avgBpm != null ? ' · ~' + Math.round(o.avgBpm) + ' BPM' : '') + (o.drops != null ? ' · ' + o.drops + ' drops' : '')]);
+    return out;
+  }
+
   function render(box, c) {
     const head = el('div', 'head');
     head.append(el('pre', 'boo', GHOST.join('\n')));
     const t = el('div');
     t.append(el('h1', null, c.home ? 'END OF NIGHT · PRACTICE' : 'END OF NIGHT'), el('div', 'sub', (c.venue ? c.venue.toUpperCase() + ' · ' : '') + 'NIGHT OF ' + c.night));
+    if (ear(c)) t.append(el('div', 'line', 'HEARD BY EAR: no DJ Link decks tonight, so this is the sound card\'s night (no titles).'));
     if (c.home) t.append(el('div', 'line', 'A practice night: kept, never counted as a show or a record.'));
     head.append(t);
     const nums = el('div', 'nums');
-    [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG BPM', c.avgBpm == null ? '--' : c.avgBpm]]
+    numbers(c)
       .concat(c.doorPeak ? [['DOOR PEAK', c.doorPeak]] : []).forEach(([k, v]) => { // #127 DOOR COUNT: only when someone counted
       const d = el('div'); d.append(el('small', null, k), el('b', null, String(v))); nums.append(d);
     });
@@ -60,6 +88,13 @@ const EndNight = (() => {
       hl.forEach(([k, v]) => { const li = el('li'); li.append(el('span', null, k + '  '), el('b', null, v)); ul.append(li); });
       box.append(ul);
     }
+    const be = byEarRows(c);
+    if (be.length) {
+      box.append(el('h2', null, 'BY EAR'));
+      const ul = el('ul');
+      be.forEach(([k, v]) => { const li = el('li'); li.append(el('span', null, k + '  '), el('b', null, v)); ul.append(li); });
+      box.append(ul);
+    }
     box.append(el('h2', null, 'TRACKLIST'));
     if (c.tracklist && c.tracklist.length) {
       const ol = el('ol', 'tl');
@@ -69,7 +104,8 @@ const EndNight = (() => {
         const li = el('li'); li.append(el('span', null, hm(x.at)), el('b', null, (x.artist ? x.artist + ' - ' : '') + x.title)); ol.append(li);
       });
       box.append(ol);
-    } else box.append(el('div', 'private', c.shared ? 'Nothing played.' : 'The DJ\'s call: the tracklist shows here only when it was shared (PLAYED -> COPY · SAVE -> TRACKLIST).'));
+    } else if (ear(c)) box.append(el('div', 'private', 'No tracklist: the night was heard by ear (no DJ Link). GHOST LINK never guesses titles.'));
+    else box.append(el('div', 'private', c.shared ? 'Nothing played.' : 'The DJ\'s call: the tracklist shows here only when it was shared (PLAYED -> COPY · SAVE -> TRACKLIST).'));
     box.append(el('div', 'foot', 'GHOST LINK · made with <3 in Boston, MA by Third Polar Arch'));
   }
 
@@ -86,7 +122,7 @@ const EndNight = (() => {
     g.font = F(600, 44); g.fillText(c.home ? 'END OF NIGHT · PRACTICE' : 'END OF NIGHT', 220, 84);
     g.fillStyle = '#9a9a9a'; g.font = F(400, 26);
     g.fillText(fit((c.venue ? c.venue.toUpperCase() + ' · ' : '') + 'NIGHT OF ' + c.night, W - 300), 220, 144);
-    [['TRACKS', c.tracks], ['HOURS', c.hours], ['BPM', bpm(c)], ['AVG', c.avgBpm == null ? '--' : c.avgBpm]].forEach(([k, v], i) => {
+    numbers(c).forEach(([k, v], i) => {
       const x = 72 + i * 240;
       g.fillStyle = '#9a9a9a'; g.font = F(400, 22); g.fillText(k, x, 240);
       g.fillStyle = '#fff'; g.font = F(600, 50); g.fillText(fit(String(v), 225), x, 272);
@@ -100,8 +136,13 @@ const EndNight = (() => {
       g.fillStyle = cut.cls === 'over' ? '#ff2a2a' : cut.cls === 'wait' ? '#ffb000' : '#fff'; g.font = F(600, 34); g.fillText(fit(cut.text, W - 144), 72, y); y += 46;
       g.fillStyle = '#9a9a9a'; g.font = F(400, 24); g.fillText(fit(cut.more, W - 144), 72, y); y += 52;
     }
+    const be = byEarRows(c); // #160
+    if (be.length) {
+      head('BY EAR');
+      be.slice(0, 5).forEach(([k, v]) => { g.fillStyle = '#9a9a9a'; g.font = F(400, 20); g.fillText(k, 72, y); y += 26; g.fillStyle = '#fff'; g.font = F(600, 26); g.fillText(fit(v, W - 144), 72, y); y += 42; });
+    }
     const hl = highlights(c);
-    if (hl.length) {
+    if (hl.length && y < H - 300) {
       head('HIGHLIGHTS');
       hl.slice(0, 5).forEach(([k, v]) => { g.fillStyle = '#9a9a9a'; g.font = F(400, 20); g.fillText(k, 72, y); y += 26; g.fillStyle = '#fff'; g.font = F(600, 26); g.fillText(fit(v, W - 144), 72, y); y += 42; });
     }

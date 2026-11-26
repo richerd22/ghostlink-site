@@ -26,6 +26,7 @@ const Lines = (() => {
     ['asks', '#boothAsks', 'BOOTH ASKS from HARD STOP'],
     ['settime', '#setTimeNow, #setTimeDecks', 'SET TIME: fits / runs over / past MUSIC OFF / running late'],
     ['moment', '#momentNow', 'MOMENTS: SPEECHES IN 12'],
+    ['venue', '#venueHintLine', "VENUE FROM WI-FI: YOU'RE AT X - SWITCH TONIGHT? (#160, nodecks.js)"],
     ['mixcloud', '#mixcloudNow', 'MIXCLOUD CHECK while recording'],
     ['eon', '#eonReady', 'END OF NIGHT card ready'],
     ['tonight', '#tonightCard', "TONIGHT ISN'T SET UP (NOW; never while music plays; once a night; #162)"],

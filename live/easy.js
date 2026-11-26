@@ -55,6 +55,10 @@ const Easy = (() => {
     return { say: 'On its own hotspot: fine for the crew. For the venue\'s Wi-Fi: VENUE -> EDIT -> + VENUE WI-FI (pick the name under NEARBY).', join: false };
   }
 
+  // #160 DJ CABLE: "NO LINK LIGHT · 4 H 12 MIN" (status djCable: the box's own reading of its network port)
+  const forHow = secs => secs < 60 ? secs + ' S' : secs < 3600 ? Math.floor(secs / 60) + ' MIN' : Math.floor(secs / 3600) + ' H ' + Math.floor(secs / 60) % 60 + ' MIN';
+  const cableSay = dc => dc.head + ' · ' + forHow(dc.secs || 0) + '. ' + dc.fix;
+
   // ---------- READY FOR TONIGHT ----------
   /** Every check, in the order to fix them: st = fix (stop and fix), look (worth a look), ok, none (not in use). */
   function checks(s) {
@@ -64,12 +68,14 @@ const Easy = (() => {
     const n = s.players || 0, want = v.players || 0;
     const p = prob(/^Power low/);
     if (p) add('POWER', 'fix', p.fix);
-    if (s.cable === false) add('DJ CABLE', 'fix', "Plug the DJ cable: GHOST LINK's network port to the DJ switch, or the mixer's LINK port.");
+    const dc = s.djCable && s.djCable.problem ? s.djCable : null; // #160: which of the DJ cable's problems, and since when
+    if (dc) add('DJ CABLE', dc.state === 'NO_LINK_LIGHT' || dc.state === 'LINK_NO_GEAR' ? 'fix' : 'look', cableSay(dc));
+    else if (s.cable === false) add('DJ CABLE', 'fix', "Plug the DJ cable: GHOST LINK's network port to the DJ switch, or the mixer's LINK port.");
     else if (s.cable && !s.djAddress) add('DJ CABLE', 'look', 'In, no address yet. It usually sorts itself out within a minute.');
     else if (s.cable) add('DJ CABLE', 'ok', 'IN');
     if (s.link === 'LISTEN_ONLY') add('LISTEN ONLY', 'fix', 'GHOST LINK is quiet on the DJ network: decks show BPM only. Tap REJOIN when you want titles back.', 'controls', 'REJOIN');
     else if (s.link === 'BACKED_OFF') add('BACKED OFF', 'look', 'Another device used our number. GHOST LINK comes back on a free one by itself in about 30 s.');
-    if (s.cable !== false && s.link !== 'LISTEN_ONLY') {
+    if (s.cable !== false && s.link !== 'LISTEN_ONLY' && !dc) {
       if (!traffic && (s.uptimeSeconds || 0) > 15) add('DJ NETWORK', 'fix', "Nothing on the DJ network is talking. Players on? In LINK mode, not USB to a laptop? Cable on the switch the players use?");
       else if (traffic && !n) add('PLAYERS', 'fix', 'None yet. Turn the players on: they show up within seconds.');
       else if (n && want && n < want) add('PLAYERS', 'look', 'Seeing ' + n + ' of ' + want + '. One is off, in laptop mode, or its cable is out of the switch.');
@@ -159,11 +165,12 @@ const Easy = (() => {
   let emptySig = '';
   function renderEmpty() {
     const s = S.status;
-    const show = !!s && !S.demo && players().length === 0;
+    const show = !!s && !S.demo && players().length === 0 && !(s.byEar && s.byEar.minutes); // #160: TONIGHT BY EAR says it then (and the top line has the fix)
     empty.hidden = !show;
     if (!show) return;
     const traffic = !!(s.djLinkTraffic && s.djLinkTraffic.arriving);
-    const say = s.cable === false ? "Plug the DJ cable: GHOST LINK's network port to the DJ switch, or the mixer's LINK port."
+    const dc = s.djCable && s.djCable.problem ? s.djCable : null; // #160
+    const say = dc ? cableSay(dc) : s.cable === false ? "Plug the DJ cable: GHOST LINK's network port to the DJ switch, or the mixer's LINK port."
       : s.link === 'LISTEN_ONLY' ? 'LISTEN ONLY is on. STATUS -> CONTROLS -> REJOIN to see the decks.'
       : traffic ? 'Something is talking on the DJ network. Turn the players on: they show up within seconds.'
       : 'Turn the players on and cable them to the same switch as GHOST LINK. Players in LINK mode, not USB to a laptop.';
