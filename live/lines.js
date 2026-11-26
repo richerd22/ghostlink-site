@@ -21,6 +21,7 @@ const Lines = (() => {
     ['deaf', '#soundChip.warn', 'RECORDING BUT HEARING NOTHING'],
     ['announce', '#annBar', 'an announcement playing (■ STOP)'],
     ['crew', '#crewCalls', 'CREW CALLS (one bar; +1 / +2 inside it)'],
+    ['cue', '#cueLine', 'CUES: PREP CO2 / CO2 IN 4 · CONFIRM? / CO2 IN 4 - CONFIRMED (#163)'],
     ['weather', '.wx-ask', 'WEATHER: HOLD? (safety ask)'],
     ['autostop', '#curfewBar', 'AUTO-STOP armed at MUSIC OFF'],
     ['asks', '#boothAsks', 'BOOTH ASKS from HARD STOP'],

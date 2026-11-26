@@ -581,6 +581,7 @@ const WAVE_OPT = { fit, windowS: 8, color: 'rgb', grid: null, struct: null };
 function waveOpt(d) {
   WAVE_OPT.windowS = Views.windowS(d, DV.zoom); WAVE_OPT.color = DV.color || 'rgb';
   WAVE_OPT.grid = (S.grids || {})[d.player] || null; WAVE_OPT.struct = S.structs[d.player] || null;
+  WAVE_OPT.marks = typeof Cues !== 'undefined' && Cues.marks ? Cues.marks(d.player, d.trackKey) : null; // #163 CUES: a picked / called drop
   return WAVE_OPT;
 }
 function drawDetail(c, w, pos, d) { Waves.detail(c, w, pos, d, waveOpt(d)); }

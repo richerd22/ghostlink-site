@@ -38,7 +38,9 @@ const Crew = (() => {
     setInterval(() => {
       const now = Date.now() - (getSkew() || 0); // the box's clock
       // #127: a call nobody has SEEN stays up for the box's 30 s after GO (a seen one goes after goKeep, as before)
-      const calls = (getCalls() || []).filter(c => now - c.goAt < (c.seen || c.done ? goKeep : Math.max(goKeep, 30000)))
+      // #163 CUES: a cue's reminder (PREP / CONFIRM? / CONFIRMED, `cuest`) is for HARD STOP's panels; the box's own
+      // screens show it in the CUES line (cues.js) instead, and the TV never shows it as a call.
+      const calls = (getCalls() || []).filter(c => !c.cuest && now - c.goAt < (c.seen || c.done ? goKeep : Math.max(goKeep, 30000)))
         .slice().sort((a, b) => (b.pri === 'urgent') - (a.pri === 'urgent')).slice(0, max);
       const rows = calls.map(c => {
         const left = c.goAt - now, go = left <= 0;
@@ -83,7 +85,7 @@ const Crew = (() => {
     let key = '';
     setInterval(() => {
       const now = Date.now() - (getSkew() || 0);
-      const c = (getCalls() || []).find(x => x.mo && x.goAt - now <= 10000 && now - x.goAt < 3000);
+      const c = (getCalls() || []).find(x => x.mo && !x.cuest && x.goAt - now <= 10000 && now - x.goAt < 3000);
       const t = !c ? '' : c.goAt - now > 0 ? String(Math.ceil((c.goAt - now) / 1000)) : 'GO';
       const k = c ? c.id + t + (c.barMs > 0 ? Math.ceil((c.goAt - now) / c.barMs) : '') : '';
       if (k === key) return;

@@ -25,6 +25,13 @@ const EndNight = (() => {
 
   function highlights(c) {
     const out = [];
+    if (c.cues) { // #163 CUES: what went, and what didn't
+      const q = c.cues, bits = [];
+      if (q.fired) bits.push(q.fired + ' GONE');
+      if (q.skipped) bits.push(q.skipped + ' NOT TONIGHT');
+      if (q.missed) bits.push(q.missed + ' MISSED');
+      if (bits.length) out.push(['CUES', bits.join(' · ') + ((q.lines || []).length ? ' · ' + q.lines.slice(0, 4).join(', ') : '')]);
+    }
     (c.records || []).forEach(r => out.push(['NEW BOX RECORD', r.name + ': ' + r.text + (r.title ? ' (' + r.title + ')' : '') + (r.dj ? ' · ' + r.dj : '')]));
     const t = c.transitions;
     if (t && t.count) {

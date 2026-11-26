@@ -175,6 +175,21 @@ const Waves = (() => {
         g.fillStyle = '#fff'; g.beginPath(); g.moveTo(x - sz, 0); g.lineTo(x + sz, 0); g.lineTo(x, sz * 1.2); g.closePath(); g.fill();
       }
     }
+    // #163 CUES: a picked drop (amber, dashed) or a called one (red, full) with its name and the time to it.
+    if (opt.marks && opt.marks.length) {
+      const fs = Math.max(9 * r, Math.min(13 * r, H * .2)), lw = Math.max(2, Math.round(2 * r));
+      g.font = '700 ' + Math.round(fs) + 'px "JetBrains Mono", ui-monospace, monospace';
+      for (const mk of opt.marks) {
+        if (mk.ms < a || mk.ms > b) continue;
+        const x = Math.round(X(mk.ms)), col = mk.called ? '#ff3b30' : '#ffb000';
+        g.fillStyle = col;
+        if (mk.called) g.fillRect(x - lw / 2, 0, lw, H);
+        else for (let y = 0; y < H; y += 6 * r) g.fillRect(x - lw / 2, y, lw, 3 * r);
+        const tw = g.measureText(mk.label).width + 6 * r, tx = Math.min(W - tw, Math.max(0, x + 3 * r));
+        g.fillStyle = '#000'; g.fillRect(tx, H - fs - 6 * r, tw, fs + 4 * r);
+        g.fillStyle = col; g.fillText(mk.label, tx + 3 * r, H - 5 * r);
+      }
+    }
     // The playhead: white, amber in the last 30 s (with the words: REMAIN shows the time).
     g.fillStyle = ending(d, pos) ? AMBER : '#fff';
     g.fillRect(Math.round(W / 2 - r), 0, Math.max(2, Math.round(2 * r)), H);
@@ -214,7 +229,8 @@ const Waves = (() => {
     }
     const px = d.durationMs ? Math.round(pos / d.durationMs * W) : 0;
     const end = ending(d, pos), lp = d.info && d.info.looping && d.loop && d.durationMs ? d.loop : null;
-    const now = px + '|' + end + '|' + (lp ? lp.join() : '');
+    const mk = d.durationMs && opt.marks && opt.marks.length ? opt.marks : null; // #163 CUES: the picked / called drop
+    const now = px + '|' + end + '|' + (lp ? lp.join() : '') + '|' + (mk ? mk.map(m => m.ms + (m.called ? 'c' : '')).join() : '');
     if (c._ov.drawn === now) return; // nothing moved by a pixel: leave it
     c._ov.drawn = now;
     g.clearRect(0, 0, W, H);
@@ -222,6 +238,7 @@ const Waves = (() => {
     if (px > 0) { g.fillStyle = 'rgba(0,0,0,.6)'; g.fillRect(0, bh, px, H - bh); } // played
     if (lp) { g.fillStyle = 'rgba(255,176,0,.35)'; const x0 = lp[0] / d.durationMs * W; g.fillRect(x0, bh, Math.max(2 * r, lp[1] / d.durationMs * W - x0), H - bh); }
     if (end) { g.fillStyle = AMBER; g.fillRect(px, H - Math.max(2, 2 * r), W - px, Math.max(2, 2 * r)); }
+    if (mk) for (const m of mk) { g.fillStyle = m.called ? '#ff3b30' : AMBER; g.fillRect(Math.round(m.ms / d.durationMs * W) - r, 0, Math.max(2, Math.round(2 * r)), H); }
     if (d.durationMs) { g.fillStyle = end ? AMBER : '#fff'; g.fillRect(px, 0, Math.max(2, Math.round(2 * r)), H); }
   }
 
