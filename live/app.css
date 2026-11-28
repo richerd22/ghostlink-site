@@ -994,3 +994,13 @@ body.fit-decks[data-view=decks] .booth-asks:has(> :nth-child(3)) > :first-child 
 .sb-lost h2 { font-size: 22px; line-height: 1.2; margin: 0 0 14px; overflow-wrap: anywhere; }
 .sb-lost p { font-size: 16px; line-height: 1.4; margin: 0 0 10px; overflow-wrap: anywhere; }
 .sb-lost .sb-small { font-size: 13px; color: var(--grey); margin-top: 16px; }
+
+/* 51, Nov 27: unlock on the page you're on (needUnlock) */
+.unlock-here { border: 1px solid var(--fg); background: var(--bg); color: var(--fg); padding: 16px; max-width: 360px; width: calc(100% - 32px); }
+.unlock-here::backdrop { background: rgba(0,0,0,.55); }
+.unlock-here form { display: grid; gap: 10px; }
+.unlock-here .uh-title { margin: 0; letter-spacing: .12em; font-weight: 700; }
+.unlock-here .uh-note { margin: 0; font-size: 13px; color: var(--grey); }
+.unlock-here .uh-note.warn { color: var(--warn, #ffb000); }
+.unlock-here input { font: inherit; padding: 10px; background: transparent; color: var(--fg); border: 1px solid var(--grey); }
+.unlock-here .uh-row { display: flex; gap: 8px; }

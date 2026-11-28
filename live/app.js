@@ -1911,9 +1911,40 @@ async function showCrew(owner) {
 }
 function needUnlock() {
   note('lockNote', 'That control is locked. Enter the password above; it runs as soon as you\'re in.', true);
-  if (curView() !== 'status') location.hash = '#status';
-  $('lock').scrollIntoView({ block: 'center' });
-  $('pw').focus();
+  // 51, Nov 27 (Richard): "should let you enter on the page you're on, not take you away". STATUS still works the same.
+  if (curView() === 'status') { $('lock').scrollIntoView({ block: 'center' }); $('pw').focus(); return; }
+  unlockHere();
+}
+/** A small password box over the page you're on; the locked control runs as soon as you're in. */
+function unlockHere() {
+  let d = $('unlockHere');
+  if (!d) {
+    d = document.createElement('dialog');
+    d.id = 'unlockHere';
+    d.className = 'unlock-here';
+    const f = document.createElement('form');
+    const h = document.createElement('p'); h.className = 'uh-title'; h.textContent = 'THAT CONTROL IS LOCKED';
+    const t = document.createElement('p'); t.className = 'uh-note'; t.textContent = 'Enter the password. It runs as soon as you\'re in.';
+    const i = document.createElement('input'); i.type = 'password'; i.autocomplete = 'current-password'; i.id = 'uhPw'; i.setAttribute('aria-label', 'Password');
+    const row = document.createElement('div'); row.className = 'uh-row';
+    const go = document.createElement('button'); go.type = 'submit'; go.className = 'btn'; go.textContent = 'UNLOCK';
+    const no = document.createElement('button'); no.type = 'button'; no.className = 'btn ghost'; no.textContent = 'NOT NOW';
+    row.append(go, no); f.append(h, t, i, row); d.append(f); document.body.append(d);
+    no.addEventListener('click', () => { pending = null; d.close(); });
+    f.addEventListener('submit', async e => {
+      e.preventDefault();
+      const r = await fetch('/api/unlock', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: i.value }) });
+      i.value = '';
+      if (!r.ok) { t.textContent = r.status === 429 ? 'Too many tries: wait a minute.' : 'Wrong password. After 5 tries, wait a minute.'; t.classList.add('warn'); return; }
+      d.close();
+      setUnlocked(true);
+      refreshAuth();
+      if (pending) { const b = pending; pending = null; if (typeof b === 'function') b(); else if (b && b.click) b.click(); }
+    });
+  }
+  const t = d.querySelector('.uh-note'); t.textContent = 'Enter the password. It runs as soon as you\'re in.'; t.classList.remove('warn');
+  if (!d.open) { try { d.showModal(); } catch (e) { d.setAttribute('open', ''); } }
+  $('uhPw').focus();
 }
 /** #160: a deck's BPM as this phone wants it (DISPLAY -> BPM: 137 / 136.9 / 136.90); 2 decimals only from the decks. */
 function glBpmDp() { try { const v = localStorage.getItem('gl-bpm-dp'); return v === '0' ? 0 : v === '2' ? 2 : 1; } catch (e) { return 1; } }
@@ -1947,7 +1978,7 @@ $('unlockForm').addEventListener('submit', async e => {
     setUnlocked(true);
     refreshAuth();
     note('lockNote', 'Unlocked on this phone.');
-    if (pending) { const b = pending; pending = null; if (curView() !== 'status') location.hash = '#status'; b.click(); }
+    if (pending) { const b = pending; pending = null; if (typeof b === 'function') b(); else if (b && b.click) b.click(); }
   }
   else note('lockNote', 'Wrong password. After 5 tries, wait a minute.', true);
 });
@@ -2973,3 +3004,17 @@ document.addEventListener('click', e => {
 // #87: opening the page on a tab (#status) let the browser jump to that section once the page finished loading, after
 // showView had already scrolled to the top, so the header and tabs started off screen. Undo that late jump.
 addEventListener('load', () => { if (!route().sub) setTimeout(() => { if (window.scrollY < 400) window.scrollTo(0, 0); }, 0); });
+
+// 51, Nov 27: MARK DROP. One tap right on the hit; the box keeps the ms and every playing deck's position (black box).
+(() => {
+  const b = document.getElementById('markDrop');
+  if (!b) return;
+  b.addEventListener('click', async () => {
+    const at = Date.now() - (S.skew || 0); // in the box's clock
+    try {
+      const r = await fetch('/api/hardstop/mark', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'drop', from: 'dashboard', at }) });
+      b.textContent = r.ok ? 'MARKED' : 'NOT SAVED';
+    } catch (e) { b.textContent = 'NOT SAVED'; }
+    setTimeout(() => { b.textContent = 'MARK DROP'; }, 1500);
+  });
+})();
